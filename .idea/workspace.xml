@@ -1,281 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2526a167-3fad-46e7-a698-aa85edf08f7c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/aitsi/m3spin/commons/ATTR.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/aitsi/m3spin/commons/ENTITY_TYPE.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/aitsi/m3spin/commons/INDEX.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/aitsi/m3spin/commons/LINK_TYPE.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/aitsi/m3spin/commons/PROC.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/aitsi/m3spin/commons/STMT.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/aitsi/m3spin/commons/STRING.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/aitsi/m3spin/commons/TNODE.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/aitsi/m3spin/commons/VAR.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/VarTable.java" afterDir="false" />
+    <list default="true" id="37dc5b92-54dc-4287-abbb-6c4b7dc069d1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/aitsi/m3spin/commons/PROCimpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/IAST.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/AST.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/ICalls.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/Calls.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/IModifies.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/Modifies.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/IProcTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/ProcTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/IUses.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/Uses.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/IVarTable.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/aitsi/m3spin/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/aitsi/m3spin/Main.java" afterDir="false" />
     </list>
-    <ignored path="$PROJECT_DIR$/out/" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="DefaultGradleProjectSettings">
-    <option name="testRunner" value="GRADLE" />
-    <option name="delegatedBuild" value="true" />
-  </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/VarTable.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
-              <caret line="10" column="32" lean-forward="true" selection-start-line="5" selection-start-column="1" selection-end-line="10" selection-end-column="32" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/Modifies.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="17" column="44" selection-start-line="7" selection-start-column="3" selection-end-line="17" selection-end-column="44" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/Uses.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="462">
-              <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/ProcTable.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="96">
-              <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/Calls.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="485">
-              <caret line="29" column="20" lean-forward="true" selection-start-line="29" selection-start-column="20" selection-end-line="29" selection-end-column="20" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/AST.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="522">
-              <caret line="31" column="22" lean-forward="true" selection-start-line="31" selection-start-column="22" selection-end-line="31" selection-end-column="22" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/commons/LINK_TYPE.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="56">
-              <caret line="2" column="21" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="21" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/commons/ATTR.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="3" column="6" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/commons/ENTITY_TYPE.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/commons/VAR.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="32">
-              <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
-  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
   </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find></find>
-      <find>Uses</find>
-      <find>Modifies</find>
-    </findStrings>
-    <replaceStrings>
-      <replace>//</replace>
-      <replace>Uses</replace>
-    </replaceStrings>
-  </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/src/aitsi/m3spin/Main.java" />
-        <option value="$PROJECT_DIR$/src/aitsi/m3spin/pkb/AST.java" />
-        <option value="$PROJECT_DIR$/src/aitsi/m3spin/pkb/IAST.java" />
-        <option value="$PROJECT_DIR$/src/aitsi/m3spin/pkb/IFollows.java" />
-        <option value="$PROJECT_DIR$/src/aitsi/m3spin/pkb/IModifies.java" />
-        <option value="$PROJECT_DIR$/src/aitsi/m3spin/pkb/IProcTable.java" />
-        <option value="$PROJECT_DIR$/src/aitsi/m3spin/pkb/IUses.java" />
-        <option value="$PROJECT_DIR$/src/aitsi/m3spin/pkb/Intefaces/IUses.java" />
-        <option value="$PROJECT_DIR$/src/aitsi/m3spin/pkb/IVarTable.java" />
-        <option value="$PROJECT_DIR$/src/aitsi/m3spin/commons/IIndex.java" />
-        <option value="$PROJECT_DIR$/src/aitsi/m3spin/commons/IPROC.java" />
-        <option value="$PROJECT_DIR$/src/aitsi/m3spin/commons/IINDEX.java" />
-        <option value="$PROJECT_DIR$/src/aitsi/m3spin/commons/ISTAT.java" />
-        <option value="$PROJECT_DIR$/src/aitsi/m3spin/commons/ISTRING.java" />
-        <option value="$PROJECT_DIR$/src/aitsi/m3spin/commons/ITNODE.java" />
-        <option value="$PROJECT_DIR$/src/aitsi/m3spin/commons/IVAR.java" />
-        <option value="$PROJECT_DIR$/src/aitsi/m3spin/commons/VAR.java" />
-        <option value="$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/IVarTable.java" />
-        <option value="$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/Modifies.java" />
-        <option value="$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/Uses.java" />
-        <option value="$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/IProcTable.java" />
-        <option value="$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/ProcTable.java" />
-        <option value="$PROJECT_DIR$/src/aitsi/m3spin/commons/ENTITY_TYPE.java" />
-        <option value="$PROJECT_DIR$/src/aitsi/m3spin/commons/ATTR.java" />
-        <option value="$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/Calls.java" />
-        <option value="$PROJECT_DIR$/src/aitsi/m3spin/commons/LINK_TYPE.java" />
-        <option value="$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/AST.java" />
-      </list>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="C:\Users\dell\AppData\Local\JetBrains\Toolbox\apps\IDEA-U\ch-0\202.7660.26\plugins\maven\lib\maven3" />
+      </MavenGeneralSettings>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="1915" />
-    <option name="width" value="1044" />
-    <option name="height" value="1087" />
-  </component>
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="AITSI-M3SPIN" type="b2602c69:ProjectViewProjectNode" />
-              <item name="AITSI-M3SPIN" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="AITSI-M3SPIN" type="b2602c69:ProjectViewProjectNode" />
-              <item name="AITSI-M3SPIN" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="AITSI-M3SPIN" type="b2602c69:ProjectViewProjectNode" />
-              <item name="AITSI-M3SPIN" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="m3spin" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="AITSI-M3SPIN" type="b2602c69:ProjectViewProjectNode" />
-              <item name="AITSI-M3SPIN" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="m3spin" type="462c0819:PsiDirectoryNode" />
-              <item name="commons" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="AITSI-M3SPIN" type="b2602c69:ProjectViewProjectNode" />
-              <item name="AITSI-M3SPIN" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="m3spin" type="462c0819:PsiDirectoryNode" />
-              <item name="pkb" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="AITSI-M3SPIN" type="b2602c69:ProjectViewProjectNode" />
-              <item name="AITSI-M3SPIN" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="m3spin" type="462c0819:PsiDirectoryNode" />
-              <item name="pkb" type="462c0819:PsiDirectoryNode" />
-              <item name="Interfaces" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
-    </panes>
+  <component name="ProjectId" id="27F4Mj2J3lh27qaOD4riJFMATeA" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
   </component>
   <component name="RunManager">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="aitsi.m3spin.Main" />
       <module name="AITSI-M3SPIN" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="aitsi.m3spin.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -286,256 +81,52 @@
       </list>
     </recent_temporary>
   </component>
-  <component name="SvnConfiguration">
-    <configuration />
-  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="2526a167-3fad-46e7-a698-aa85edf08f7c" name="Default Changelist" comment="" />
-      <created>1648902570314</created>
+      <changelist id="37dc5b92-54dc-4287-abbb-6c4b7dc069d1" name="Default Changelist" comment="" />
+      <created>1648902454683</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1648902570314</updated>
+      <updated>1648902454683</updated>
+      <workItem from="1648902455867" duration="2726000" />
+      <workItem from="1649091352694" duration="975000" />
+      <workItem from="1649229813472" duration="2830000" />
+      <workItem from="1649253816178" duration="1025000" />
     </task>
     <servers />
   </component>
-  <component name="TodoView">
-    <todo-panel id="selected-file">
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-    <todo-panel id="all">
-      <are-packages-shown value="true" />
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
-  <component name="ToolWindowManager">
-    <frame x="1915" y="0" width="1044" height="1087" extended-state="0" />
-    <editor active="true" />
-    <layout>
-      <window_info id="Image Layers" />
-      <window_info id="Designer" />
-      <window_info id="UI Designer" />
-      <window_info id="Capture Tool" />
-      <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24898374" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="REST Client" />
-      <window_info anchor="bottom" id="Version Control" weight="0.32917964" />
-      <window_info anchor="bottom" id="Terminal" weight="0.14255765" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32917964" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" visible="true" weight="0.1865828" />
-      <window_info anchor="right" id="Palette" />
-      <window_info anchor="right" id="Theme Preview" />
-      <window_info anchor="right" id="Maven" />
-      <window_info anchor="right" id="Capture Analysis" />
-      <window_info anchor="right" id="Palette&#9;" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-    </layout>
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State>
-              <option name="RECENTLY_FILTERED_USER_GROUPS">
-                <collection />
-              </option>
-              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
-                <collection />
-              </option>
-              <option name="COLUMN_ORDER">
-                <list>
-                  <option value="0" />
-                  <option value="1" />
-                  <option value="2" />
-                  <option value="3" />
-                </list>
-              </option>
-            </State>
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/query/xd.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="32">
-          <caret line="2" column="15" selection-start-line="2" selection-start-column="15" selection-end-line="2" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="8" column="1" lean-forward="true" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/pkb/xd.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="32">
-          <caret line="2" column="15" selection-start-line="2" selection-start-column="15" selection-end-line="2" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/ICFG.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="32">
-          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/IFollows.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="32">
-          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/IParent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="32">
-          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/commons/PROC.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="32">
-          <caret line="2" column="16" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/commons/STMT.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="32">
-          <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/commons/STRING.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="32">
-          <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/commons/TNODE.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="32">
-          <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/commons/INDEX.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="32">
-          <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/commons/VAR.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="32">
-          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/commons/INTEGER.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="32">
-          <caret line="2" column="24" selection-start-line="2" selection-start-column="24" selection-end-line="2" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/Modifies.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="17" column="44" selection-start-line="7" selection-start-column="3" selection-end-line="17" selection-end-column="44" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/Uses.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="462">
-          <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/VarTable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="10" column="32" lean-forward="true" selection-start-line="5" selection-start-column="1" selection-end-line="10" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/ProcTable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/Calls.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="485">
-          <caret line="29" column="20" lean-forward="true" selection-start-line="29" selection-start-column="20" selection-end-line="29" selection-end-column="20" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/commons/ATTR.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="3" column="6" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/commons/ENTITY_TYPE.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/commons/LINK_TYPE.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="56">
-          <caret line="2" column="21" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/aitsi/m3spin/pkb/Interfaces/AST.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="522">
-          <caret line="31" column="22" lean-forward="true" selection-start-line="31" selection-start-column="22" selection-end-line="31" selection-end-column="22" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+  <component name="WindowStateProjectService">
+    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1649231171937">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1649231171937" />
+    <state x="765" y="236" key="#com.intellij.ide.util.MemberChooser" timestamp="1649254693775">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="765" y="236" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1649254693775" />
+    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1649091915729">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1649091915729" />
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1649254101718">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1649254101718" />
+    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1649254101718">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1649254101718" />
+    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1649254101718">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1649254101718" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1649254101718">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1649254101718" />
   </component>
 </project>
