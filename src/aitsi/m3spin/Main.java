@@ -14,6 +14,7 @@ public class Main {
                 SimpleReader simpleReader = new SimpleReader();
                 String simpleCode = simpleReader.readFile();
                 Parser parser = new Parser();
+                parser.parseAST();
                 break;
             case '2':
                 break;
