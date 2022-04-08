@@ -1,9 +1,9 @@
 package aitsi.m3spin.commons;
 
-public class PROCimpl implements PROC, TNODE{
+public class ProcedureImpl implements Procedure {
     private String name;
 
-    public PROCimpl(String name) {
+    public ProcedureImpl(String name) {
         this.name = name;
     }
 }

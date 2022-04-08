@@ -1,13 +1,19 @@
 package aitsi.m3spin.parser;
 
+import aitsi.m3spin.commons.EntityType;
+import aitsi.m3spin.commons.ProcedureImpl;
+import aitsi.m3spin.commons.Procedure;
 import aitsi.m3spin.pkb.Interfaces.AST;
 
-public class Parser {
-    private String rawCode;
-    private AST ast = new AstImpl();
+import java.util.*;
 
-    public Parser(String rawCode) {
-        this.rawCode = rawCode;
+public class Parser {
+    private Dictionary<String, Object> parserDict = new Hashtable<String, Object>();//todo: zapytać co to
+    private AST ast = new AstImpl();
+    private CodeScanner codeScanner;
+
+    public Parser(List<String> code) {
+        this.codeScanner = new CodeScanner(code);
     }
 
     public void parse() {
@@ -25,65 +31,32 @@ public class Parser {
         parseEndingBrace();
     }
 
-    private void parseStmtList() {
-        while (rawCode)
+    private Object parseName() {
+        parseLetter();
+        while (hasNextNotSpace()) {
+            char nextChar = codeScanner.getNextChar();
+            if (codeScanner.hasNextLetter()) {
+                parseLetter();
+            } else if (codeScanner.hasNextDigit()) {
+                parseDigit();
+
+            }
+
+            String procedureKeyword = codeScanner.getNextSubstr(EntityType.PROCEDURE.getETName().length());
+            nodeList.add(new ProcedureImpl(parts[i + 1]));
+        }
+
+        private void parseProcedureTag () throws MissingSimpleKeywordException {
+            String procedureKeyword = codeScanner.getNextSubstr(EntityType.PROCEDURE.getETName().length());
+            if (!EntityType.PROCEDURE.getETName().equals(procedureKeyword)) {
+                throw new MissingSimpleKeywordException(EntityType.PROCEDURE, codeScanner.getCurrentPosition());
+            }
+        }
+
+        private void parseStmtList () {
+            parseStmt();
+            if (codeScanner.hasNextStmt()) {
+                parseStmt();
+            }
+        }
     }
-}
-//package aitsi.m3spin.parser;
-//
-//import aitsi.m3spin.commons.*;
-//
-//import java.io.File;
-//import java.io.FileNotFoundException;
-//import java.sql.SQLOutput;
-//import java.util.*;
-//import java.util.regex.Pattern;
-//
-//public class Parser {
-//
-//    Dictionary<String, Object>  parserDict = new Hashtable<String, Object>();
-//    List<String> programList =  new ArrayList<>();
-//    List<TNODE> nodeList =  new ArrayList<>();
-//
-//
-//    public void parseAST(){
-//    File file = new File("procedura.txt");
-//        try (Scanner sc = new Scanner(file))
-//        {
-//            Pattern pattern = Pattern.compile("[a-z]");
-////[{{]
-//
-//            while (sc.hasNextLine()) {
-//                programList.add(sc.nextLine());
-//            }
-////            while(programList){
-////                String line = sc.nextLine();
-////                String[] parts = line.split(" ");
-////                for(int i=0; i< parts.length; i++){
-////                    System.out.println(parts[i]);
-////                    if(parts[i].equals("procedure")){
-////                        nodeList.add(new PROCimpl(parts[i+1]));
-////                    }
-////                    if(parts[i].equals("{")){
-////
-////                    }
-////                    if(pattern.matcher(parts[i]).matches()){
-////                        if ((parts[i-1].equals(";") || parts[i-1].equals("{")) && parts[i+1].equals("=")){
-////                            nodeList.add(ENTITY_TYPE.ASSIGN);
-////                            nodeList.add(new VARimpl(parts[i]));
-////                        }
-////                    }
-////                }
-////            }
-//            System.out.println();
-//            System.out.println();
-//            System.out.println(programList);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//
-//
-//
-//}

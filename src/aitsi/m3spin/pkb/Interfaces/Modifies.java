@@ -6,14 +6,14 @@ import java.util.List;
 
 public interface Modifies {
     void setModifies (STMT stmt, VAR var);
-    void setModifies (PROC proc, VAR var);
+    void setModifies (Procedure proc, VAR var);
 
     List<VAR> getModified (STMT stmt);
-    List<VAR> getModified (PROC proc);
+    List<VAR> getModified (Procedure proc);
 
     List<STMT> getModifiesSTMT (VAR var);
-    List<PROC> getModifiesPROC (VAR var);
+    List<Procedure> getModifiesPROC (VAR var);
 
     Boolean isModified (VAR var, STMT stat);
-    Boolean isModified (VAR var, PROC proc);
+    Boolean isModified (VAR var, Procedure proc);
 }

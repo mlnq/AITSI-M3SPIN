@@ -3,6 +3,8 @@ package aitsi.m3spin;
 import aitsi.m3spin.parser.Parser;
 import aitsi.m3spin.ui.SimpleReader;
 
+import java.io.FileNotFoundException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -12,9 +14,14 @@ public class Main {
         switch (uiOption) {
             case '1':
                 SimpleReader simpleReader = new SimpleReader();
-                String simpleCode = simpleReader.readFile();
-                Parser parser = new Parser();
-                parser.parseAST();
+                List<String> code = null;
+                try {
+                    code = simpleReader.readFile("procedura.txt");
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                Parser parser = new Parser(code);
+                parser.parse();
                 break;
             case '2':
                 break;

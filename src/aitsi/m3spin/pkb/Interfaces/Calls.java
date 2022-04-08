@@ -7,25 +7,25 @@ public interface Calls {
     //TODO impl: CallsTable[][]
 
     //Procedure p calls q
-    void setCalls (PROC p,PROC q);
+    void setCalls (Procedure p, Procedure q);
 
     //Which procedures call procedure q?
-    List<PROC> getCalledBy (PROC q);
+    List<Procedure> getCalledBy (Procedure q);
 
     //Which procedures are called from p?
-    List<PROC> getCalledFrom (PROC p);
+    List<Procedure> getCalledFrom (Procedure p);
 
     //Does procedure p call q?
-    Boolean isCalled (PROC p,PROC q);
+    Boolean isCalled (Procedure p, Procedure q);
 
 //TODO co robimy z Calls*
 
 //    //Which procedures call procedure q?
-    List<PROC> getCalls$ (PROC q);
+    List<Procedure> getCalls$ (Procedure q);
 //
 //    //Which procedures are called from p?
-    List<PROC> getCalled$From (PROC p);
+    List<Procedure> getCalled$From (Procedure p);
 //
 //    //Does procedure p call q?
-    Boolean isCalls$ (PROC p,PROC q);
+    Boolean isCalls$ (Procedure p, Procedure q);
 }
