@@ -8,12 +8,12 @@ public class CodeScanner {
     private CodePosition currentPosition;
     private List<String> code;
 
-    public CodeScanner(List<String> code) {
+    CodeScanner(List<String> code) {
         this.code = code;
         this.currentPosition = new CodePosition();
     }
 
-    public CodePosition getCurrentPosition() {
+    CodePosition getCurrentPosition() {
         return currentPosition;
     }
 
@@ -21,37 +21,44 @@ public class CodeScanner {
         return code;
     }
 
-    public boolean hasNextChar() {
+    boolean hasNextChar() {
         return false;//todo zaimplementować: sprawdza czy na aktualnej pozycji jest znak
     }
 
-    public char getNextChar() {
-        return 0;//todo zwraca znak na aktualnej pozycji, lub wyjątek, jeśli nie ma już znaków
+    char getNextChar() {
+        if (hasNextChar())
+            return this.code.get(currentPosition.getLine()).charAt(currentPosition.getColumn());//todo brac pod uwage koniec linii
+        return 0;//else //todo wyrzucic exception?
     }
 
-    public boolean hasNextChar(char c) {
+    boolean hasNextChar(char c) {
         return false; //todo sprawdza, czy na aktualnej pozycji znajduje się znak c
     }
 
-    public char getNextLetter() throws IllegalCharacterException {
+    char getNextLetter() throws IllegalCharacterException {
         char nextChar = this.getNextChar();
-        if(Character.isLetter(nextChar)) return nextChar;
+        if (Character.isLetter(nextChar)) return nextChar;
         else throw new IllegalCharacterException(nextChar, this.currentPosition);
     }
 
-    public void incrementPosition(int n) {
+    private void incrementPosition(int n) {
         //todo zwiększa aktualną pozycję o N
     }
 
-    public void incrementPosition() {
+    void incrementPosition() {
         this.incrementPosition(1);
     }
 
-    public String getNextString(int length) {
-        return null;//todo zwraca string o długości length zaczynając od aktualnej pozycji
+    String getNextString(int length) {
+        StringBuilder stringBuilder = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            stringBuilder.append(getNextChar());
+            incrementPosition();
+        }
+        return String.valueOf(stringBuilder);
     }
 
-    public void skipWhitespaces() {
+    void skipWhitespaces() {
         //todo przesuwa aktualną pozycję na najlbiższy niepusty znak (non-whitespace character)
     }
 }

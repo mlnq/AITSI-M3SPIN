@@ -1,19 +1,25 @@
 package aitsi.m3spin.pkb.Interfaces;
 
-import aitsi.m3spin.commons.*;
+import aitsi.m3spin.commons.interfaces.Procedure;
+import aitsi.m3spin.commons.interfaces.Statement;
+import aitsi.m3spin.commons.interfaces.Variable;
 
 import java.util.List;
 
 public interface Modifies {
-    void setModifies (Statement stmt, VAR var);
-    void setModifies (Procedure proc, VAR var);
+    void setModifies(Statement stmt, Variable var);
 
-    List<VAR> getModified (Statement stmt);
-    List<VAR> getModified (Procedure proc);
+    void setModifies(Procedure proc, Variable var);
 
-    List<Statement> getModifiesSTMT (VAR var);
-    List<Procedure> getModifiesPROC (VAR var);
+    List<Variable> getModified(Statement stmt);
 
-    Boolean isModified (VAR var, Statement stat);
-    Boolean isModified (VAR var, Procedure proc);
+    List<Variable> getModified(Procedure proc);
+
+    List<Statement> getModifiesSTMT(Variable var);
+
+    List<Procedure> getModifiesPROC(Variable var);
+
+    Boolean isModified(Variable var, Statement stat);
+
+    Boolean isModified(Variable var, Procedure proc);
 }

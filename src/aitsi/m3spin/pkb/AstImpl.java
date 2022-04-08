@@ -3,7 +3,7 @@ package aitsi.m3spin.pkb;
 import aitsi.m3spin.commons.ATTR;
 import aitsi.m3spin.commons.EntityType;
 import aitsi.m3spin.commons.LINK_TYPE;
-import aitsi.m3spin.commons.TNODE;
+import aitsi.m3spin.commons.interfaces.TNODE;
 import aitsi.m3spin.pkb.Interfaces.AST;
 
 import java.util.List;

@@ -1,6 +1,8 @@
 package aitsi.m3spin.commons;
 
-public enum EntityType implements TNODE{
+import aitsi.m3spin.commons.interfaces.TNODE;
+
+public enum EntityType implements TNODE {
     PROGRAM("PROGRAM"),
     PROCEDURE("procedure"),
     STMT_LIST("STMTLIST"),

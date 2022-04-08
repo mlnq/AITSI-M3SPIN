@@ -1,5 +1,6 @@
 package aitsi.m3spin.pkb.Interfaces;
-import aitsi.m3spin.commons.*;
+
+import aitsi.m3spin.commons.interfaces.Procedure;
 
 import java.util.List;
 

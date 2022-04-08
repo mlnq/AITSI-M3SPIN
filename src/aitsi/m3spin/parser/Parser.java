@@ -1,17 +1,22 @@
 package aitsi.m3spin.parser;
 
+import aitsi.m3spin.commons.AssignmentImpl;
 import aitsi.m3spin.commons.EntityType;
 import aitsi.m3spin.commons.ProcedureImpl;
-import aitsi.m3spin.commons.Procedure;
-import aitsi.m3spin.commons.Statement;
-import aitsi.m3spin.parser.exception.*;
+import aitsi.m3spin.commons.VariableImpl;
+import aitsi.m3spin.commons.interfaces.*;
+import aitsi.m3spin.parser.exception.IllegalCharacterException;
+import aitsi.m3spin.parser.exception.MissingCharacterException;
+import aitsi.m3spin.parser.exception.MissingSimpleKeywordException;
+import aitsi.m3spin.parser.exception.SimpleParserException;
 import aitsi.m3spin.pkb.AstImpl;
 import aitsi.m3spin.pkb.Interfaces.AST;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Parser {
-    private Dictionary<String, Object> parserDict = new Hashtable<String, Object>();//todo: zapytać co to
+    //private Dictionary<String, Object> parserDict = new Hashtable<String, Object>();//todo: zapytać co to
     private AST ast = new AstImpl();
     private CodeScanner codeScanner;
 
@@ -20,7 +25,9 @@ public class Parser {
     }
 
     public void parse() throws SimpleParserException {
+        System.out.println("Parsing SIMPLE code...");
         parseProcedure();
+        System.out.println("Parsing completed.");
     }
 
     private void parseProcedure() throws SimpleParserException {
@@ -44,7 +51,7 @@ public class Parser {
 
     private void parseChar(char c) throws MissingCharacterException {
         this.codeScanner.skipWhitespaces();
-        if(this.codeScanner.hasNextChar(c)) {
+        if (this.codeScanner.hasNextChar(c)) {
             this.codeScanner.incrementPosition();
         } else throw new MissingCharacterException(c, this.codeScanner.getCurrentPosition());
     }
@@ -57,10 +64,8 @@ public class Parser {
                 name.append(parseLetter());
             } else if (Character.isDigit(nextChar)) {
                 name.append(parseDigit());
-            } else if (Character.isWhitespace(nextChar)) {
-                break;
             } else {
-                throw new IllegalNameCharacterException(nextChar, codeScanner.getCurrentPosition());
+                break;
             }
         }
         return String.valueOf(name);
@@ -83,15 +88,42 @@ public class Parser {
         }
     }
 
-    private List<Statement> parseStmtList() {
+    private List<Statement> parseStmtList() throws SimpleParserException {
         List<Statement> stmtList = new ArrayList<>();
         stmtList.add(parseStmt());
-        if (codeScanner.hasNextStmt()) {//todo pokminić. codeScanner nie powinien umieć rozpoznawać statementów
+
+        while (!this.codeScanner.hasNextChar('}')) {
             stmtList.add(parseStmt());
+            codeScanner.skipWhitespaces();
+        }
+        return stmtList;
+    }
+
+
+    private Statement parseStmt() throws SimpleParserException {
+        codeScanner.skipWhitespaces();
+        String firstWord = parseName();
+
+        codeScanner.skipWhitespaces();
+        if (this.codeScanner.hasNextChar('=')) {
+            this.codeScanner.incrementPosition();
+            return parseAssignmentAfterEquals(firstWord);
+        } else {
+            return parseWhile();
         }
     }
 
-    private Statement parseStmt() {
+    private While parseWhile() {
+        return null;//todo
+    }
+
+    private Assignment parseAssignmentAfterEquals(String leftSideVar) throws MissingCharacterException {
+        Expression expr = parseExpression();
+        parseChar(';');
+        return new AssignmentImpl(new VariableImpl(leftSideVar), expr);
+    }
+
+    private Expression parseExpression() {
         return null;//todo
     }
 }

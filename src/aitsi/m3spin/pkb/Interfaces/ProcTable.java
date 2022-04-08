@@ -1,7 +1,7 @@
 package aitsi.m3spin.pkb.Interfaces;
 
-import aitsi.m3spin.commons.INDEX;
-import aitsi.m3spin.commons.STRING;
+import aitsi.m3spin.commons.interfaces.INDEX;
+import aitsi.m3spin.commons.interfaces.STRING;
 
 public interface ProcTable {
 //9.2.1 handbook

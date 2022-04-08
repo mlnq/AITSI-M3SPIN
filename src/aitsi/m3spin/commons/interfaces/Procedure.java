@@ -1,4 +1,4 @@
-package aitsi.m3spin.commons;
+package aitsi.m3spin.commons.interfaces;
 
 public interface Procedure extends TNODE {
 }

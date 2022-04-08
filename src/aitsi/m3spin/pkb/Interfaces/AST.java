@@ -1,6 +1,9 @@
 package aitsi.m3spin.pkb.Interfaces;
 
-import aitsi.m3spin.commons.*;
+import aitsi.m3spin.commons.ATTR;
+import aitsi.m3spin.commons.EntityType;
+import aitsi.m3spin.commons.LINK_TYPE;
+import aitsi.m3spin.commons.interfaces.TNODE;
 
 import java.util.List;
 
