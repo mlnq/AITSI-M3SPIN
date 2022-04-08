@@ -1,4 +1,4 @@
 package aitsi.m3spin.commons;
 
-public interface STMT {
+public interface Statement {
 }

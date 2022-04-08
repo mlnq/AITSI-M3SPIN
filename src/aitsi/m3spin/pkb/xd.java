@@ -6,21 +6,17 @@
 
 public class Parser {
 
-    List<TNODE> nodeList =  new ArrayList<>();
-
-
     public void parse(){
 
         {
-            Pattern pattern = Pattern.compile("[a-z]");
+
 //[{{]
             while(code) {
                 for (int i = 0; i < parts.length; i++) {
                     System.out.println(parts[i]);
 
-                    if (parts[i].equals("{")) {
 
-                    }
+                    Pattern pattern = Pattern.compile("[a-z]");
                     if (pattern.matcher(parts[i]).matches()) {
                         if ((parts[i - 1].equals(";") || parts[i - 1].equals("{")) && parts[i + 1].equals("=")) {
                             nodeList.add(EntityType.ASSIGN);
