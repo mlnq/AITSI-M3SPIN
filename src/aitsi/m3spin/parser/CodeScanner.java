@@ -1,6 +1,8 @@
 package aitsi.m3spin.parser;
 
 import aitsi.m3spin.parser.exception.IllegalCharacterException;
+import aitsi.m3spin.parser.exception.MissingCharacterException;
+import aitsi.m3spin.parser.exception.SimpleParserException;
 
 import java.util.List;
 
@@ -21,44 +23,55 @@ public class CodeScanner {
         return code;
     }
 
-    boolean hasNextChar() {
-        return false;//todo zaimplementować: sprawdza czy na aktualnej pozycji jest znak
+    boolean hasCurrentChar() {
+        return currentPosition.getLine() < code.size()
+                && currentPosition.getColumn() < getCurrentLine().length();
     }
 
-    char getNextChar() {
-        if (hasNextChar())
-            return this.code.get(currentPosition.getLine()).charAt(currentPosition.getColumn());//todo brac pod uwage koniec linii
-        return 0;//else //todo wyrzucic exception?
+    char getCurrentChar() throws MissingCharacterException {
+        if (hasCurrentChar()) return getCurrentLine().charAt(currentPosition.getColumn());
+        else throw new MissingCharacterException(currentPosition);
     }
 
-    boolean hasNextChar(char c) {
-        return false; //todo sprawdza, czy na aktualnej pozycji znajduje się znak c
-    }
+    boolean hasCurrentChar(char c) throws MissingCharacterException {
+        return getCurrentChar() == c;
+    }//brać pod uwagę koniec linii - przechodzic do kolejnej
 
-    char getNextLetter() throws IllegalCharacterException {
-        char nextChar = this.getNextChar();
-        if (Character.isLetter(nextChar)) return nextChar;
-        else throw new IllegalCharacterException(nextChar, this.currentPosition);
+    char getCurrentLetter() throws SimpleParserException {
+        char currentChar = this.getCurrentChar();
+        if (Character.isLetter(currentChar)) return currentChar;
+        else throw new IllegalCharacterException(currentChar, this.currentPosition);
     }
 
     private void incrementPosition(int n) {
-        //todo zwiększa aktualną pozycję o N
+        if (currentPosition.getColumn() + n < getCurrentLine().length()) currentPosition.moveColumnBy(n);
+        else {
+            currentPosition.moveLine();
+            incrementPosition(Math.max(currentPosition.getColumn() + n - getCurrentLine().length() - 1, 0));
+        }
+    }
+
+    private String getCurrentLine() {
+        return this.code.get(currentPosition.getLine());
     }
 
     void incrementPosition() {
         this.incrementPosition(1);
     }
 
-    String getNextString(int length) {
+    String getCurrentString(int length) throws MissingCharacterException {
         StringBuilder stringBuilder = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
-            stringBuilder.append(getNextChar());
+            stringBuilder.append(getCurrentChar());
             incrementPosition();
         }
         return String.valueOf(stringBuilder);
     }
 
-    void skipWhitespaces() {
-        //todo przesuwa aktualną pozycję na najlbiższy niepusty znak (non-whitespace character)
+    void skipWhitespaces() throws MissingCharacterException {
+        if (Character.isWhitespace(getCurrentChar())) {
+            incrementPosition();
+            skipWhitespaces();
+        }
     }
 }

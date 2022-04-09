@@ -4,7 +4,7 @@ public class CodePosition {
     private int line;
     private int column;
 
-    public CodePosition() {
+    CodePosition() {
         this.line = 0;
         this.column = 0;
     }
@@ -18,7 +18,7 @@ public class CodePosition {
         return line;
     }
 
-    public void setLine(int line) {
+    private void setLine(int line) {
         this.line = line;
     }
 
@@ -26,7 +26,20 @@ public class CodePosition {
         return column;
     }
 
-    public void setColumn(int column) {
+    private void setColumn(int column) {
         this.column = column;
+    }
+
+    void moveColumnBy(int n) {
+        this.setColumn(this.column + n);
+    }
+
+    private void moveLineBy(int n) {
+        this.setLine(this.line + n);
+        this.setColumn(0);
+    }
+
+    void moveLine() {
+        this.moveLineBy(1);
     }
 }

@@ -1,11 +1,16 @@
 package aitsi.m3spin.commons;
 
 import aitsi.m3spin.commons.interfaces.Procedure;
+import aitsi.m3spin.commons.interfaces.Statement;
+
+import java.util.List;
 
 public class ProcedureImpl implements Procedure {
     private String name;
+    private List<Statement> stmtList;
 
-    public ProcedureImpl(String name) {
+    public ProcedureImpl(String name, List<Statement> stmtList) {
         this.name = name;
+        this.stmtList = stmtList;
     }
 }

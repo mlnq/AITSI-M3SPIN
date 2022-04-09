@@ -5,8 +5,8 @@ import aitsi.m3spin.commons.EntityType;
 import aitsi.m3spin.commons.ProcedureImpl;
 import aitsi.m3spin.commons.VariableImpl;
 import aitsi.m3spin.commons.interfaces.*;
-import aitsi.m3spin.parser.exception.IllegalCharacterException;
 import aitsi.m3spin.parser.exception.MissingCharacterException;
+import aitsi.m3spin.parser.exception.MissingCodeEntityException;
 import aitsi.m3spin.parser.exception.MissingSimpleKeywordException;
 import aitsi.m3spin.parser.exception.SimpleParserException;
 import aitsi.m3spin.pkb.AstImpl;
@@ -32,13 +32,15 @@ public class Parser {
 
     private void parseProcedure() throws SimpleParserException {
         parseProcedureTag();
-        Procedure procedure = new ProcedureImpl(parseName());
-
-        ast.setRoot(procedure);
+        String procName = parseName();
 
         parseStartingBrace();
-        parseStmtList();
+
+        Procedure procedure = new ProcedureImpl(procName, parseStmtList());
+
         parseEndingBrace();
+
+        ast.setRoot(procedure);//todo zapisać wszystkie sparsowane elementy w PKB za pomocą interfejsu AST
     }
 
     private void parseStartingBrace() throws MissingCharacterException {
@@ -51,15 +53,15 @@ public class Parser {
 
     private void parseChar(char c) throws MissingCharacterException {
         this.codeScanner.skipWhitespaces();
-        if (this.codeScanner.hasNextChar(c)) {
+        if (this.codeScanner.hasCurrentChar(c)) {
             this.codeScanner.incrementPosition();
         } else throw new MissingCharacterException(c, this.codeScanner.getCurrentPosition());
     }
 
-    private String parseName() throws IllegalCharacterException {
+    private String parseName() throws SimpleParserException {
         StringBuilder name = new StringBuilder(String.valueOf(parseLetter()));
-        while (codeScanner.hasNextChar()) {
-            char nextChar = codeScanner.getNextChar();
+        while (codeScanner.hasCurrentChar()) {
+            char nextChar = codeScanner.getCurrentChar();
             if (Character.isLetter(nextChar)) {
                 name.append(parseLetter());
             } else if (Character.isDigit(nextChar)) {
@@ -75,24 +77,25 @@ public class Parser {
         return 0;//todo analogicznie do parseLetter()
     }
 
-    private char parseLetter() throws IllegalCharacterException {
-        char letter = this.codeScanner.getNextLetter();
+    private char parseLetter() throws SimpleParserException {
+        char letter = this.codeScanner.getCurrentLetter();
         this.codeScanner.incrementPosition();
         return letter;
     }
 
-    private void parseProcedureTag() throws MissingSimpleKeywordException {
-        String procedureKeyword = codeScanner.getNextString(EntityType.PROCEDURE.getETName().length());
+    private void parseProcedureTag() throws MissingCodeEntityException {
+        String procedureKeyword = codeScanner.getCurrentString(EntityType.PROCEDURE.getETName().length());
         if (!EntityType.PROCEDURE.getETName().equals(procedureKeyword)) {
             throw new MissingSimpleKeywordException(EntityType.PROCEDURE, codeScanner.getCurrentPosition());
         }
+        codeScanner.skipWhitespaces();
     }
 
     private List<Statement> parseStmtList() throws SimpleParserException {
         List<Statement> stmtList = new ArrayList<>();
         stmtList.add(parseStmt());
 
-        while (!this.codeScanner.hasNextChar('}')) {
+        while (!this.codeScanner.hasCurrentChar('}')) {
             stmtList.add(parseStmt());
             codeScanner.skipWhitespaces();
         }
@@ -105,7 +108,7 @@ public class Parser {
         String firstWord = parseName();
 
         codeScanner.skipWhitespaces();
-        if (this.codeScanner.hasNextChar('=')) {
+        if (this.codeScanner.hasCurrentChar('=')) {
             this.codeScanner.incrementPosition();
             return parseAssignmentAfterEquals(firstWord);
         } else {
@@ -114,7 +117,11 @@ public class Parser {
     }
 
     private While parseWhile() {
-        return null;//todo
+        return null;/*todo zaimplementować parsowanie pętli wg gramatyki Jarząbka:
+        while : ‘while’ var_name ‘{‘ stmtLst ‘}’
+        var_name : NAME (zaimplementowane jako parseName())
+        stmtLst zaimplementowane jako parseStmtList()
+        */
     }
 
     private Assignment parseAssignmentAfterEquals(String leftSideVar) throws MissingCharacterException {
@@ -124,6 +131,14 @@ public class Parser {
     }
 
     private Expression parseExpression() {
-        return null;//todo
+        return null;
+        /*todo zaimplementować parsowanie wyrażeń wg gramatyki Jarząbka:
+
+        expr : expr ‘+’ factor | factor
+        factor : var_name | const_value
+        var_name : NAME (zaimplementowane jako parseName())
+        const_value : INTEGER
+
+        */
     }
 }
