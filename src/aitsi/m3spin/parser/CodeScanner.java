@@ -74,4 +74,10 @@ public class CodeScanner {
             skipWhitespaces();
         }
     }
+
+    public char getCurrentDigit() throws SimpleParserException {
+        char currentChar = this.getCurrentChar();
+        if (Character.isDigit(currentChar)) return currentChar;
+        else throw new IllegalCharacterException(currentChar, this.currentPosition);
+    }
 }
