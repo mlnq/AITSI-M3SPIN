@@ -1,6 +1,7 @@
 package aitsi.m3spin.pkb.Interfaces;
 
-import aitsi.m3spin.commons.*;
+import aitsi.m3spin.commons.interfaces.INDEX;
+import aitsi.m3spin.commons.interfaces.STRING;
 
 public interface VarTable {
   INDEX insertVar (STRING varName);

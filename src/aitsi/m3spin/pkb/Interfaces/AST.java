@@ -1,13 +1,15 @@
 package aitsi.m3spin.pkb.Interfaces;
 
-import aitsi.m3spin.commons.*;
-import sun.plugin.javascript.navig4.Link;
+import aitsi.m3spin.commons.ATTR;
+import aitsi.m3spin.commons.EntityType;
+import aitsi.m3spin.commons.LINK_TYPE;
+import aitsi.m3spin.commons.interfaces.TNODE;
 
 import java.util.List;
 
 public interface AST {
     //: Creates a new node of type ‘et’ and returns a reference to it
-    TNODE createTNode (ENTITY_TYPE et);
+    TNODE createTNode (EntityType et);
     void setRoot (TNODE node);
     void setAttr (TNODE n, ATTR attr);
     void setFirstChild (TNODE parent,TNODE child);
@@ -20,7 +22,7 @@ public interface AST {
 
     void setLink (LINK_TYPE relation, TNODE node1, TNODE node2);
     TNODE getRoot ();
-    ENTITY_TYPE getType (TNODE node);
+    EntityType getType (TNODE node);
 
     ATTR getAttr (TNODE node);
     TNODE getFirstChild (TNODE p);
