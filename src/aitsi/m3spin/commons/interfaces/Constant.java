@@ -1,4 +1,4 @@
 package aitsi.m3spin.commons.interfaces;
 
-public interface Constant {
+public interface Constant extends Factor{
 }

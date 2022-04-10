@@ -2,9 +2,11 @@ package aitsi.m3spin.commons.impl;
 
 import aitsi.m3spin.commons.interfaces.Procedure;
 import aitsi.m3spin.commons.interfaces.Statement;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
 
+@AllArgsConstructor
 public class ProcedureImpl extends TNodeImpl implements Procedure {
     private List<Statement> stmtList;
     private int ID;
