@@ -1,4 +1,4 @@
 package aitsi.m3spin.commons.interfaces;
 
-public interface Statement {
+public interface Statement extends TNode {
 }

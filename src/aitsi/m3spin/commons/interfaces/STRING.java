@@ -1,4 +1,5 @@
 package aitsi.m3spin.commons.interfaces;
 
-public interface STRING {
+public interface STRING extends TNode {
+    //todo prawdopodobnie niepotrzebne???
 }

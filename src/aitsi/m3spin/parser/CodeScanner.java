@@ -8,10 +8,10 @@ import java.util.List;
 
 public class CodeScanner {
     private CodePosition currentPosition;
-    private List<String> code;
+    private List<String> codeLines;
 
-    CodeScanner(List<String> code) {
-        this.code = code;
+    CodeScanner(List<String> codeLines) {
+        this.codeLines = codeLines;
         this.currentPosition = new CodePosition();
     }
 
@@ -19,12 +19,12 @@ public class CodeScanner {
         return currentPosition;
     }
 
-    public List<String> getCode() {
-        return code;
+    public List<String> getCodeLines() {
+        return codeLines;
     }
 
     boolean hasCurrentChar() {
-        return currentPosition.getLine() < code.size()
+        return currentPosition.getLine() < codeLines.size()
                 && currentPosition.getColumn() < getCurrentLine().length();
     }
 
@@ -35,7 +35,7 @@ public class CodeScanner {
 
     boolean hasCurrentChar(char c) throws MissingCharacterException {
         return getCurrentChar() == c;
-    }//brać pod uwagę koniec linii - przechodzic do kolejnej
+    }
 
     char getCurrentLetter() throws SimpleParserException {
         char currentChar = this.getCurrentChar();
@@ -52,7 +52,7 @@ public class CodeScanner {
     }
 
     private String getCurrentLine() {
-        return this.code.get(currentPosition.getLine());
+        return this.codeLines.get(currentPosition.getLine());
     }
 
     void incrementPosition() {

@@ -1,55 +1,69 @@
 package aitsi.m3spin.pkb.Interfaces;
 
-import aitsi.m3spin.commons.ATTR;
-import aitsi.m3spin.commons.EntityType;
-import aitsi.m3spin.commons.LINK_TYPE;
-import aitsi.m3spin.commons.interfaces.TNODE;
+import aitsi.m3spin.commons.Attr;
+import aitsi.m3spin.commons.enums.EntityType;
+import aitsi.m3spin.commons.enums.LinkType;
+import aitsi.m3spin.commons.interfaces.TNode;
 
 import java.util.List;
 
 public interface AST {
     //: Creates a new node of type ‘et’ and returns a reference to it
-    TNODE createTNode (EntityType et);
-    void setRoot (TNODE node);
-    void setAttr (TNODE n, ATTR attr);
-    void setFirstChild (TNODE parent,TNODE child);
+    TNode createTNode(EntityType et);
 
-    void setRightSibling (TNODE l,TNODE r);
-    void setLeftSibling (TNODE l,TNODE r);
+    void setRoot(TNode node);
+
+    void setAttr(TNode n, Attr attr);
+
+    void setFirstChild(TNode parent, TNode child);
+
+    void setRightSibling(TNode l, TNode r);
+
+    void setLeftSibling(TNode l, TNode r);
 
 
-    void setChildOfLink (TNODE parent,TNODE child);
+    void setChildOfLink(TNode parent, TNode child);
 
-    void setLink (LINK_TYPE relation, TNODE node1, TNODE node2);
-    TNODE getRoot ();
-    EntityType getType (TNODE node);
+    void setLink(LinkType relation, TNode node1, TNode node2);
 
-    ATTR getAttr (TNODE node);
-    TNODE getFirstChild (TNODE p);
+    TNode getRoot();
 
-    TNODE getLinkedNode (LINK_TYPE link, TNODE node1);
+    EntityType getType(TNode node);
+
+    Attr getAttr(TNode node);
+
+    TNode getFirstChild(TNode p);
+
+    TNode getLinkedNode(LinkType link, TNode node1);
     //todo CreateLink(LINK_TYPE link, TNODE fromNode, toNode)???????
-    Boolean isLinked (LINK_TYPE link, TNODE node1, TNODE node2);
+    Boolean isLinked(LinkType link, TNode node1, TNode node2);
 
-    void setParent (TNODE p,TNODE c);
-    TNODE getParent (TNODE c);
-    List<TNODE> getParentedBy (TNODE p);
+    void setParent(TNode p, TNode c);
 
-    TNODE getParent$(TNODE c);
+    TNode getParent(TNode c);
 
-    List<TNODE> getParented$By (TNODE p);
+    List<TNode> getParentedBy(TNode p);
 
-    void setFollows (TNODE p,TNODE c);
-    TNODE getFollows (TNODE n);
+    TNode getParent$(TNode c);
 
-    List<TNODE> getFollows$(TNODE n);
-    TNODE getFollowedBy (TNODE n);
-    List<TNODE> getFollowed$By (TNODE n);
+    List<TNode> getParented$By(TNode p);
+
+    void setFollows(TNode p, TNode c);
+
+    TNode getFollows(TNode n);
+
+    List<TNode> getFollows$(TNode n);
+
+    TNode getFollowedBy(TNode n);
+
+    List<TNode> getFollowed$By(TNode n);
 
 
-    Boolean isFollowed (TNODE n1,TNODE n2);
-    Boolean isFollowed$ (TNODE n1,TNODE n2);
+    Boolean isFollowed(TNode n1, TNode n2);
 
-    Boolean isParent (TNODE p,TNODE c);
-    Boolean isParent$ (TNODE p,TNODE c);
+    Boolean isFollowed$(TNode n1, TNode n2);
+
+    Boolean isParent(TNode p, TNode c);
+
+    Boolean isParent$(TNode p, TNode c);
 }
