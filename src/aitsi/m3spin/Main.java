@@ -15,13 +15,13 @@ public class Main {
         switch (uiOption) {
             case '1':
                 SimpleReader simpleReader = new SimpleReader();
-                List<String> code = null;
+                List<String> codeLines = null;
                 try {
-                    code = simpleReader.readFile("procedura.txt");
+                    codeLines = simpleReader.readFile("procedura.txt");
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-                Parser parser = new Parser(code);
+                Parser parser = new Parser(codeLines);
                 parser.parse();
                 break;
             case '2':

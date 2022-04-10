@@ -1,151 +1,151 @@
 package aitsi.m3spin.pkb;
 
-import aitsi.m3spin.commons.ATTR;
-import aitsi.m3spin.commons.EntityType;
-import aitsi.m3spin.commons.LINK_TYPE;
-import aitsi.m3spin.commons.interfaces.TNODE;
+import aitsi.m3spin.commons.Attr;
+import aitsi.m3spin.commons.enums.EntityType;
+import aitsi.m3spin.commons.enums.LinkType;
+import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.Interfaces.AST;
 
 import java.util.List;
 
 public class AstImpl implements AST {
     @Override
-    public TNODE createTNode(EntityType et) {
+    public TNode createTNode(EntityType et) {
         return null;
     }
 
     @Override
-    public void setRoot(TNODE node) {
+    public void setRoot(TNode node) {
 
     }
 
     @Override
-    public void setAttr(TNODE n, ATTR attr) {
+    public void setAttr(TNode n, Attr attr) {
 
     }
 
     @Override
-    public void setFirstChild(TNODE parent, TNODE child) {
+    public void setFirstChild(TNode parent, TNode child) {
 
     }
 
     @Override
-    public void setRightSibling(TNODE l, TNODE r) {
+    public void setRightSibling(TNode l, TNode r) {
 
     }
 
     @Override
-    public void setLeftSibling(TNODE l, TNODE r) {
+    public void setLeftSibling(TNode l, TNode r) {
 
     }
 
     @Override
-    public void setChildOfLink(TNODE parent, TNODE child) {
+    public void setChildOfLink(TNode parent, TNode child) {
 
     }
 
     @Override
-    public void setLink(LINK_TYPE relation, TNODE node1, TNODE node2) {
+    public void setLink(LinkType relation, TNode node1, TNode node2) {
 
     }
 
     @Override
-    public TNODE getRoot() {
+    public TNode getRoot() {
         return null;
     }
 
     @Override
-    public EntityType getType(TNODE node) {
+    public EntityType getType(TNode node) {
         return null;
     }
 
     @Override
-    public ATTR getAttr(TNODE node) {
+    public Attr getAttr(TNode node) {
         return null;
     }
 
     @Override
-    public TNODE getFirstChild(TNODE p) {
+    public TNode getFirstChild(TNode p) {
         return null;
     }
 
     @Override
-    public TNODE getLinkedNode(LINK_TYPE link, TNODE node1) {
+    public TNode getLinkedNode(LinkType link, TNode node1) {
         return null;
     }
 
     @Override
-    public Boolean isLinked(LINK_TYPE link, TNODE node1, TNODE node2) {
+    public Boolean isLinked(LinkType link, TNode node1, TNode node2) {
         return null;
     }
 
     @Override
-    public void setParent(TNODE p, TNODE c) {
+    public void setParent(TNode p, TNode c) {
 
     }
 
     @Override
-    public TNODE getParent(TNODE c) {
+    public TNode getParent(TNode c) {
         return null;
     }
 
     @Override
-    public List<TNODE> getParentedBy(TNODE p) {
+    public List<TNode> getParentedBy(TNode p) {
         return null;
     }
 
     @Override
-    public TNODE getParent$(TNODE c) {
+    public TNode getParent$(TNode c) {
         return null;
     }
 
     @Override
-    public List<TNODE> getParented$By(TNODE p) {
+    public List<TNode> getParented$By(TNode p) {
         return null;
     }
 
     @Override
-    public void setFollows(TNODE p, TNODE c) {
+    public void setFollows(TNode p, TNode c) {
 
     }
 
     @Override
-    public TNODE getFollows(TNODE n) {
+    public TNode getFollows(TNode n) {
         return null;
     }
 
     @Override
-    public List<TNODE> getFollows$(TNODE n) {
+    public List<TNode> getFollows$(TNode n) {
         return null;
     }
 
     @Override
-    public TNODE getFollowedBy(TNODE n) {
+    public TNode getFollowedBy(TNode n) {
         return null;
     }
 
     @Override
-    public List<TNODE> getFollowed$By(TNODE n) {
+    public List<TNode> getFollowed$By(TNode n) {
         return null;
     }
 
     @Override
-    public Boolean isFollowed(TNODE n1, TNODE n2) {
+    public Boolean isFollowed(TNode n1, TNode n2) {
         return null;
     }
 
     @Override
-    public Boolean isFollowed$(TNODE n1, TNODE n2) {
+    public Boolean isFollowed$(TNode n1, TNode n2) {
         return null;
     }
 
     @Override
-    public Boolean isParent(TNODE p, TNODE c) {
+    public Boolean isParent(TNode p, TNode c) {
         return null;
     }
 
     @Override
-    public Boolean isParent$(TNODE p, TNODE c) {
+    public Boolean isParent$(TNode p, TNode c) {
         return null;
     }
 }

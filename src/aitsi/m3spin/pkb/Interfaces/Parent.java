@@ -1,4 +1,4 @@
 package aitsi.m3spin.pkb.Interfaces;
 
-public interface IFollows {
+public interface Parent {
 }

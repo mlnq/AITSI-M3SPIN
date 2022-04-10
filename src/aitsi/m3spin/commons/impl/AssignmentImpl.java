@@ -1,4 +1,4 @@
-package aitsi.m3spin.commons;
+package aitsi.m3spin.commons.impl;
 
 import aitsi.m3spin.commons.interfaces.Assignment;
 import aitsi.m3spin.commons.interfaces.Expression;

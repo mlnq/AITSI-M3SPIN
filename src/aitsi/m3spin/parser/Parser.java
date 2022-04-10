@@ -1,9 +1,10 @@
 package aitsi.m3spin.parser;
 
-import aitsi.m3spin.commons.AssignmentImpl;
-import aitsi.m3spin.commons.EntityType;
-import aitsi.m3spin.commons.ProcedureImpl;
-import aitsi.m3spin.commons.VariableImpl;
+import aitsi.m3spin.commons.enums.EntityType;
+import aitsi.m3spin.commons.impl.AssignmentImpl;
+import aitsi.m3spin.commons.impl.ProcedureImpl;
+import aitsi.m3spin.commons.impl.VariableImpl;
+import aitsi.m3spin.commons.impl.WhileImpl;
 import aitsi.m3spin.commons.interfaces.*;
 import aitsi.m3spin.parser.exception.MissingCharacterException;
 import aitsi.m3spin.parser.exception.MissingCodeEntityException;
@@ -16,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Parser {
-    //private Dictionary<String, Object> parserDict = new Hashtable<String, Object>();//todo: zapytać co to
     private AST ast = new AstImpl();
     private CodeScanner codeScanner;
 
@@ -26,12 +26,17 @@ public class Parser {
 
     public void parse() throws SimpleParserException {
         System.out.println("Parsing SIMPLE code...");
-        parseProcedure();
+        Procedure rootProc = parseProcedure();
         System.out.println("Parsing completed.");
+
+        ast.setRoot(rootProc);
+        //todo zapisać wszystkie sparsowane elementy w PKB za pomocą interfejsu AST
+        //todo wypełnić varTable
+        //todo wypełnić procTable
     }
 
-    private void parseProcedure() throws SimpleParserException {
-        parseProcedureTag();
+    private Procedure parseProcedure() throws SimpleParserException {
+        parseKeyword(EntityType.PROCEDURE);
         String procName = parseName();
 
         parseStartingBrace();
@@ -40,7 +45,7 @@ public class Parser {
 
         parseEndingBrace();
 
-        ast.setRoot(procedure);//todo zapisać wszystkie sparsowane elementy w PKB za pomocą interfejsu AST
+        return procedure;
     }
 
     private void parseStartingBrace() throws MissingCharacterException {
@@ -61,10 +66,10 @@ public class Parser {
     private String parseName() throws SimpleParserException {
         StringBuilder name = new StringBuilder(String.valueOf(parseLetter()));
         while (codeScanner.hasCurrentChar()) {
-            char nextChar = codeScanner.getCurrentChar();
-            if (Character.isLetter(nextChar)) {
+            char currentChar = codeScanner.getCurrentChar();
+            if (Character.isLetter(currentChar)) {
                 name.append(parseLetter());
-            } else if (Character.isDigit(nextChar)) {
+            } else if (Character.isDigit(currentChar)) {
                 name.append(parseDigit());
             } else {
                 break;
@@ -83,10 +88,10 @@ public class Parser {
         return letter;
     }
 
-    private void parseProcedureTag() throws MissingCodeEntityException {
-        String procedureKeyword = codeScanner.getCurrentString(EntityType.PROCEDURE.getETName().length());
-        if (!EntityType.PROCEDURE.getETName().equals(procedureKeyword)) {
-            throw new MissingSimpleKeywordException(EntityType.PROCEDURE, codeScanner.getCurrentPosition());
+    private void parseKeyword(EntityType keyword) throws MissingCodeEntityException {
+        String keywordStr = codeScanner.getCurrentString(keyword.getETName().length());
+        if (!keyword.getETName().equals(keywordStr)) {
+            throw new MissingSimpleKeywordException(keyword, codeScanner.getCurrentPosition());
         }
         codeScanner.skipWhitespaces();
     }
@@ -102,26 +107,35 @@ public class Parser {
         return stmtList;
     }
 
-
     private Statement parseStmt() throws SimpleParserException {
         codeScanner.skipWhitespaces();
         String firstWord = parseName();
 
         codeScanner.skipWhitespaces();
-        if (this.codeScanner.hasCurrentChar('=')) {
+        if (this.codeScanner.hasCurrentChar(EntityType.EQUALS.getETName().charAt(0))) {
             this.codeScanner.incrementPosition();
             return parseAssignmentAfterEquals(firstWord);
+        } else if (EntityType.IF.getETName().equals(firstWord)) {
+            return parseIf();
         } else {
             return parseWhile();
         }
     }
 
-    private While parseWhile() {
-        return null;/*todo zaimplementować parsowanie pętli wg gramatyki Jarząbka:
-        while : ‘while’ var_name ‘{‘ stmtLst ‘}’
-        var_name : NAME (zaimplementowane jako parseName())
-        stmtLst zaimplementowane jako parseStmtList()
-        */
+    private If parseIf() {
+        return null;//todo w przyszłych iteracjach
+    }
+
+    private While parseWhile() throws SimpleParserException {
+//        parseKeyword(EntityType.WHILE);
+        String conditionVar = parseName();
+
+        parseStartingBrace();
+
+        List<Statement> stmtList = parseStmtList();
+
+        parseEndingBrace();
+        return new WhileImpl(new VariableImpl(conditionVar), stmtList);
     }
 
     private Assignment parseAssignmentAfterEquals(String leftSideVar) throws MissingCharacterException {

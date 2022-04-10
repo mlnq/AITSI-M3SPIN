@@ -1,6 +1,6 @@
 package aitsi.m3spin.parser.exception;
 
-import aitsi.m3spin.commons.EntityType;
+import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.parser.CodePosition;
 
 public class MissingSimpleKeywordException extends MissingCodeEntityException {
