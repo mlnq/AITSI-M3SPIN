@@ -2,7 +2,7 @@ package aitsi.m3spin.commons.enums;
 
 import aitsi.m3spin.commons.interfaces.TNode;
 
-public enum EntityType implements TNode {
+public enum EntityType{
     //    PROGRAM("PROGRAM"),
     PROCEDURE("procedure"),
     //    STMT_LIST("STMTLIST"),
@@ -13,8 +13,8 @@ public enum EntityType implements TNode {
     IF("if"),
     PLUS("+"),
     MINUS("-"),
-    TIMES("*");
-//    VARIABLE("VARIABLE"),
+    TIMES("*"),
+    VARIABLE("VARIABLE");
 //    CONSTANT("CONSTANT");
 
     private String entityTypeName;

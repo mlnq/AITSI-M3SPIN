@@ -1,5 +1,7 @@
 package aitsi.m3spin;
 
+import aitsi.m3spin.commons.impl.TNodeImpl;
+import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.parser.Parser;
 import aitsi.m3spin.parser.exception.SimpleParserException;
 import aitsi.m3spin.ui.SimpleReader;
@@ -31,6 +33,7 @@ public class Main {
             default:
                 throw new IllegalStateException("Unexpected value: " + uiOption);
         }
+
     }
 
     static char readUiOption() {

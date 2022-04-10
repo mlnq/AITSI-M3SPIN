@@ -3,55 +3,88 @@ package aitsi.m3spin.pkb;
 import aitsi.m3spin.commons.Attr;
 import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.enums.LinkType;
+import aitsi.m3spin.commons.impl.ProcedureImpl;
+import aitsi.m3spin.commons.impl.VariableImpl;
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.Interfaces.AST;
+import aitsi.m3spin.pkb.exception.IllegalLinkTypeException;
 
 import java.util.List;
 
 public class AstImpl implements AST {
+    private int procID = 0;
+    private int varID = 0;
+    private TNode root;
+
     @Override
     public TNode createTNode(EntityType et) {
-        return null;
+        switch (et){
+            case PROCEDURE:
+                return new ProcedureImpl(procID++);
+            case VARIABLE:
+                return new VariableImpl(varID++);
+            default:
+                return null;
+        }
     }
 
     @Override
     public void setRoot(TNode node) {
-
+        this.root = node;
     }
 
-    @Override
-    public void setAttr(TNode n, Attr attr) {
-
-    }
+//    @Override
+//    public void setAttr(TNode n, Attr attr) {
+//
+//    }
 
     @Override
     public void setFirstChild(TNode parent, TNode child) {
-
+        parent.setChild(child);
     }
 
     @Override
-    public void setRightSibling(TNode l, TNode r) {
-
+    public void setSibling(TNode left, TNode right) {
+        left.setRightSibling(right);
+        right.setLeftSibling(left);
     }
 
     @Override
-    public void setLeftSibling(TNode l, TNode r) {
-
+    public void setRightSibling(TNode left, TNode right) {
+        left.setRightSibling(right);
     }
 
     @Override
-    public void setChildOfLink(TNode parent, TNode child) {
-
+    public void setLeftSibling(TNode left, TNode right) {
+        right.setLeftSibling(left);
     }
 
-    @Override
-    public void setLink(LinkType relation, TNode node1, TNode node2) {
+//    @Override
+//    public void setChildOfLink(TNode parent, TNode child) {
+//
+//    }
 
+    @Override
+    public void setLink(LinkType relation, TNode node1, TNode node2) throws IllegalLinkTypeException {
+        switch (relation)
+        {
+            case CHILD:
+                node2.setChild(node1);
+                node1.setParent(node2);
+            case PARENT:
+                node1.setChild(node2);
+                node2.setParent(node1);
+            case SIBLING:
+                node1.setRightSibling(node2);
+                node2.setRightSibling(node1);
+            default:
+                throw new IllegalLinkTypeException(relation, node1, node2);
+        }
     }
 
     @Override
     public TNode getRoot() {
-        return null;
+        return root;
     }
 
     @Override
@@ -61,7 +94,7 @@ public class AstImpl implements AST {
 
     @Override
     public Attr getAttr(TNode node) {
-        return null;
+        return node.getAttribute();
     }
 
     @Override

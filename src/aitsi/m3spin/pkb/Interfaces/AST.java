@@ -4,6 +4,7 @@ import aitsi.m3spin.commons.Attr;
 import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.enums.LinkType;
 import aitsi.m3spin.commons.interfaces.TNode;
+import aitsi.m3spin.pkb.exception.IllegalLinkTypeException;
 
 import java.util.List;
 
@@ -13,18 +14,19 @@ public interface AST {
 
     void setRoot(TNode node);
 
-    void setAttr(TNode n, Attr attr);
+//    void setAttr(TNode n, Attr attr);
 
     void setFirstChild(TNode parent, TNode child);
 
-    void setRightSibling(TNode l, TNode r);
+    void setSibling(TNode left, TNode right);
 
-    void setLeftSibling(TNode l, TNode r);
+    void setRightSibling(TNode left, TNode right);
 
+    void setLeftSibling(TNode left, TNode right);
 
-    void setChildOfLink(TNode parent, TNode child);
+//    void setChildOfLink(TNode parent, TNode child);
 
-    void setLink(LinkType relation, TNode node1, TNode node2);
+    void setLink(LinkType relation, TNode node1, TNode node2) throws IllegalLinkTypeException;
 
     TNode getRoot();
 
