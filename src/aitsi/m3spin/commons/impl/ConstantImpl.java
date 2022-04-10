@@ -5,6 +5,6 @@ import aitsi.m3spin.commons.interfaces.Constant;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class ConstantImpl implements Constant {
+public class ConstantImpl extends TNodeImpl implements Constant {
     private int value;
 }

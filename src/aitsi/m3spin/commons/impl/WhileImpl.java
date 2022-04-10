@@ -10,7 +10,7 @@ import java.util.List;
 
 
 @AllArgsConstructor
-public class WhileImpl implements While {
+public class WhileImpl extends TNodeImpl implements While {
     private Variable conditionVar;
     private List<Statement> stmtList;
 }

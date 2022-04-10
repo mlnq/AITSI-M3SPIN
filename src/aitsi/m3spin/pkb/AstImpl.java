@@ -94,7 +94,7 @@ public class AstImpl implements AST {
 
     @Override
     public Attr getAttr(TNode node) {
-        return node.getAttribute();
+        return null;
     }
 
     @Override

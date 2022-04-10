@@ -6,7 +6,7 @@ import aitsi.m3spin.commons.interfaces.Variable;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class AssignmentImpl implements Assignment {
+public class AssignmentImpl extends TNodeImpl implements Assignment {
     private Variable var;
     private Expression expr;
 }
