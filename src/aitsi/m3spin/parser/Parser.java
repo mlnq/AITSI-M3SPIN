@@ -1,10 +1,7 @@
 package aitsi.m3spin.parser;
 
 import aitsi.m3spin.commons.enums.EntityType;
-import aitsi.m3spin.commons.impl.AssignmentImpl;
-import aitsi.m3spin.commons.impl.ProcedureImpl;
-import aitsi.m3spin.commons.impl.VariableImpl;
-import aitsi.m3spin.commons.impl.WhileImpl;
+import aitsi.m3spin.commons.impl.*;
 import aitsi.m3spin.commons.interfaces.*;
 import aitsi.m3spin.parser.exception.MissingCharacterException;
 import aitsi.m3spin.parser.exception.MissingCodeEntityException;
@@ -43,7 +40,8 @@ public class Parser {
 
         Procedure procedure = new ProcedureImpl(procName, parseStmtList());
 
-        parseEndingBrace();
+        //Whole endingBrace
+        parseChar('}',false);
 
         return procedure;
     }
@@ -57,9 +55,12 @@ public class Parser {
     }
 
     private void parseChar(char c) throws MissingCharacterException {
+        parseChar(c,true);
+    }
+    private void parseChar(char c,boolean incFlag) throws MissingCharacterException {
         this.codeScanner.skipWhitespaces();
         if (this.codeScanner.hasCurrentChar(c)) {
-            this.codeScanner.incrementPosition();
+            if(incFlag) this.codeScanner.incrementPosition();
         } else throw new MissingCharacterException(c, this.codeScanner.getCurrentPosition());
     }
 
@@ -71,15 +72,18 @@ public class Parser {
                 name.append(parseLetter());
             } else if (Character.isDigit(currentChar)) {
                 name.append(parseDigit());
-            } else {
+            }
+            else {
                 break;
             }
         }
         return String.valueOf(name);
     }
 
-    private char parseDigit() {
-        return 0;//todo analogicznie do parseLetter()
+    private char parseDigit() throws SimpleParserException {
+        char digit = this.codeScanner.getCurrentDigit();
+        this.codeScanner.incrementPosition();
+        return digit;
     }
 
     private char parseLetter() throws SimpleParserException {
@@ -138,14 +142,27 @@ public class Parser {
         return new WhileImpl(new VariableImpl(conditionVar), stmtList);
     }
 
-    private Assignment parseAssignmentAfterEquals(String leftSideVar) throws MissingCharacterException {
+    private Assignment parseAssignmentAfterEquals(String leftSideVar) throws SimpleParserException {
+        codeScanner.skipWhitespaces();
         Expression expr = parseExpression();
+
         parseChar(';');
         return new AssignmentImpl(new VariableImpl(leftSideVar), expr);
     }
 
-    private Expression parseExpression() {
-        return null;
+    private Expression parseExpression() throws SimpleParserException {
+
+        codeScanner.skipWhitespaces();
+        Factor factor = parseFactor();
+        codeScanner.skipWhitespaces();
+
+        if(codeScanner.getCurrentChar() == EntityType.PLUS.getETName().charAt(0))
+        {
+            codeScanner.incrementPosition();
+            codeScanner.skipWhitespaces();
+            return new ExpressionImpl(factor,parseExpression());
+        }
+        else return factor;
         /*todo zaimplementować parsowanie wyrażeń wg gramatyki Jarząbka:
 
         expr : expr ‘+’ factor | factor
@@ -155,4 +172,32 @@ public class Parser {
 
         */
     }
+
+    private Factor parseFactor() throws SimpleParserException {
+        //todo rozpoznac czy to constant czy vaname
+// zmienna
+        codeScanner.skipWhitespaces();
+        Factor factor;
+        if(Character.isLetter(this.codeScanner.getCurrentChar()))
+        {
+            //this.codeScanner.incrementPosition();
+            factor = new VariableImpl(parseName());
+        }
+        else factor = new ConstantImpl(parseConst());
+
+        return factor;
+    }
+    private int parseConst() throws SimpleParserException {
+        StringBuilder name = new StringBuilder(String.valueOf(parseDigit()));
+        while (codeScanner.hasCurrentChar()) {
+            char currentChar = codeScanner.getCurrentChar();
+            if (Character.isDigit(currentChar)) {
+                name.append(parseDigit());
+            } else {
+                break;
+            }
+        }
+        return Integer.parseInt(String.valueOf(name));
+    }
+
 }
