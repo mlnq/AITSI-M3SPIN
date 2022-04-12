@@ -1,16 +1,15 @@
-package aitsi.m3spin.pkb;
+package aitsi.m3spin.pkb.impl;
 
-import aitsi.m3spin.commons.Attr;
 import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.enums.LinkType;
 import aitsi.m3spin.commons.impl.*;
 import aitsi.m3spin.commons.interfaces.TNode;
-import aitsi.m3spin.pkb.Interfaces.AST;
+import aitsi.m3spin.pkb.Interfaces.Ast;
 import aitsi.m3spin.pkb.exception.IllegalLinkTypeException;
 
 import java.util.List;
 
-public class AstImpl implements AST {
+public class AstImpl implements Ast {
     private int procID = 0;
     private int varID = 0;
     private TNode root;
@@ -44,10 +43,10 @@ public class AstImpl implements AST {
         this.root = node;
     }
 
-//    @Override
-//    public void setAttr(TNode n, Attr attr) {
-//
-//    }
+    @Override
+    public void setAttr(TNode n, String attr) {
+        n.setAttribute(attr);
+    }
 
     @Override
     public void setFirstChild(TNode parent, TNode child) {
@@ -114,8 +113,8 @@ public class AstImpl implements AST {
     }
 
     @Override
-    public Attr getAttr(TNode node) {
-        return null;
+    public String getAttr(TNode node) {
+        return node.getAttribute();
     }
 
     @Override
@@ -145,12 +144,12 @@ public class AstImpl implements AST {
 
     @Override
     public void setParent(TNode p, TNode c) {
-
+        c.setParent(p);
     }
 
     @Override
     public TNode getParent(TNode c) {
-        return null;
+        return c.getParent();
     }
 
     @Override
@@ -205,7 +204,7 @@ public class AstImpl implements AST {
 
     @Override
     public Boolean isParent(TNode p, TNode c) {
-        return null;
+        return c.getParent() == p;
     }
 
     @Override

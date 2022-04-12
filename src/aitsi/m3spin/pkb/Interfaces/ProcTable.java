@@ -5,12 +5,12 @@ import aitsi.m3spin.commons.interfaces.STRING;
 
 public interface ProcTable {
 //9.2.1 handbook
-Index insertVar(STRING varName);
+    int insertProc(String procName);
 
-    STRING getVarName(Index ind);
+    String getProcName(int id);
 
-    Index getVarIndex(STRING varName);
+    int getProcIndex(String procName);
 
-    Integer getSize();
-    Boolean isIn (STRING varName);
+    int getSize();
+    Boolean isIn (String procName);
 }

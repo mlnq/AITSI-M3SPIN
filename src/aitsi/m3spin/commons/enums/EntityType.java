@@ -16,7 +16,9 @@ public enum EntityType{
     TIMES("*"),
     ASSIGNMENT("assign"),
     CONSTANT("contant"),
-    VARIABLE("VARIABLE");
+    VARIABLE("variable"),
+    EXPRESSION("expression"),
+    FACTOR("factor");
 //    CONSTANT("CONSTANT");
 
     private String entityTypeName;

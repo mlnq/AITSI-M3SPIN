@@ -7,14 +7,14 @@ import aitsi.m3spin.parser.exception.MissingCharacterException;
 import aitsi.m3spin.parser.exception.MissingCodeEntityException;
 import aitsi.m3spin.parser.exception.MissingSimpleKeywordException;
 import aitsi.m3spin.parser.exception.SimpleParserException;
-import aitsi.m3spin.pkb.AstImpl;
-import aitsi.m3spin.pkb.Interfaces.AST;
+import aitsi.m3spin.pkb.impl.AstImpl;
+import aitsi.m3spin.pkb.Interfaces.Ast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Parser {
-    private AST ast = new AstImpl();
+    private Ast ast = new AstImpl();
     private CodeScanner codeScanner;
 
     public Parser(List<String> code) {
