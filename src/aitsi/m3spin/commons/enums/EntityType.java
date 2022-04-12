@@ -14,6 +14,8 @@ public enum EntityType{
     PLUS("+"),
     MINUS("-"),
     TIMES("*"),
+    ASSIGNMENT("assign"),
+    CONSTANT("contant"),
     VARIABLE("VARIABLE");
 //    CONSTANT("CONSTANT");
 

@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ExpressionImpl implements  Expression{
+public class ExpressionImpl extends TNodeImpl implements  Expression{
     private Factor factor;
 
     private Expression expression;

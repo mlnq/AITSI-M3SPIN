@@ -13,6 +13,8 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) throws SimpleParserException {//todo obsłużyć ten wyjątek
+
+        System.out.println("Waiting for input");
         char uiOption = readUiOption();
         switch (uiOption) {
             case '1':

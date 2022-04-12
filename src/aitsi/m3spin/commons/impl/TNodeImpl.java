@@ -10,7 +10,9 @@ public class TNodeImpl implements TNode {
     TNode leftSibling;
     TNode rightSibling;
     TNode parent;
-    TNode child;
+    TNode firstChild;
+    TNode secondChild;
+    TNode thirdChild;
     String attribute;
     int stmtLine;
 }

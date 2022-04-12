@@ -3,8 +3,7 @@ package aitsi.m3spin.pkb;
 import aitsi.m3spin.commons.Attr;
 import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.enums.LinkType;
-import aitsi.m3spin.commons.impl.ProcedureImpl;
-import aitsi.m3spin.commons.impl.VariableImpl;
+import aitsi.m3spin.commons.impl.*;
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.Interfaces.AST;
 import aitsi.m3spin.pkb.exception.IllegalLinkTypeException;
@@ -19,10 +18,22 @@ public class AstImpl implements AST {
     @Override
     public TNode createTNode(EntityType et) {
         switch (et){
+            case ASSIGNMENT:
+                return new AssignmentImpl();
+            case CONSTANT:
+                return new ConstantImpl();
+            case IF:
+                return new IfImpl();
+            case MINUS:
+                return new MinusImpl();
+            case PLUS:
+                return new PlusImpl();
             case PROCEDURE:
                 return new ProcedureImpl(procID++);
             case VARIABLE:
                 return new VariableImpl(varID++);
+            case WHILE:
+                return new WhileImpl();
             default:
                 return null;
         }
@@ -40,7 +51,7 @@ public class AstImpl implements AST {
 
     @Override
     public void setFirstChild(TNode parent, TNode child) {
-        parent.setChild(child);
+        parent.setFirstChild(child);
     }
 
     @Override
@@ -69,10 +80,10 @@ public class AstImpl implements AST {
         switch (relation)
         {
             case CHILD:
-                node2.setChild(node1);
+                node2.setFirstChild(node1);
                 node1.setParent(node2);
             case PARENT:
-                node1.setChild(node2);
+                node1.setFirstChild(node2);
                 node2.setParent(node1);
             case SIBLING:
                 node1.setRightSibling(node2);

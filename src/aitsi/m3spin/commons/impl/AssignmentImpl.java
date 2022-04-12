@@ -4,7 +4,9 @@ import aitsi.m3spin.commons.interfaces.Assignment;
 import aitsi.m3spin.commons.interfaces.Expression;
 import aitsi.m3spin.commons.interfaces.Variable;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @AllArgsConstructor
 public class AssignmentImpl extends TNodeImpl implements Assignment {
     private Variable var;
