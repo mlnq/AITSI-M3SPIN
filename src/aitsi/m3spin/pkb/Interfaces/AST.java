@@ -17,6 +17,14 @@ public interface AST {
 //    void setAttr(TNode n, Attr attr);
 
     void setFirstChild(TNode parent, TNode child);
+    void setSecondChild(TNode parent, TNode child);
+    void setThirdChild(TNode parent, TNode child);
+
+    TNode getFirstChild(TNode p);
+
+    TNode getSecondChild(TNode p);
+
+    TNode getThirdChild(TNode p);
 
     void setSibling(TNode left, TNode right);
 
@@ -34,7 +42,6 @@ public interface AST {
 
     Attr getAttr(TNode node);
 
-    TNode getFirstChild(TNode p);
 
     TNode getLinkedNode(LinkType link, TNode node1);
     //todo CreateLink(LINK_TYPE link, TNODE fromNode, toNode)???????

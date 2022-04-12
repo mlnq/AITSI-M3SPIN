@@ -55,6 +55,16 @@ public class AstImpl implements AST {
     }
 
     @Override
+    public void setSecondChild(TNode parent, TNode child) {
+        parent.setSecondChild(child);
+    }
+
+    @Override
+    public void setThirdChild(TNode parent, TNode child) {
+        parent.setThirdChild(child);
+    }
+
+    @Override
     public void setSibling(TNode left, TNode right) {
         left.setRightSibling(right);
         right.setLeftSibling(left);
@@ -110,7 +120,17 @@ public class AstImpl implements AST {
 
     @Override
     public TNode getFirstChild(TNode p) {
-        return null;
+        return p.getFirstChild();
+    }
+
+    @Override
+    public TNode getSecondChild(TNode p) {
+        return p.getSecondChild();
+    }
+
+    @Override
+    public TNode getThirdChild(TNode p) {
+        return p.getThirdChild();
     }
 
     @Override
