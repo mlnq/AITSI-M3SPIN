@@ -1,5 +1,7 @@
 package aitsi.m3spin.commons.interfaces;
 
+import aitsi.m3spin.commons.enums.EntityType;
+
 public interface TNode {
     TNode getLeftSibling();
     void setLeftSibling(TNode leftSibling);
@@ -21,4 +23,6 @@ public interface TNode {
     void setAttribute(String attribute);
     int getStmtLine();
     void setStmtLine(int stmtLine);
+
+    EntityType getType();
 }

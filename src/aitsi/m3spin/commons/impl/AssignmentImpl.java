@@ -7,18 +7,16 @@ import aitsi.m3spin.commons.interfaces.Variable;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@NoArgsConstructor
 public class AssignmentImpl extends TNodeImpl implements Assignment {
+    private static final EntityType TYPE = EntityType.ASSIGNMENT;
+
     private Variable var;
     private Expression expr;
 
-    public AssignmentImpl(){
-        super(EntityType.ASSIGNMENT);
+    @Override
+    public EntityType getType() {
+        return TYPE;
     }
-
-    public AssignmentImpl(Variable var, Expression expr){
-        this();
-        this.var = var;
-        this.expr = expr;
-    }
-
 }

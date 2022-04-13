@@ -10,17 +10,15 @@ import lombok.Setter;
 
 import java.util.List;
 
+@NoArgsConstructor
+@AllArgsConstructor
 public class WhileImpl extends TNodeImpl implements While {
+    private static final EntityType TYPE = EntityType.WHILE;
     private Variable conditionVar;
     private List<Statement> stmtList;
 
-    public WhileImpl(){
-        super(EntityType.WHILE);
-    }
-
-    public WhileImpl(Variable conditionVar, List<Statement> stmtList){
-        this();
-        this.conditionVar = conditionVar;
-        this.stmtList = stmtList;
+    @Override
+    public EntityType getType() {
+        return TYPE;
     }
 }

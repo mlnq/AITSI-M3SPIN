@@ -8,8 +8,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class TNodeImpl implements TNode {
-    final EntityType type;
+@NoArgsConstructor
+public abstract class TNodeImpl implements TNode {
     TNode leftSibling;
     TNode rightSibling;
     TNode parent;
@@ -19,9 +19,5 @@ public class TNodeImpl implements TNode {
     String attribute;
     int stmtLine;
 
-    public TNodeImpl(EntityType type)
-    {
-        this.type = type;
-    }
-
+    public abstract EntityType getType();
 }

@@ -9,16 +9,18 @@ import lombok.NoArgsConstructor;
 
 
 @Getter
+@AllArgsConstructor
 public class VariableImpl extends TNodeImpl implements Variable {
-    private int ID;
+    private static final EntityType TYPE = EntityType.VARIABLE;
+
+    private int id;
 
     public VariableImpl(String name) {
-        super(EntityType.VARIABLE);
         super.attribute = name;
     }
 
-    public VariableImpl(int ID) {
-        super(EntityType.VARIABLE);
-        this.ID = ID;
+    @Override
+    public EntityType getType() {
+        return TYPE;
     }
 }

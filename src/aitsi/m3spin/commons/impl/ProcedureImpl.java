@@ -8,9 +8,13 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProcedureImpl extends TNodeImpl implements Procedure {
+    private static final EntityType TYPE = EntityType.PROCEDURE;
+
     private List<Statement> stmtList;
-    private int ID;
+    private int id;
 
     public String getName(){
         return super.attribute;
@@ -21,17 +25,16 @@ public class ProcedureImpl extends TNodeImpl implements Procedure {
     }
 
     public ProcedureImpl(String name, List<Statement> stmtList) {
-        super(EntityType.PROCEDURE);
         super.attribute = name;
         this.stmtList = stmtList;
     }
 
-    public ProcedureImpl(int ID){
-        super(EntityType.PROCEDURE);
-        this.ID = ID;
+    public ProcedureImpl(int id){
+        this.id = id;
     }
 
-    public ProcedureImpl(){
-        super(EntityType.PROCEDURE);
+    @Override
+    public EntityType getType() {
+        return TYPE;
     }
 }
