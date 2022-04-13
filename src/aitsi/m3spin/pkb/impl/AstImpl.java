@@ -40,8 +40,9 @@ public class AstImpl implements Ast {
     }
 
     @Override
-    public void setRoot(TNode node) {
+    public TNode setRoot(TNode node) {
         this.root = node;
+        return node;
     }
 
     @Override
@@ -50,34 +51,27 @@ public class AstImpl implements Ast {
     }
 
     @Override
-    public void setFirstChild(TNode parent, TNode child) {
+    public TNode setFirstChild(TNode parent, TNode child) {
         parent.setFirstChild(child);
+        child.setParent(parent);
+        return child;
     }
 
-    @Override
-    public void setSecondChild(TNode parent, TNode child) {
+    /*@Override
+    public TNode setSecondChild(TNode parent, TNode child) {
         parent.setSecondChild(child);
     }
 
     @Override
     public void setThirdChild(TNode parent, TNode child) {
         parent.setThirdChild(child);
-    }
+    }*/
 
     @Override
-    public void setSibling(TNode left, TNode right) {
+    public TNode setSibling(TNode left, TNode right) {
         left.setRightSibling(right);
         right.setLeftSibling(left);
-    }
-
-    @Override
-    public void setRightSibling(TNode left, TNode right) {
-        left.setRightSibling(right);
-    }
-
-    @Override
-    public void setLeftSibling(TNode left, TNode right) {
-        right.setLeftSibling(left);
+        return right;
     }
 
 //    @Override
@@ -86,18 +80,21 @@ public class AstImpl implements Ast {
 //    }
 
     @Override
-    public void setLink(LinkType relation, TNode node1, TNode node2) throws IllegalLinkTypeException {
+    public TNode setLink(LinkType relation, TNode node1, TNode node2) throws IllegalLinkTypeException {
         switch (relation)
         {
             case CHILD:
                 node2.setFirstChild(node1);
                 node1.setParent(node2);
+                return node2;
             case PARENT:
                 node1.setFirstChild(node2);
                 node2.setParent(node1);
+                return node1;
             case SIBLING:
                 node1.setRightSibling(node2);
-                node2.setRightSibling(node1);
+                node2.setLeftSibling(node1);
+                return node2;
             default:
                 throw new IllegalLinkTypeException(relation, node1, node2);
         }
@@ -110,7 +107,7 @@ public class AstImpl implements Ast {
 
     @Override
     public EntityType getType(TNode node) {
-        return null;
+        return node.getType();
     }
 
     @Override
@@ -123,6 +120,7 @@ public class AstImpl implements Ast {
         return p.getFirstChild();
     }
 
+    /*
     @Override
     public TNode getSecondChild(TNode p) {
         return p.getSecondChild();
@@ -131,7 +129,7 @@ public class AstImpl implements Ast {
     @Override
     public TNode getThirdChild(TNode p) {
         return p.getThirdChild();
-    }
+    }*/
 
     @Override
     public TNode getLinkedNode(LinkType link, TNode node1) {
@@ -144,8 +142,10 @@ public class AstImpl implements Ast {
     }
 
     @Override
-    public void setParent(TNode p, TNode c) {
-        c.setParent(p);
+    public TNode setParent(TNode parent, TNode child) {
+        child.setParent(parent);
+        parent.setFirstChild(child);
+        return parent;
     }
 
     @Override

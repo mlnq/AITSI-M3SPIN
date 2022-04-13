@@ -12,27 +12,37 @@ public interface Ast {
     //: Creates a new node of type ‘et’ and returns a reference to it
     TNode createTNode(EntityType et) throws IllegalNodeTypeException;
 
-    void setRoot(TNode node);
+    TNode setRoot(TNode node);
     void setAttr(TNode n, String attr);
-    void setFirstChild(TNode parent, TNode child);
-    void setSecondChild(TNode parent, TNode child);
-    void setThirdChild(TNode parent, TNode child);
+    TNode setFirstChild(TNode parent, TNode child);
 
     TNode getFirstChild(TNode p);
 
+    /* TODO jaką notację przyjmujemy w stosunku do dzieci?
+    TNode setSecondChild(TNode parent, TNode child);
+    TNode setThirdChild(TNode parent, TNode child);
     TNode getSecondChild(TNode p);
+    TNode getThirdChild(TNode p);*/
 
-    TNode getThirdChild(TNode p);
-
-    void setSibling(TNode left, TNode right);
-
-    void setRightSibling(TNode left, TNode right);
-
-    void setLeftSibling(TNode left, TNode right);
+    /**
+     * Sets sibling relation
+     * @param left left sibling
+     * @param right right sibling
+     * @return right sibling
+     */
+    TNode setSibling(TNode left, TNode right);
 
 //    void setChildOfLink(TNode parent, TNode child);
 
-    void setLink(LinkType relation, TNode node1, TNode node2) throws IllegalLinkTypeException;
+    /**
+     * Sets relation of two nodes
+     * @param relation relation type
+     * @param node1 first node
+     * @param node2 second node
+     * @return relationType: CHILD - returns child; PARENT - returns parent; SIBLING - return right sibling;
+     * @throws IllegalLinkTypeException no such relation type
+     */
+    TNode setLink(LinkType relation, TNode node1, TNode node2) throws IllegalLinkTypeException;
 
     TNode getRoot();
 
@@ -45,7 +55,7 @@ public interface Ast {
     //todo CreateLink(LINK_TYPE link, TNODE fromNode, toNode)???????
     Boolean isLinked(LinkType link, TNode node1, TNode node2);
 
-    void setParent(TNode p, TNode c);
+    TNode setParent(TNode p, TNode c);
 
     TNode getParent(TNode c);
 
