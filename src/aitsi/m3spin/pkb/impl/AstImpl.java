@@ -6,6 +6,7 @@ import aitsi.m3spin.commons.impl.*;
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.Interfaces.Ast;
 import aitsi.m3spin.pkb.exception.IllegalLinkTypeException;
+import aitsi.m3spin.pkb.exception.IllegalNodeTypeException;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class AstImpl implements Ast {
     private TNode root;
 
     @Override
-    public TNode createTNode(EntityType et) {
+    public TNode createTNode(EntityType et) throws IllegalNodeTypeException {
         switch (et){
             case ASSIGNMENT:
                 return new AssignmentImpl();
@@ -34,7 +35,7 @@ public class AstImpl implements Ast {
             case WHILE:
                 return new WhileImpl();
             default:
-                return null;
+                throw new IllegalNodeTypeException(et);
         }
     }
 
