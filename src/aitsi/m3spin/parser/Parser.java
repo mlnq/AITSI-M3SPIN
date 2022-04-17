@@ -8,7 +8,7 @@ import aitsi.m3spin.parser.exception.MissingCodeEntityException;
 import aitsi.m3spin.parser.exception.MissingSimpleKeywordException;
 import aitsi.m3spin.parser.exception.SimpleParserException;
 import aitsi.m3spin.pkb.impl.AstImpl;
-import aitsi.m3spin.pkb.Interfaces.Ast;
+import aitsi.m3spin.pkb.interfaces.Ast;
 
 import java.util.ArrayList;
 import java.util.List;

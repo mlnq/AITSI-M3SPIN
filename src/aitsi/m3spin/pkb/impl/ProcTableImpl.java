@@ -1,6 +1,6 @@
 package aitsi.m3spin.pkb.impl;
 
-import aitsi.m3spin.pkb.Interfaces.ProcTable;
+import aitsi.m3spin.pkb.interfaces.ProcTable;
 
 public class ProcTableImpl implements ProcTable {
 

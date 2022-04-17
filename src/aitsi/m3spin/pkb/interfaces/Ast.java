@@ -1,4 +1,4 @@
-package aitsi.m3spin.pkb.Interfaces;
+package aitsi.m3spin.pkb.interfaces;
 
 import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.enums.LinkType;

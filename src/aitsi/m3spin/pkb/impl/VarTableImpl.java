@@ -1,6 +1,6 @@
 package aitsi.m3spin.pkb.impl;
 
-import aitsi.m3spin.pkb.Interfaces.VarTable;
+import aitsi.m3spin.pkb.interfaces.VarTable;
 
 public class VarTableImpl implements VarTable {
 

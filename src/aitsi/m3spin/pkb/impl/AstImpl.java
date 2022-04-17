@@ -4,15 +4,15 @@ import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.enums.LinkType;
 import aitsi.m3spin.commons.impl.*;
 import aitsi.m3spin.commons.interfaces.TNode;
-import aitsi.m3spin.pkb.Interfaces.Ast;
+import aitsi.m3spin.pkb.interfaces.Ast;
 import aitsi.m3spin.pkb.exception.IllegalLinkTypeException;
 import aitsi.m3spin.pkb.exception.IllegalNodeTypeException;
 
 import java.util.List;
 
 public class AstImpl implements Ast {
-    private int procID = 0;
-    private int varID = 0;
+    private int procId = 0;
+    private int varId = 0;
     private TNode root;
 
     @Override
@@ -29,9 +29,9 @@ public class AstImpl implements Ast {
             case PLUS:
                 return new PlusImpl();
             case PROCEDURE:
-                return new ProcedureImpl(procID++);
+                return new ProcedureImpl(procId++);
             case VARIABLE:
-                return new VariableImpl(varID++);
+                return new VariableImpl(varId++);
             case WHILE:
                 return new WhileImpl();
             default:

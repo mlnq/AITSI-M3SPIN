@@ -1,7 +1,4 @@
-package aitsi.m3spin.pkb.Interfaces;
-
-import aitsi.m3spin.commons.interfaces.Index;
-import aitsi.m3spin.commons.interfaces.STRING;
+package aitsi.m3spin.pkb.interfaces;
 
 public interface VarTable {
   int insertVar(String varName);
