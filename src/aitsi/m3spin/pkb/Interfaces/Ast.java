@@ -50,10 +50,25 @@ public interface Ast {
 
     String getAttr(TNode node);
 
-
-    TNode getLinkedNode(LinkType link, TNode node1);
+    /**
+     * Gets node connected by relation of given type with given node (argument)
+     * @param link type of connection between nodes
+     * @param node checked node
+     * @return node connected by link with node
+     * @throws IllegalLinkTypeException link is not a valid link type
+     */
+    TNode getLinkedNode(LinkType link, TNode node) throws IllegalLinkTypeException;
     //todo CreateLink(LINK_TYPE link, TNODE fromNode, toNode)???????
-    Boolean isLinked(LinkType link, TNode node1, TNode node2);
+
+    /**
+     * Gets information if node2 is connected with node1 by connection of link type
+     * @param link type of relation
+     * @param node1 first checked node
+     * @param node2 second checked node
+     * @throws IllegalLinkTypeException link is not a valid link type
+     * @return true if nodes are connected by link or false if not
+     */
+    Boolean isLinked(LinkType link, TNode node1, TNode node2) throws IllegalLinkTypeException;
 
     TNode setParent(TNode p, TNode c);
 

@@ -5,10 +5,12 @@ import aitsi.m3spin.commons.interfaces.Assignment;
 import aitsi.m3spin.commons.interfaces.Expression;
 import aitsi.m3spin.commons.interfaces.Variable;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class AssignmentImpl extends TNodeImpl implements Assignment {
     private static final EntityType TYPE = EntityType.ASSIGNMENT;
 

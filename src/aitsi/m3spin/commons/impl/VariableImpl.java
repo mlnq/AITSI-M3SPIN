@@ -4,12 +4,14 @@ import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.commons.interfaces.Variable;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
 @Getter
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class VariableImpl extends TNodeImpl implements Variable {
     private static final EntityType TYPE = EntityType.VARIABLE;
 

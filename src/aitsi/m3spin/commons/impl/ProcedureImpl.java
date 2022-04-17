@@ -4,12 +4,14 @@ import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.interfaces.Procedure;
 import aitsi.m3spin.commons.interfaces.Statement;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class ProcedureImpl extends TNodeImpl implements Procedure {
     private static final EntityType TYPE = EntityType.PROCEDURE;
 

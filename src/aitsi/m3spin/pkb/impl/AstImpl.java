@@ -132,13 +132,39 @@ public class AstImpl implements Ast {
     }*/
 
     @Override
-    public TNode getLinkedNode(LinkType link, TNode node1) {
-        return null;
+    public TNode getLinkedNode(LinkType link, TNode node) throws IllegalLinkTypeException {
+        switch(link) {
+            case CHILD:
+                return node.getFirstChild();
+            case PARENT:
+                return node.getParent();
+            case SIBLING:
+                return node.getRightSibling();
+            default:
+                throw new IllegalLinkTypeException(link);
+        }
     }
 
     @Override
-    public Boolean isLinked(LinkType link, TNode node1, TNode node2) {
-        return null;
+    public Boolean isLinked(LinkType link, TNode node1, TNode node2) throws IllegalLinkTypeException {
+        TNode linkedNode;
+        switch (link) {
+            case CHILD:
+                linkedNode = node1.getFirstChild();
+                break;
+            case PARENT:
+                linkedNode = node1.getParent();
+                break;
+            case SIBLING:
+                linkedNode = node1.getRightSibling();
+                break;
+            default:
+                throw new IllegalLinkTypeException(link);
+        }
+        if (linkedNode == null) {
+            return false;
+        }
+        return linkedNode.equals(node2);
     }
 
     @Override
