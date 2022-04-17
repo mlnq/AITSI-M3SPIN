@@ -14,15 +14,9 @@ public interface Ast {
 
     TNode setRoot(TNode node);
     void setAttr(TNode n, String attr);
-    TNode setFirstChild(TNode parent, TNode child);
+    TNode setChild(TNode parent, TNode child);
 
-    TNode getFirstChild(TNode p);
-
-    /* TODO jaką notację przyjmujemy w stosunku do dzieci?
-    TNode setSecondChild(TNode parent, TNode child);
-    TNode setThirdChild(TNode parent, TNode child);
-    TNode getSecondChild(TNode p);
-    TNode getThirdChild(TNode p);*/
+    TNode getChild(TNode p);
 
     /**
      * Sets sibling relation
@@ -36,6 +30,10 @@ public interface Ast {
 
     /**
      * Sets relation of two nodes
+     * Relation types:
+     *  - PARENT: node1 becomes parent and node2 becomes child
+     *  - CHILD: node1 becomes child and node2 becomes parent
+     *  - SIBLING: node1 becomes left sibling and node2 becomes right sibling
      * @param relation relation type
      * @param node1 first node
      * @param node2 second node
@@ -58,7 +56,6 @@ public interface Ast {
      * @throws IllegalLinkTypeException link is not a valid link type
      */
     TNode getLinkedNode(LinkType link, TNode node) throws IllegalLinkTypeException;
-    //todo CreateLink(LINK_TYPE link, TNODE fromNode, toNode)???????
 
     /**
      * Gets information if node2 is connected with node1 by connection of link type
@@ -73,29 +70,4 @@ public interface Ast {
     TNode setParent(TNode p, TNode c);
 
     TNode getParent(TNode c);
-
-    List<TNode> getParentedBy(TNode p);
-
-    TNode getParent$(TNode c);
-
-    List<TNode> getParented$By(TNode p);
-
-    void setFollows(TNode p, TNode c);
-
-    TNode getFollows(TNode n);
-
-    List<TNode> getFollows$(TNode n);
-
-    TNode getFollowedBy(TNode n);
-
-    List<TNode> getFollowed$By(TNode n);
-
-
-    Boolean isFollowed(TNode n1, TNode n2);
-
-    Boolean isFollowed$(TNode n1, TNode n2);
-
-    Boolean isParent(TNode p, TNode c);
-
-    Boolean isParent$(TNode p, TNode c);
 }

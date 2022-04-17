@@ -1,12 +1,10 @@
 package aitsi.m3spin.commons.impl;
 
 import aitsi.m3spin.commons.enums.EntityType;
-import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.commons.interfaces.Variable;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 
 @Getter
@@ -18,6 +16,15 @@ public class VariableImpl extends TNodeImpl implements Variable {
     private int id;
 
     public VariableImpl(String name) {
+        super.attribute = name;
+    }
+
+
+    public String getName(){
+        return super.attribute;
+    }
+
+    public void setName(String name){
         super.attribute = name;
     }
 

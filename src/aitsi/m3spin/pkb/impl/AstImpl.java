@@ -7,10 +7,12 @@ import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.interfaces.Ast;
 import aitsi.m3spin.pkb.exception.IllegalLinkTypeException;
 import aitsi.m3spin.pkb.exception.IllegalNodeTypeException;
+import aitsi.m3spin.pkb.interfaces.Follows;
+import aitsi.m3spin.pkb.interfaces.Parent;
 
 import java.util.List;
 
-public class AstImpl implements Ast {
+public class AstImpl implements Ast, Follows, Parent {
     private int procId = 0;
     private int varId = 0;
     private TNode root;
@@ -57,16 +59,6 @@ public class AstImpl implements Ast {
         return child;
     }
 
-    /*@Override
-    public TNode setSecondChild(TNode parent, TNode child) {
-        parent.setSecondChild(child);
-    }
-
-    @Override
-    public void setThirdChild(TNode parent, TNode child) {
-        parent.setThirdChild(child);
-    }*/
-
     @Override
     public TNode setSibling(TNode left, TNode right) {
         left.setRightSibling(right);
@@ -74,21 +66,16 @@ public class AstImpl implements Ast {
         return right;
     }
 
-//    @Override
-//    public void setChildOfLink(TNode parent, TNode child) {
-//
-//    }
-
     @Override
     public TNode setLink(LinkType relation, TNode node1, TNode node2) throws IllegalLinkTypeException {
         switch (relation)
         {
             case CHILD:
-                node2.setFirstChild(node1);
+                node2.setChild(node1);
                 node1.setParent(node2);
                 return node2;
             case PARENT:
-                node1.setFirstChild(node2);
+                node1.setChild(node2);
                 node2.setParent(node1);
                 return node1;
             case SIBLING:
@@ -116,26 +103,15 @@ public class AstImpl implements Ast {
     }
 
     @Override
-    public TNode getFirstChild(TNode p) {
-        return p.getFirstChild();
+    public TNode getChild(TNode p) {
+        return p.getChild();
     }
-
-    /*
-    @Override
-    public TNode getSecondChild(TNode p) {
-        return p.getSecondChild();
-    }
-
-    @Override
-    public TNode getThirdChild(TNode p) {
-        return p.getThirdChild();
-    }*/
 
     @Override
     public TNode getLinkedNode(LinkType link, TNode node) throws IllegalLinkTypeException {
         switch(link) {
             case CHILD:
-                return node.getFirstChild();
+                return node.getChild();
             case PARENT:
                 return node.getParent();
             case SIBLING:
@@ -150,7 +126,7 @@ public class AstImpl implements Ast {
         TNode linkedNode;
         switch (link) {
             case CHILD:
-                linkedNode = node1.getFirstChild();
+                linkedNode = node1.getChild();
                 break;
             case PARENT:
                 linkedNode = node1.getParent();
@@ -170,7 +146,7 @@ public class AstImpl implements Ast {
     @Override
     public TNode setParent(TNode parent, TNode child) {
         child.setParent(parent);
-        parent.setFirstChild(child);
+        parent.setChild(child);
         return parent;
     }
 

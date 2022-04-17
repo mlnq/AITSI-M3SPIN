@@ -1,12 +1,10 @@
 package aitsi.m3spin.commons.enums;
 
-import aitsi.m3spin.commons.interfaces.TNode;
-
 public enum EntityType{
     //    PROGRAM("PROGRAM"),
     PROCEDURE("procedure"),
     //    STMT_LIST("STMTLIST"),
-//    STMT("STMT"),
+    //    STMT("STMT"),
     EQUALS("="),
     CALL("call"),
     WHILE("while"),
@@ -14,12 +12,11 @@ public enum EntityType{
     PLUS("+"),
     MINUS("-"),
     TIMES("*"),
-    ASSIGNMENT("assign"),
-    CONSTANT("contant"),
+    ASSIGNMENT("assignment"),
+    CONSTANT("constant"),
     VARIABLE("variable"),
     EXPRESSION("expression"),
     FACTOR("factor");
-//    CONSTANT("CONSTANT");
 
     private String entityTypeName;
 

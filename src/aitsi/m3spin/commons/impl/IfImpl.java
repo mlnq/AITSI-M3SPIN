@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class IfImpl extends TNodeImpl implements If {
+public class IfImpl extends StatementImpl implements If {
     private static final EntityType TYPE = EntityType.IF;
 
     @Override

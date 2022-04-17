@@ -10,19 +10,11 @@ public interface TNode {
     TNode getParent();
     void setParent(TNode parent);
 
-    TNode getFirstChild();
-    void setFirstChild(TNode child);
-
-    TNode getSecondChild();
-    void setSecondChild(TNode child);
-
-    TNode getThirdChild();
-    void setThirdChild(TNode child);
+    TNode getChild();
+    void setChild(TNode child);
 
     String getAttribute();
     void setAttribute(String attribute);
-    int getStmtLine();
-    void setStmtLine(int stmtLine);
 
     EntityType getType();
 }

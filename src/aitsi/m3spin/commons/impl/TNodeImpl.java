@@ -12,14 +12,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode
 public abstract class TNodeImpl implements TNode {
-    TNode leftSibling;
-    TNode rightSibling;
-    TNode parent;
-    TNode firstChild;
-    TNode secondChild;
-    TNode thirdChild;
-    String attribute;
-    int stmtLine;
+    protected TNode leftSibling;
+    protected TNode rightSibling;
+    protected TNode parent;
+    protected TNode child;
+    protected String attribute;
 
     public abstract EntityType getType();
 }
