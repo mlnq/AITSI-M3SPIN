@@ -11,6 +11,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ExpressionImpl implements  Expression{
     private Factor factor;
-
     private Expression expression;
 }

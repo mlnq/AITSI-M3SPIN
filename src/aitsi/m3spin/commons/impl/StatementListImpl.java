@@ -1,16 +1,14 @@
 package aitsi.m3spin.commons.impl;
 
-import aitsi.m3spin.commons.interfaces.Procedure;
+import java.util.List;
+
 import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.commons.interfaces.StatementList;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.List;
-
 @AllArgsConstructor
 @Getter
-public class ProcedureImpl implements Procedure {
-    private String name;
-    private StatementList stmtList;
+public class StatementListImpl implements StatementList {
+    private List<Statement> stmtList;
 }
