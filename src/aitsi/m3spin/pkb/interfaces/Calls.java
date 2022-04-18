@@ -1,11 +1,11 @@
-package aitsi.m3spin.pkb.Interfaces;
+package aitsi.m3spin.pkb.interfaces;
 
 import aitsi.m3spin.commons.interfaces.Procedure;
 
 import java.util.List;
 
 public interface Calls {
-    //TODO impl: CallsTable[][]
+    //TODO impl: CallsTable[][] zrobić z tego zadanie na Trello
 
     //Procedure p calls q
     void setCalls (Procedure p, Procedure q);

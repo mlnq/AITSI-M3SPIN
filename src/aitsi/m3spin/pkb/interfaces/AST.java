@@ -1,4 +1,4 @@
-package aitsi.m3spin.pkb.Interfaces;
+package aitsi.m3spin.pkb.interfaces;
 
 import aitsi.m3spin.commons.Attr;
 import aitsi.m3spin.commons.enums.EntityType;
@@ -15,12 +15,11 @@ public interface AST {
 
     void setAttr(TNode n, Attr attr);
 
-    void setFirstChild(TNode parent, TNode child);
+    TNode setFirstChild(TNode parent, TNode child);
 
-    void setRightSibling(TNode l, TNode r);
+    TNode setRightSibling(TNode l, TNode r);
 
     void setLeftSibling(TNode l, TNode r);
-
 
     void setChildOfLink(TNode parent, TNode child);
 
@@ -35,7 +34,7 @@ public interface AST {
     TNode getFirstChild(TNode p);
 
     TNode getLinkedNode(LinkType link, TNode node1);
-    //todo CreateLink(LINK_TYPE link, TNODE fromNode, toNode)???????
+    //todo CreateLink(LINK_TYPE link, TNODE fromNode, toNode)??????? raczej nie
     Boolean isLinked(LinkType link, TNode node1, TNode node2);
 
     void setParent(TNode p, TNode c);

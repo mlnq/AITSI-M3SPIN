@@ -4,7 +4,7 @@ import aitsi.m3spin.commons.Attr;
 import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.enums.LinkType;
 import aitsi.m3spin.commons.interfaces.TNode;
-import aitsi.m3spin.pkb.Interfaces.AST;
+import aitsi.m3spin.pkb.interfaces.AST;
 
 import java.util.List;
 
@@ -25,13 +25,13 @@ public class AstImpl implements AST {
     }
 
     @Override
-    public void setFirstChild(TNode parent, TNode child) {
-
+    public TNode setFirstChild(TNode parent, TNode child) {
+        return child;
     }
 
     @Override
-    public void setRightSibling(TNode l, TNode r) {
-
+    public TNode setRightSibling(TNode l, TNode r) {
+        return r;
     }
 
     @Override

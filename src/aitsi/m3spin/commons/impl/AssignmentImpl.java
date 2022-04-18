@@ -4,9 +4,11 @@ import aitsi.m3spin.commons.interfaces.Assignment;
 import aitsi.m3spin.commons.interfaces.Expression;
 import aitsi.m3spin.commons.interfaces.Variable;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @AllArgsConstructor
+@Getter
 public class AssignmentImpl implements Assignment {
-    private Variable var;
+    private Variable variable;
     private Expression expr;
 }
