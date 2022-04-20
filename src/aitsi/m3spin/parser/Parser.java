@@ -59,18 +59,23 @@ public class Parser {
     }
     private void parseChar(char c,boolean incFlag) throws MissingCharacterException {
         this.codeScanner.skipWhitespaces();
-        if (this.codeScanner.hasCurrentChar(c)) {
+
+        if (this.codeScanner.hasCurrentChar(c))
+        {
             if(incFlag) this.codeScanner.incrementPosition();
-        } else throw new MissingCharacterException(c, this.codeScanner.getCurrentPosition());
+        }
+        else throw new MissingCharacterException(c, this.codeScanner.getCurrentPosition());
     }
 
     private String parseName() throws SimpleParserException {
         StringBuilder name = new StringBuilder(String.valueOf(parseLetter()));
+
         while (codeScanner.hasCurrentChar()) {
             char currentChar = codeScanner.getCurrentChar();
             if (Character.isLetter(currentChar)) {
                 name.append(parseLetter());
-            } else if (Character.isDigit(currentChar)) {
+            }
+            else if (Character.isDigit(currentChar)) {
                 name.append(parseDigit());
             }
             else {
@@ -93,6 +98,7 @@ public class Parser {
     }
 
     private void parseKeyword(EntityType keyword) throws MissingCodeEntityException {
+
         String keywordStr = codeScanner.getCurrentString(keyword.getETName().length());
         if (!keyword.getETName().equals(keywordStr)) {
             throw new MissingSimpleKeywordException(keyword, codeScanner.getCurrentPosition());
@@ -121,13 +127,15 @@ public class Parser {
             return parseAssignmentAfterEquals(firstWord);
         } else if (EntityType.IF.getETName().equals(firstWord)) {
             return parseIf();
-        } else {
+        } else if(EntityType.WHILE.getETName().equals(firstWord)){
             return parseWhile();
         }
+        else return null;
     }
 
     private If parseIf() {
-        return null;//todo w przyszłych iteracjach
+        return null;
+        //todo w przyszłych iteracjach
     }
 
     private While parseWhile() throws SimpleParserException {

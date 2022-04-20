@@ -12,7 +12,7 @@ public class CodeScanner {
     private CodePosition currentPosition;
     private List<String> codeLines;
 
-    CodeScanner(List<String> codeLines) {
+    public CodeScanner(List<String> codeLines) {
         this.codeLines = codeLines;
         this.currentPosition = new CodePosition();
     }
@@ -26,7 +26,7 @@ public class CodeScanner {
         if (hasCurrentChar()) return getCurrentLine().charAt(currentPosition.getColumn());
         else throw new MissingCharacterException(currentPosition);
     }
-
+///todo nie do konca styka
     boolean hasCurrentChar(char c) throws MissingCharacterException {
         return getCurrentChar() == c;
     }

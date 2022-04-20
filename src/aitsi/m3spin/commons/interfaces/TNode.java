@@ -17,4 +17,6 @@ public interface TNode {
     void setAttribute(String attribute);
 
     EntityType getType();
+
+    void setFirstChild(TNode child);
 }

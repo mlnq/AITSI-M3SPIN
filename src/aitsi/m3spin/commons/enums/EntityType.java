@@ -12,7 +12,10 @@ public enum EntityType{
     PLUS("+"),
     MINUS("-"),
     TIMES("*"),
-    ASSIGNMENT("assignment"),
+//    ASSIGNMENT("assignment"),
+    ASSIGNMENT("assign"),
+
+    STATEMENT("stmt"),
     CONSTANT("constant"),
     VARIABLE("variable"),
     EXPRESSION("expression"),

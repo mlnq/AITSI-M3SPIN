@@ -7,12 +7,12 @@ import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.interfaces.Ast;
 import aitsi.m3spin.pkb.exception.IllegalLinkTypeException;
 import aitsi.m3spin.pkb.exception.IllegalNodeTypeException;
-import aitsi.m3spin.pkb.interfaces.Follows;
-import aitsi.m3spin.pkb.interfaces.Parent;
+//import aitsi.m3spin.pkb.interfaces.Follows;
+//import aitsi.m3spin.pkb.interfaces.Parent;
 
 import java.util.List;
 
-public class AstImpl implements Ast, Follows, Parent {
+public class AstImpl implements Ast {
     private int procId = 0;
     private int varId = 0;
     private TNode root;
@@ -50,6 +50,11 @@ public class AstImpl implements Ast, Follows, Parent {
     @Override
     public void setAttr(TNode n, String attr) {
         n.setAttribute(attr);
+    }
+
+    @Override
+    public TNode setChild(TNode parent, TNode child) {
+        return null;
     }
 
     @Override
@@ -155,63 +160,63 @@ public class AstImpl implements Ast, Follows, Parent {
         return c.getParent();
     }
 
-    @Override
-    public List<TNode> getParentedBy(TNode p) {
-        return null;
-    }
-
-    @Override
-    public TNode getParent$(TNode c) {
-        return null;
-    }
-
-    @Override
-    public List<TNode> getParented$By(TNode p) {
-        return null;
-    }
-
-    @Override
-    public void setFollows(TNode p, TNode c) {
-
-    }
-
-    @Override
-    public TNode getFollows(TNode n) {
-        return null;
-    }
-
-    @Override
-    public List<TNode> getFollows$(TNode n) {
-        return null;
-    }
-
-    @Override
-    public TNode getFollowedBy(TNode n) {
-        return null;
-    }
-
-    @Override
-    public List<TNode> getFollowed$By(TNode n) {
-        return null;
-    }
-
-    @Override
-    public Boolean isFollowed(TNode n1, TNode n2) {
-        return null;
-    }
-
-    @Override
-    public Boolean isFollowed$(TNode n1, TNode n2) {
-        return null;
-    }
-
-    @Override
-    public Boolean isParent(TNode p, TNode c) {
-        return c.getParent() == p;
-    }
-
-    @Override
-    public Boolean isParent$(TNode p, TNode c) {
-        return null;
-    }
+//    @Override
+//    public List<TNode> getParentedBy(TNode p) {
+//        return null;
+//    }
+//
+//    @Override
+//    public TNode getParent$(TNode c) {
+//        return null;
+//    }
+//
+//    @Override
+//    public List<TNode> getParented$By(TNode p) {
+//        return null;
+//    }
+//
+//    @Override
+//    public void setFollows(TNode p, TNode c) {
+//
+//    }
+//
+//    @Override
+//    public TNode getFollows(TNode n) {
+//        return null;
+//    }
+//
+//    @Override
+//    public List<TNode> getFollows$(TNode n) {
+//        return null;
+//    }
+//
+//    @Override
+//    public TNode getFollowedBy(TNode n) {
+//        return null;
+//    }
+//
+//    @Override
+//    public List<TNode> getFollowed$By(TNode n) {
+//        return null;
+//    }
+//
+//    @Override
+//    public Boolean isFollowed(TNode n1, TNode n2) {
+//        return null;
+//    }
+//
+//    @Override
+//    public Boolean isFollowed$(TNode n1, TNode n2) {
+//        return null;
+//    }
+//
+//    @Override
+//    public Boolean isParent(TNode p, TNode c) {
+//        return c.getParent() == p;
+//    }
+//
+//    @Override
+//    public Boolean isParent$(TNode p, TNode c) {
+//        return null;
+//    }
 }
