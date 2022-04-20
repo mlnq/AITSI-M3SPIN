@@ -38,8 +38,8 @@ public class Main {
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-//                QueryProcessor queryProcessor = new QueryProcessor(codeLines);
-//                queryProcessor.parse();
+                QueryProcessor queryProcessor = new QueryProcessor(codeLines);
+                queryProcessor.parse();
                 break;
             case '3':
                 break;

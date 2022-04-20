@@ -1,4 +1,4 @@
-stmt s1, s2; assign a; while w;
+assign s1, s2; stmt a; while w;
 Select s1 such that Follows (s1, s2)
 Select a such that Follows* (20, a)
 Select a such that Modifies (a, “x”)
