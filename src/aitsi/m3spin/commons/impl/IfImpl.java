@@ -1,14 +1,14 @@
 package aitsi.m3spin.commons.impl;
 
 import aitsi.m3spin.commons.enums.EntityType;
-import aitsi.m3spin.commons.interfaces.Factor;
+import aitsi.m3spin.commons.interfaces.If;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class FactorImpl extends TNodeImpl implements Factor {
-    private static final EntityType TYPE = EntityType.FACTOR;
+public class IfImpl extends StatementImpl implements If {
+    private static final EntityType TYPE = EntityType.IF;
 
     @Override
     public EntityType getType() {
