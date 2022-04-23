@@ -1,23 +1,19 @@
 package aitsi.m3spin.queryProcessor;
 
 import aitsi.m3spin.commons.enums.EntityType;
-import aitsi.m3spin.commons.impl.AssignmentImpl;
-import aitsi.m3spin.commons.impl.StatementImpl;
-import aitsi.m3spin.commons.impl.VariableImpl;
-import aitsi.m3spin.commons.impl.WhileImpl;
-import aitsi.m3spin.commons.interfaces.Statement;
-import aitsi.m3spin.commons.interfaces.TNode;
-import aitsi.m3spin.commons.interfaces.Variable;
 import aitsi.m3spin.parser.CodeScanner;
 import aitsi.m3spin.parser.exception.MissingCharacterException;
 import aitsi.m3spin.parser.exception.SimpleParserException;
+import aitsi.m3spin.queryProcessor.model.Declaration;
+import aitsi.m3spin.queryProcessor.model.Query;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class QueryProcessor {
     private CodeScanner codeScanner;
-    private List<TNode> declarationList = new ArrayList<TNode>();
+    private List<Declaration> declarationList = new ArrayList<Declaration>();
+    private List<Query> queryList = new ArrayList<Query>();
 
     public QueryProcessor(List<String> code) {
         this.codeScanner = new CodeScanner(code);
@@ -60,20 +56,27 @@ public class QueryProcessor {
 
 
    private void parseDeclaration() throws SimpleParserException {
-        ////
        String firstWord = parseName();
        codeScanner.skipWhitespaces();
 
+//       Stream.of(EntityType.values())
+//               .anyMatch(value => {})
+
        if (EntityType.ASSIGNMENT.getETName().equals(firstWord)) {
            //tworzenie listy obiektów 1. zliczyc ilosć, do średnika ;
-           parseAssignment();
-
+           parseDeclaration(EntityType.ASSIGNMENT);
        }
-//       else if(EntityType.WHILE.getETName().equals(firstWord)){
-////           parseWhile();
-//       }
+       else if(EntityType.WHILE.getETName().equals(firstWord)){
+           parseDeclaration(EntityType.WHILE);
+       }
        else if(EntityType.STATEMENT.getETName().equals(firstWord)){
-//           parseStatement();
+           parseDeclaration(EntityType.STATEMENT);
+       }else if(EntityType.VARIABLE.getETName().equals(firstWord)){
+           parseDeclaration(EntityType.VARIABLE);
+       }else if(EntityType.CONSTANT.getETName().equals(firstWord)){
+           parseDeclaration(EntityType.CONSTANT);
+       }else if(EntityType.PROG_LINE.getETName().equals(firstWord)){
+           parseDeclaration(EntityType.PROG_LINE);
        }
    }
 
@@ -90,42 +93,21 @@ public class QueryProcessor {
 
 
    //zmienić exceptiony
-    private void parseAssignment() throws SimpleParserException{
-        while (!this.codeScanner.hasCurrentChar(';'))
-        {
-                codeScanner.skipWhitespaces();
-                String firstWord = parseName();
-                //utwórz instancje obiektu Assign i dodaj na liste obiektów
-                declarationList.add(new AssignmentImpl(new VariableImpl(firstWord)));
-                //pominięcie ','
-                parseChar(',',true);
-                codeScanner.skipWhitespaces();
-        }
-    }
-
-    private void parseStatement() throws SimpleParserException{
-        while (!this.codeScanner.hasCurrentChar(';'))
-        {
-            codeScanner.skipWhitespaces();
-            String firstWord = parseName();
-//            declarationList.add(new StatementImpl((firstWord));
-            parseChar(',',true);
-            codeScanner.skipWhitespaces();
-        }
-    }
-
-    private void parseWhile() throws SimpleParserException{
+    private void parseDeclaration(EntityType entityType) throws SimpleParserException{
         while (!this.codeScanner.hasCurrentChar(';'))
         {
             codeScanner.skipWhitespaces();
             String firstWord = parseName();
             //utwórz instancje obiektu Assign i dodaj na liste obiektów
-            declarationList.add(new WhileImpl(new VariableImpl(firstWord),null));
+            declarationList.add(new Declaration(firstWord,entityType));
             //pominięcie ','
-            parseChar(',',true);
+            if(this.codeScanner.hasCurrentChar(','))
+                parseChar(',',true);
             codeScanner.skipWhitespaces();
         }
     }
+
+
 
 
 

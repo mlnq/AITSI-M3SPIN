@@ -1,10 +1,7 @@
 package aitsi.m3spin.commons.enums;
 
 public enum EntityType{
-    //    PROGRAM("PROGRAM"),
     PROCEDURE("procedure"),
-    //    STMT_LIST("STMTLIST"),
-    //    STMT("STMT"),
     EQUALS("="),
     CALL("call"),
     WHILE("while"),
@@ -14,14 +11,14 @@ public enum EntityType{
     TIMES("*"),
 //    ASSIGNMENT("assignment"),
     ASSIGNMENT("assign"),
-
     STATEMENT("stmt"),
     CONSTANT("constant"),
     VARIABLE("variable"),
     EXPRESSION("expression"),
-    FACTOR("factor");
+    FACTOR("factor"),
+    PROG_LINE("prog_line");
 
-    private String entityTypeName;
+    private final String entityTypeName;
 
     EntityType(String entityTypeName) {
         this.entityTypeName = entityTypeName;

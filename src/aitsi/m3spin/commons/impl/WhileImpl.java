@@ -19,6 +19,10 @@ public class WhileImpl extends StatementImpl implements While {
     private Variable conditionVar;
     private List<Statement> stmtList;
 
+    public WhileImpl(Variable firstWord) {
+        this.conditionVar = firstWord;
+    }
+
     @Override
     public EntityType getType() {
         return TYPE;
