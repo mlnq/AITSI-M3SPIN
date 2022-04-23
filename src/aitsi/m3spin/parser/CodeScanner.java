@@ -53,7 +53,7 @@ public boolean hasCurrentChar(char c) throws MissingCharacterException {
         this.incrementPosition(1);
     }
 
-    String getCurrentString(int length) throws MissingCharacterException {
+    public String getCurrentString(int length) throws MissingCharacterException {
         StringBuilder stringBuilder = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
             stringBuilder.append(getCurrentChar());

@@ -3,6 +3,7 @@ package aitsi.m3spin.queryProcessor.model;
 
 import aitsi.m3spin.commons.enums.EntityType;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor

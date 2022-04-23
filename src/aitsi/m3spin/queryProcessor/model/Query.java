@@ -28,5 +28,9 @@ public class Query {
     //List<Declaration> Select; <-- 4 iteracja jak ktos nie ma zycia x.d.
     private Declaration Select;
     private List<SuchThat> suchThatList;
-    private List<With> withList;
+    private List<WithClause> withList;
+
+    public Query(Declaration select) {
+        this.select = select;
+    }
 }
