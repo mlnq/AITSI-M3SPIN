@@ -6,7 +6,7 @@ import aitsi.m3spin.commons.interfaces.Variable;
 
 import java.util.List;
 
-public interface Modifies {
+public interface Modifies { //
     void setModifies(Statement stmt, Variable variable);
 
     void setModifies(Procedure proc, Variable variable);

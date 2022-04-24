@@ -1,13 +1,10 @@
-package aitsi.m3spin.parser;
+package aitsi.m3spin.spafrontend.parser;
 
 import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.impl.*;
 import aitsi.m3spin.commons.interfaces.*;
-import aitsi.m3spin.parser.exception.MissingCharacterException;
-import aitsi.m3spin.parser.exception.MissingCodeEntityException;
-import aitsi.m3spin.parser.exception.MissingSimpleKeywordException;
-import aitsi.m3spin.parser.exception.SimpleParserException;
 import aitsi.m3spin.pkb.PkbImpl;
+import aitsi.m3spin.spafrontend.parser.exception.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,54 +24,121 @@ public class Parser {
         Procedure rootProc = parseProcedure();
         System.out.println("Parsing completed.");
         return Collections.singletonList(rootProc);
-
     }
+
     /*
-    * Wzór metody fillPkb(tnode):
-    * 1. insertVar(tnode) / insertProc(tnode)
-    * 2. setChild(tnode, tnodeChild) / setSibling(tnode, tnodeSibling)
-    * 3. Wywołaj fillPkb() dla tego dziecka/rodzeństwa
-    * */
-    public void fillPkb(List<Procedure> procedures){
+     * Wzór metody fillPkb(tnode):
+     * 1. insertVar(tnode) / insertProc(tnode)
+     * 2. setChild(tnode, tnodeChild) / setSibling(tnode, tnodeSibling)
+     * 3. Wywołaj fillPkb() dla tego dziecka/rodzeństwa
+     *
+     *  todo w przyszłuch iteracjach: Calls
+     * */
+    public void fillPkb(List<Procedure> procedures) throws UnrecognizedStatementTypeExcepton {
         Procedure rootProc = procedures.get(0);
         pkb.setRoot(rootProc);
         fillPkb(rootProc);
     }
 
-    private void fillPkb(Procedure procedure){
+    private void fillPkb(Procedure procedure) throws UnrecognizedStatementTypeExcepton {
         pkb.insertProc(procedure.getName());
         StatementList stmtList = (StatementList) pkb.setChild(procedure, procedure.getStatementList());
-        fillPkb(stmtList);
+        RelationshipsInfo relationshipsInfo = fillPkb(stmtList);
+
+        relationshipsInfo.getModifiedVariables()
+                .forEach(modifiedVar -> pkb.setModifies(procedure, modifiedVar));
+
+        relationshipsInfo.getUsedVariables()
+                .forEach(usedVar -> pkb.setUses(procedure, usedVar));
     }
 
-    private void fillPkb(StatementList stmtList) {
+    private RelationshipsInfo fillPkb(StatementList stmtList) throws UnrecognizedStatementTypeExcepton {
         Statement firstStmt = (Statement) pkb.setChild(stmtList, stmtList.getStmtList().get(0));
-        fillPkb(firstStmt);
+        RelationshipsInfo stmtListRelationshipsInfo = fillPkb(firstStmt);
 
-        Statement nextStmt = firstStmt;
+        Statement currentStmt = firstStmt;
 
         for (int i = 1; i < stmtList.getStmtList().size(); i++) {
-            nextStmt = (Statement) pkb.setRightSibling(nextStmt, stmtList.getStmtList().get(i));
-            fillPkb(nextStmt);
+            pkb.setFollows(currentStmt, stmtList.getStmtList().get(i));
+            currentStmt = (Statement) pkb.setRightSibling(currentStmt, stmtList.getStmtList().get(i));
+            stmtListRelationshipsInfo = RelationshipsInfo.merge(stmtListRelationshipsInfo, fillPkb(currentStmt));
         }
-        //todo zapisać wszystkie sparsowane elementy w PKB za pomocą interfejsu Ast
-        //todo wypełnić varTable
-        //todo wypełnić procTable
+
+        return stmtListRelationshipsInfo;
     }
 
-    private void fillPkb(Statement stmt) {
+    private RelationshipsInfo fillPkb(Statement stmt) throws UnrecognizedStatementTypeExcepton {
         if (stmt instanceof Assignment) {
-            VariableImpl variable = (VariableImpl) pkb.setChild(stmt, ((AssignmentImpl) stmt).getVariable());
-            //ast.setRightSibling(variable, )//todo na spokojnie
+            return fillPkb((Assignment) stmt);
         } else if (stmt instanceof While) {
-
+            return fillPkb((While) stmt);
         } else if (stmt instanceof If) {
-            //todo
+            return RelationshipsInfo.emptyInfo();
+            //todo w przyszłych iteracjach
         } else if (stmt instanceof Call) {
-            //todo
+            return RelationshipsInfo.emptyInfo();
+            //todo w przyszłych iteracjach
         } else {
-            //todo throw new UnsupportedStatementTypeExcepton()
+            throw new UnrecognizedStatementTypeExcepton();
         }
+    }
+
+    private RelationshipsInfo fillPkb(While whileStmt) throws UnrecognizedStatementTypeExcepton {
+        Variable conditionVar = (Variable) pkb.setChild(whileStmt, whileStmt.getConditionVar());
+        RelationshipsInfo relationshipsInfo = fillPkb(conditionVar, whileStmt.getStmtList());
+
+        relationshipsInfo.getModifiedVariables()
+                .forEach(modifiedVar -> pkb.setModifies(whileStmt, modifiedVar));
+
+        pkb.setUses(whileStmt, conditionVar);
+        relationshipsInfo.getUsedVariables()
+                .forEach(usedVar -> pkb.setUses(whileStmt, usedVar));
+
+        whileStmt.getStmtList().getStmtList()
+                .forEach(statement -> pkb.setParent(whileStmt, statement));
+
+        return relationshipsInfo;
+    }
+
+    private RelationshipsInfo fillPkb(Assignment assignment) {
+        VariableImpl variable = (VariableImpl) pkb.setChild(assignment, assignment.getVariable());
+
+        RelationshipsInfo relationshipsInfo = new RelationshipsInfo();
+
+        relationshipsInfo.addModifiedVar(variable);
+        pkb.setModifies(assignment, variable);
+
+        RelationshipsInfo.merge(relationshipsInfo, fillPkb(variable, assignment.getExpression()));
+        relationshipsInfo.getUsedVariables()
+                .forEach(usedVar -> pkb.setUses(assignment, usedVar));
+        return relationshipsInfo;
+    }
+
+    private RelationshipsInfo fillPkb(Variable variable, Expression expression) {
+        pkb.insertVar(variable.getName());
+        expression = (Expression) pkb.setRightSibling(variable, expression);
+        return fillPkb(expression);
+    }
+
+    private RelationshipsInfo fillPkb(Variable variable, StatementList stmtList) throws UnrecognizedStatementTypeExcepton {
+        pkb.insertVar(variable.getName());
+        stmtList = (StatementList) pkb.setRightSibling(variable, stmtList);
+        return fillPkb(stmtList);
+    }
+
+    private RelationshipsInfo fillPkb(Expression expression) {
+        if (expression.getExpression() != null) {
+            RelationshipsInfo relationshipsInfo = new RelationshipsInfo();
+            if (expression.getFactor() instanceof Variable) {
+                Variable variable = (Variable) expression.getFactor();
+                pkb.insertVar(variable.getName());
+                relationshipsInfo.addUsedVar(variable);
+            }
+            Factor factor = (Factor) pkb.setChild(expression, expression.getFactor());
+
+            Expression nestedExpression = (Expression) pkb.setRightSibling(factor, expression.getExpression());
+            return RelationshipsInfo.merge(relationshipsInfo, fillPkb(nestedExpression));
+        } else return RelationshipsInfo.emptyInfo();
     }
 
     private Procedure parseProcedure() throws SimpleParserException {

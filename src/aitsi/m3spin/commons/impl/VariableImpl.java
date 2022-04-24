@@ -7,7 +7,6 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class VariableImpl implements Variable, TNode {
-
+public class VariableImpl implements Variable, TNode { //todo ogarnąć żeby nie trzeba było tu implementować getFactor()
     private String name;
 }

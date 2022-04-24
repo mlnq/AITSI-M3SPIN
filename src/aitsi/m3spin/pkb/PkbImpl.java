@@ -3,15 +3,12 @@ package aitsi.m3spin.pkb;
 import aitsi.m3spin.commons.Attr;
 import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.enums.LinkType;
-import aitsi.m3spin.commons.interfaces.Index;
-import aitsi.m3spin.commons.interfaces.TNode;
-import aitsi.m3spin.pkb.interfaces.Ast;
-import aitsi.m3spin.pkb.interfaces.ProcTable;
-import aitsi.m3spin.pkb.interfaces.VarTable;
+import aitsi.m3spin.commons.interfaces.*;
+import aitsi.m3spin.pkb.interfaces.*;
 
 import java.util.List;
 
-public class PkbImpl implements Ast, VarTable, ProcTable {
+public class PkbImpl implements Ast, VarTable, ProcTable, Parent, Follows, Modifies, Uses {
     @Override
     public TNode createTNode(EntityType et) {
         return null;
@@ -98,12 +95,12 @@ public class PkbImpl implements Ast, VarTable, ProcTable {
     }
 
     @Override
-    public TNode getParent$(TNode c) {
+    public TNode getParentT(TNode c) {
         return null;
     }
 
     @Override
-    public List<TNode> getParented$By(TNode p) {
+    public List<TNode> getParentedTBy(TNode p) {
         return null;
     }
 
@@ -118,7 +115,7 @@ public class PkbImpl implements Ast, VarTable, ProcTable {
     }
 
     @Override
-    public List<TNode> getFollows$(TNode n) {
+    public List<TNode> getFollowsT(TNode n) {
         return null;
     }
 
@@ -128,7 +125,7 @@ public class PkbImpl implements Ast, VarTable, ProcTable {
     }
 
     @Override
-    public List<TNode> getFollowed$By(TNode n) {
+    public List<TNode> getFollowedTBy(TNode n) {
         return null;
     }
 
@@ -138,7 +135,7 @@ public class PkbImpl implements Ast, VarTable, ProcTable {
     }
 
     @Override
-    public Boolean isFollowed$(TNode n1, TNode n2) {
+    public Boolean isFollowedT(TNode n1, TNode n2) {
         return null;
     }
 
@@ -148,7 +145,7 @@ public class PkbImpl implements Ast, VarTable, ProcTable {
     }
 
     @Override
-    public Boolean isParent$(TNode p, TNode c) {
+    public Boolean isParentT(TNode p, TNode c) {
         return null;
     }
 
@@ -199,6 +196,86 @@ public class PkbImpl implements Ast, VarTable, ProcTable {
 
     @Override
     public Boolean isInProcTable(String procName) {
+        return null;
+    }
+
+    @Override
+    public void setModifies(Statement stmt, Variable variable) {
+
+    }
+
+    @Override
+    public void setModifies(Procedure proc, Variable variable) {
+
+    }
+
+    @Override
+    public List<Variable> getModified(Statement stmt) {
+        return null;
+    }
+
+    @Override
+    public List<Variable> getModified(Procedure proc) {
+        return null;
+    }
+
+    @Override
+    public List<Statement> getModifiesSTMT(Variable variable) {
+        return null;
+    }
+
+    @Override
+    public List<Procedure> getModifiesPROC(Variable variable) {
+        return null;
+    }
+
+    @Override
+    public Boolean isModified(Variable variable, Statement stmt) {
+        return null;
+    }
+
+    @Override
+    public Boolean isModified(Variable variable, Procedure proc) {
+        return null;
+    }
+
+    @Override
+    public void setUses(Statement stmt, Variable variable) {
+
+    }
+
+    @Override
+    public void setUses(Procedure proc, Variable variable) {
+
+    }
+
+    @Override
+    public List<Variable> getUses(Statement stmt) {
+        return null;
+    }
+
+    @Override
+    public List<Variable> getUses(Procedure proc) {
+        return null;
+    }
+
+    @Override
+    public List<Statement> getUsesSTMT(Variable variable) {
+        return null;
+    }
+
+    @Override
+    public List<Procedure> getUsesPROC(Variable variable) {
+        return null;
+    }
+
+    @Override
+    public Boolean isUsed(Variable variable, Statement stat) {
+        return null;
+    }
+
+    @Override
+    public Boolean isUseded(Variable variable, Procedure proc) {
         return null;
     }
 }

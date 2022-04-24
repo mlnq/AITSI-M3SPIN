@@ -1,8 +1,8 @@
-package aitsi.m3spin.parser;
+package aitsi.m3spin.spafrontend.parser;
 
-import aitsi.m3spin.parser.exception.IllegalCharacterException;
-import aitsi.m3spin.parser.exception.MissingCharacterException;
-import aitsi.m3spin.parser.exception.SimpleParserException;
+import aitsi.m3spin.spafrontend.parser.exception.IllegalCharacterException;
+import aitsi.m3spin.spafrontend.parser.exception.MissingCharacterException;
+import aitsi.m3spin.spafrontend.parser.exception.SimpleParserException;
 
 import java.util.List;
 

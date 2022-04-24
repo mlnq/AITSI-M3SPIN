@@ -10,5 +10,5 @@ import lombok.Getter;
 @Getter
 public class AssignmentImpl implements Assignment {
     private Variable variable;
-    private Expression expr;
+    private Expression expression;
 }

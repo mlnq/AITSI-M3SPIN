@@ -1,7 +1,7 @@
 package aitsi.m3spin;
 
-import aitsi.m3spin.parser.Parser;
-import aitsi.m3spin.parser.exception.SimpleParserException;
+import aitsi.m3spin.spafrontend.parser.Parser;
+import aitsi.m3spin.spafrontend.parser.exception.SimpleParserException;
 import aitsi.m3spin.ui.SimpleReader;
 
 import java.io.FileNotFoundException;
@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) throws SimpleParserException {//todo obsłużyć ten wyjątek
+    public static void main(String[] args) throws SimpleParserException {//todo obsłużyć ten wyjątek - robota dla UI
         char uiOption = readUiOption();
         switch (uiOption) {
             case '1':
