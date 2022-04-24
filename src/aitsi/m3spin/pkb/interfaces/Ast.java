@@ -7,7 +7,7 @@ import aitsi.m3spin.commons.interfaces.TNode;
 
 import java.util.List;
 
-public interface AST {
+public interface Ast {
     //: Creates a new node of type ‘et’ and returns a reference to it
     TNode createTNode(EntityType et);
 
@@ -15,7 +15,7 @@ public interface AST {
 
     void setAttr(TNode n, Attr attr);
 
-    TNode setFirstChild(TNode parent, TNode child);
+    TNode setChild(TNode parent, TNode child);
 
     TNode setRightSibling(TNode l, TNode r);
 

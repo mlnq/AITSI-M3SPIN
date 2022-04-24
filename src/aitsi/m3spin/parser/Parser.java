@@ -7,46 +7,64 @@ import aitsi.m3spin.parser.exception.MissingCharacterException;
 import aitsi.m3spin.parser.exception.MissingCodeEntityException;
 import aitsi.m3spin.parser.exception.MissingSimpleKeywordException;
 import aitsi.m3spin.parser.exception.SimpleParserException;
-import aitsi.m3spin.pkb.AstImpl;
-import aitsi.m3spin.pkb.interfaces.AST;
+import aitsi.m3spin.pkb.PkbImpl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Parser {
 
-    private final AST ast = new AstImpl();
+    private final PkbImpl pkb = new PkbImpl();
     private final CodeScanner codeScanner;
 
     public Parser(List<String> code) {
         this.codeScanner = new CodeScanner(code);
     }
 
-    public void parse() throws SimpleParserException {
+    public List<Procedure> parse() throws SimpleParserException {
         System.out.println("Parsing SIMPLE code...");// todo dodać logger, żeby nie używać soutów - task na trello dodać
         Procedure rootProc = parseProcedure();
         System.out.println("Parsing completed.");
+        return Collections.singletonList(rootProc);
 
-        ast.setRoot(rootProc);
-        StatementListImpl stmtList = (StatementListImpl) ast.setFirstChild(rootProc, ((ProcedureImpl) rootProc).getStmtList());
+    }
+    /*
+    * Wzór metody fillPkb(tnode):
+    * 1. insertVar(tnode) / insertProc(tnode)
+    * 2. setChild(tnode, tnodeChild) / setSibling(tnode, tnodeSibling)
+    * 3. Wywołaj fillPkb() dla tego dziecka/rodzeństwa
+    * */
+    public void fillPkb(List<Procedure> procedures){
+        Procedure rootProc = procedures.get(0);
+        pkb.setRoot(rootProc);
+        fillPkb(rootProc);
+    }
 
-        Statement firstStmt = (Statement) ast.setFirstChild(stmtList, stmtList.getStmtList().get(0));
+    private void fillPkb(Procedure procedure){
+        pkb.insertProc(procedure.getName());
+        StatementList stmtList = (StatementList) pkb.setChild(procedure, procedure.getStatementList());
+        fillPkb(stmtList);
+    }
+
+    private void fillPkb(StatementList stmtList) {
+        Statement firstStmt = (Statement) pkb.setChild(stmtList, stmtList.getStmtList().get(0));
+        fillPkb(firstStmt);
+
         Statement nextStmt = firstStmt;
 
-        createAstFor(firstStmt);
-
         for (int i = 1; i < stmtList.getStmtList().size(); i++) {
-            nextStmt = (Statement) ast.setRightSibling(nextStmt, stmtList.getStmtList().get(i));
-            createAstFor(nextStmt);
+            nextStmt = (Statement) pkb.setRightSibling(nextStmt, stmtList.getStmtList().get(i));
+            fillPkb(nextStmt);
         }
-        //todo zapisać wszystkie sparsowane elementy w PKB za pomocą interfejsu AST
+        //todo zapisać wszystkie sparsowane elementy w PKB za pomocą interfejsu Ast
         //todo wypełnić varTable
         //todo wypełnić procTable
     }
 
-    private void createAstFor(Statement stmt) {
+    private void fillPkb(Statement stmt) {
         if (stmt instanceof Assignment) {
-            VariableImpl variable = (VariableImpl) ast.setFirstChild(stmt, ((AssignmentImpl) stmt).getVariable());
+            VariableImpl variable = (VariableImpl) pkb.setChild(stmt, ((AssignmentImpl) stmt).getVariable());
             //ast.setRightSibling(variable, )//todo na spokojnie
         } else if (stmt instanceof While) {
 
@@ -81,11 +99,11 @@ public class Parser {
         parseChar('}');
     }
 
-    private void parseChar(char c) throws MissingCharacterException {
+    private void parseChar(char c) throws MissingCharacterException {//todo do codeScannera
         parseChar(c, true);
     }
 
-    private void parseChar(char c, boolean incFlag) throws MissingCharacterException {
+    private void parseChar(char c, boolean incFlag) throws MissingCharacterException {//todo do codeScannera
         this.codeScanner.skipWhitespaces();
         if (this.codeScanner.hasCurrentChar(c)) {
             if (incFlag) {
@@ -96,7 +114,7 @@ public class Parser {
         }
     }
 
-    private String parseName() throws SimpleParserException {
+    private String parseName() throws SimpleParserException {//todo do codeScannera
         StringBuilder name = new StringBuilder(String.valueOf(parseLetter()));
         while (codeScanner.hasCurrentChar()) {
             char currentChar = codeScanner.getCurrentChar();
@@ -111,13 +129,13 @@ public class Parser {
         return String.valueOf(name);
     }
 
-    private char parseDigit() throws SimpleParserException {
+    private char parseDigit() throws SimpleParserException {//todo do codeScannera
         char digit = this.codeScanner.getCurrentDigit();
         this.codeScanner.incrementPosition();
         return digit;
     }
 
-    private char parseLetter() throws SimpleParserException {
+    private char parseLetter() throws SimpleParserException {//todo do codeScannera
         char letter = this.codeScanner.getCurrentLetter();
         this.codeScanner.incrementPosition();
         return letter;

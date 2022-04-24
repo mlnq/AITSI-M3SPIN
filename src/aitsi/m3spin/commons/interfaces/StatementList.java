@@ -1,5 +1,7 @@
 package aitsi.m3spin.commons.interfaces;
 
-public interface StatementList extends TNode {
+import java.util.List;
 
+public interface StatementList extends TNode {
+    List<Statement> getStmtList();
 }

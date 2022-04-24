@@ -1,16 +1,16 @@
 package aitsi.m3spin.pkb.interfaces;
 
 import aitsi.m3spin.commons.interfaces.Index;
-import aitsi.m3spin.commons.interfaces.STRING;
 
 public interface ProcTable {
-//9.2.1 handbook
-Index insertVar(STRING varName);
+    //9.2.1 handbook
+    Index insertProc(String procName);
 
-    STRING getVarName(Index ind);
+    String getProcName(Index index);
 
-    Index getVarIndex(STRING varName);
+    Index getProcIndex(String procName);
 
-    Integer getSize();
-    Boolean isIn (STRING varName);
+    Integer getProcTableSize();
+
+    Boolean isInProcTable(String procName);
 }

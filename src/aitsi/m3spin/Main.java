@@ -22,7 +22,8 @@ public class Main {
                     e.printStackTrace();
                 }
                 Parser parser = new Parser(codeLines);
-                parser.parse();
+
+                parser.fillPkb(parser.parse());
                 break;
             case '2':
                 break;

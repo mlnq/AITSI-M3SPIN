@@ -1,16 +1,16 @@
 package aitsi.m3spin.pkb.interfaces;
 
 import aitsi.m3spin.commons.interfaces.Index;
-import aitsi.m3spin.commons.interfaces.STRING;
 
 public interface VarTable {
-  Index insertVar(STRING varName);
+    Index insertVar(String varName);
 
-  STRING getVarName(Index ind);
+    String getVarName(Index index);
 
-  Index getVarIndex(STRING varName);
+    Index getVarIndex(String varName);
 
-  Integer getSize();
-  Boolean isIn (STRING varName);
+    Integer getVarTableSize();
+
+    Boolean isInVarTable(String varName);
 
 }

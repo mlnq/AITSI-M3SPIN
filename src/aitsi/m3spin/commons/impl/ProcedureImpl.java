@@ -12,5 +12,5 @@ import java.util.List;
 @Getter
 public class ProcedureImpl implements Procedure {
     private String name;
-    private StatementList stmtList;
+    private StatementList statementList;
 }

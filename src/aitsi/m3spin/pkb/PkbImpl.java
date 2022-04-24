@@ -3,20 +3,18 @@ package aitsi.m3spin.pkb;
 import aitsi.m3spin.commons.Attr;
 import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.enums.LinkType;
+import aitsi.m3spin.commons.interfaces.Index;
 import aitsi.m3spin.commons.interfaces.TNode;
-import aitsi.m3spin.pkb.interfaces.AST;
+import aitsi.m3spin.pkb.interfaces.Ast;
+import aitsi.m3spin.pkb.interfaces.ProcTable;
+import aitsi.m3spin.pkb.interfaces.VarTable;
 
 import java.util.List;
 
-public class AstImpl implements AST {
+public class PkbImpl implements Ast, VarTable, ProcTable {
     @Override
     public TNode createTNode(EntityType et) {
         return null;
-    }
-
-    @Override
-    public void setRoot(TNode node) {
-
     }
 
     @Override
@@ -25,7 +23,7 @@ public class AstImpl implements AST {
     }
 
     @Override
-    public TNode setFirstChild(TNode parent, TNode child) {
+    public TNode setChild(TNode parent, TNode child) {
         return child;
     }
 
@@ -52,6 +50,11 @@ public class AstImpl implements AST {
     @Override
     public TNode getRoot() {
         return null;
+    }
+
+    @Override
+    public void setRoot(TNode node) {
+
     }
 
     @Override
@@ -146,6 +149,56 @@ public class AstImpl implements AST {
 
     @Override
     public Boolean isParent$(TNode p, TNode c) {
+        return null;
+    }
+
+    @Override
+    public Index insertVar(String varName) {
+        return null;
+    }
+
+    @Override
+    public String getVarName(Index index) {
+        return null;
+    }
+
+    @Override
+    public Index getVarIndex(String varName) {
+        return null;
+    }
+
+    @Override
+    public Integer getVarTableSize() {
+        return null;
+    }
+
+    @Override
+    public Boolean isInVarTable(String varName) {
+        return null;
+    }
+
+    @Override
+    public Index insertProc(String procName) {
+        return null;
+    }
+
+    @Override
+    public String getProcName(Index index) {
+        return null;
+    }
+
+    @Override
+    public Index getProcIndex(String procName) {
+        return null;
+    }
+
+    @Override
+    public Integer getProcTableSize() {
+        return null;
+    }
+
+    @Override
+    public Boolean isInProcTable(String procName) {
         return null;
     }
 }
