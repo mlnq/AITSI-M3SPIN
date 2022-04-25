@@ -8,6 +8,8 @@ public interface Parent {
 
     List<TNode> getParentedBy(TNode p);
 
+    TNode getParent(TNode c);
+
     TNode getParent$(TNode c);
 
     List<TNode> getParented$By(TNode p);

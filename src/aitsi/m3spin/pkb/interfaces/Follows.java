@@ -11,7 +11,7 @@ public interface Follows {
 
     List<TNode> getFollows$(TNode n);
 
-    TNode getFollowedBy(TNode n);
+    List<TNode> getFollowedBy(TNode n);
 
     List<TNode> getFollowed$By(TNode n);
 

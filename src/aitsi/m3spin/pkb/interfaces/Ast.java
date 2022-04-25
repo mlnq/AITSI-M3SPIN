@@ -5,6 +5,7 @@ import aitsi.m3spin.commons.enums.LinkType;
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.exception.IllegalLinkTypeException;
 import aitsi.m3spin.pkb.exception.IllegalNodeTypeException;
+import aitsi.m3spin.pkb.impl.ParentImpl;
 
 import java.util.List;
 
@@ -13,6 +14,10 @@ public interface Ast {
     TNode createTNode(EntityType et) throws IllegalNodeTypeException;
 
     TNode setRoot(TNode node);
+    Parent getParentMethods();
+    Follows getFollowsMethods();
+    Modifies getModifiesMethods();
+    Uses getUsesMethods();
     void setAttr(TNode n, String attr);
     TNode setChild(TNode parent, TNode child);
 
@@ -69,5 +74,4 @@ public interface Ast {
 
     TNode setParent(TNode p, TNode c);
 
-    TNode getParent(TNode c);
 }
