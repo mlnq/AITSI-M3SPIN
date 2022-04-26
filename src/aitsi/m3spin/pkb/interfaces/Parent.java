@@ -5,17 +5,17 @@ import aitsi.m3spin.commons.interfaces.TNode;
 import java.util.List;
 
 public interface Parent { // na podstawie AST
-    void setParent(TNode p, TNode c);
+    void setParent(TNode parent, TNode child);
 
-    TNode getParent(TNode c);
+    TNode getParent(TNode child);
 
-    List<TNode> getParentedBy(TNode p);
+    TNode getParentT(TNode child);
 
-    TNode getParentT(TNode c);
+    List<TNode> getParentedBy(TNode parent);
 
-    List<TNode> getParentedTBy(TNode p);
+    List<TNode> getParentedTBy(TNode parent);
 
-    Boolean isParent(TNode p, TNode c);
+    Boolean isParent(TNode parent, TNode child);
 
-    Boolean isParentT(TNode p, TNode c);
+    Boolean isParentT(TNode parent, TNode child);
 }

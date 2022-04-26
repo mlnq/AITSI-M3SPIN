@@ -6,20 +6,20 @@ import aitsi.m3spin.commons.interfaces.Variable;
 
 import java.util.List;
 
-public interface Modifies { //
-    void setModifies(Statement stmt, Variable variable);
+public interface Modifies {
+    void setModifies(Statement stmt, Variable var);
 
-    void setModifies(Procedure proc, Variable variable);
+    void setModifies(Procedure proc, Variable var);
 
     List<Variable> getModified(Statement stmt);
 
     List<Variable> getModified(Procedure proc);
 
-    List<Statement> getModifiesSTMT(Variable variable);
+    List<Statement> getModifiesStmt(Variable var);
 
-    List<Procedure> getModifiesPROC(Variable variable);
+    List<Procedure> getModifiesProc(Variable var);
 
-    Boolean isModified(Variable variable, Statement stmt);
+    Boolean isModified(Variable var, Statement stmt);
 
-    Boolean isModified(Variable variable, Procedure proc);
+    Boolean isModified(Variable var, Procedure proc);
 }

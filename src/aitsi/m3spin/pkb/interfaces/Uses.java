@@ -7,19 +7,19 @@ import aitsi.m3spin.commons.interfaces.Variable;
 import java.util.List;
 
 public interface Uses {
-    void setUses(Statement stmt, Variable variable);
+    void setUses(Statement stmt, Variable var);
 
-    void setUses(Procedure proc, Variable variable);
+    void setUses(Procedure proc, Variable var);
 
     List<Variable> getUses(Statement stmt);
 
     List<Variable> getUses(Procedure proc);
 
-    List<Statement> getUsesSTMT(Variable variable);
+    List<Statement> getUsesStmt(Variable var);
 
-    List<Procedure> getUsesPROC(Variable variable);
+    List<Procedure> getUsesProc(Variable var);
 
-    Boolean isUsed(Variable variable, Statement stat);
+    Boolean isUsed(Variable var, Statement stmt);
 
-    Boolean isUseded(Variable variable, Procedure proc);
+    Boolean isUsed(Variable var, Procedure proc);
 }

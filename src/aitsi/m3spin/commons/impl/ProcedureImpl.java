@@ -1,16 +1,45 @@
 package aitsi.m3spin.commons.impl;
 
+import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.interfaces.Procedure;
 import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.commons.interfaces.StatementList;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.Getter;
 
 import java.util.List;
 
+@NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Getter
-public class ProcedureImpl implements Procedure {
-    private String name;
+public class ProcedureImpl extends TNodeImpl implements Procedure {
+    private static final EntityType TYPE = EntityType.PROCEDURE;
+
     private StatementList statementList;
+    private int id;
+
+    public String getName(){
+        return super.attribute;
+    }
+
+    public void setName(String name){
+        super.attribute = name;
+    }
+
+    public ProcedureImpl(String name, List<Statement> stmtList) {
+        super.attribute = name;
+        this.stmtList = stmtList;
+    }
+
+    public ProcedureImpl(int id){
+        this.id = id;
+    }
+
+    @Override
+    public EntityType getType() {
+        return TYPE;
+    }
 }
