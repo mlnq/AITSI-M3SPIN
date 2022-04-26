@@ -273,7 +273,7 @@ public class Parser {
             codeScanner.skipWhitespaces();
             return new ExpressionImpl(factor, parseExpression());
         } else {
-            return factor;
+            return new ExpressionImpl(factor);
         }
     }
 

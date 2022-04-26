@@ -9,7 +9,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ExpressionImpl implements  Expression{
+public class ExpressionImpl implements Expression {
     private Factor factor;
     private Expression expression;
+
+    public ExpressionImpl(Factor factor) {
+        this.factor = factor;
+        this.expression = null;
+    }
 }
