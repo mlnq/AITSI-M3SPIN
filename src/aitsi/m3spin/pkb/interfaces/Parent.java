@@ -1,11 +1,12 @@
 package aitsi.m3spin.pkb.interfaces;
 
+import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.commons.interfaces.TNode;
 
 import java.util.List;
 
 public interface Parent { // na podstawie AST
-    void setParent(TNode parent, TNode child);
+    void setParent(Statement parent, Statement child);
 
     TNode getParent(TNode child);
 

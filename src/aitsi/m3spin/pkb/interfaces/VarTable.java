@@ -7,7 +7,7 @@ public interface VarTable {
 
     int getVarId(String varName);
 
-    int getVarTableSize();
+    int getSize();
 
-    Boolean isInVarTable(String varName);
+    boolean isIn(String varName);
 }

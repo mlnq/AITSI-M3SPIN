@@ -1,14 +1,22 @@
 package aitsi.m3spin.commons.impl;
 
-import java.util.List;
-
+import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.commons.interfaces.StatementList;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+
+import java.util.List;
 
 @AllArgsConstructor
 @Getter
-public class StatementListImpl implements StatementList {
+@EqualsAndHashCode(callSuper = true)
+public class StatementListImpl extends TNodeImpl implements StatementList {
     private List<Statement> stmtList;
+
+    @Override
+    public EntityType getType() {
+        return EntityType.STMT_LIST;
+    }
 }

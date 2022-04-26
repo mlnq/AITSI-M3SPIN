@@ -9,28 +9,28 @@ import java.util.List;
 
 @Getter
 public class CodeScanner {
-    private CodePosition currentPosition;
-    private List<String> codeLines;
+    private final CodePosition currentPosition;
+    private final List<String> codeLines;
 
-    CodeScanner(List<String> codeLines) {
+    public CodeScanner(List<String> codeLines) {
         this.codeLines = codeLines;
         this.currentPosition = new CodePosition();
     }
 
-    boolean hasCurrentChar() {
+    public boolean hasCurrentChar() {
         return currentPosition.getLine() < codeLines.size() && currentPosition.getColumn() < getCurrentLine().length();
     }
 
-    char getCurrentChar() throws MissingCharacterException {
+    public char getCurrentChar() throws MissingCharacterException {
         if (hasCurrentChar()) return getCurrentLine().charAt(currentPosition.getColumn());
         else throw new MissingCharacterException(currentPosition);
     }
 
-    boolean hasCurrentChar(char c) throws MissingCharacterException {
+    public boolean hasCurrentChar(char c) throws MissingCharacterException {
         return getCurrentChar() == c;
     }
 
-    char getCurrentLetter() throws SimpleParserException {
+    public char getCurrentLetter() throws SimpleParserException {
         char currentChar = this.getCurrentChar();
         if (Character.isLetter(currentChar)) return currentChar;
         else throw new IllegalCharacterException(currentChar, this.currentPosition);
@@ -48,11 +48,11 @@ public class CodeScanner {
         return this.codeLines.get(currentPosition.getLine());
     }
 
-    void incrementPosition() {
+    public void incrementPosition() {
         this.incrementPosition(1);
     }
 
-    String getCurrentString(int length) throws MissingCharacterException {
+    public String getCurrentString(int length) throws MissingCharacterException {
         StringBuilder stringBuilder = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
             stringBuilder.append(getCurrentChar());
@@ -61,7 +61,7 @@ public class CodeScanner {
         return String.valueOf(stringBuilder);
     }
 
-    void skipWhitespaces() throws MissingCharacterException {
+    public void skipWhitespaces() throws MissingCharacterException {
         if (Character.isWhitespace(getCurrentChar())) {
             incrementPosition();
             skipWhitespaces();

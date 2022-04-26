@@ -8,7 +8,7 @@ public interface ProcTable {
 
     int getProcId(String procName);
 
-    int getProcTableSize();
+    int getSize();
 
-    boolean isInProcTable(String procName);
+    boolean isIn(String procName);
 }
