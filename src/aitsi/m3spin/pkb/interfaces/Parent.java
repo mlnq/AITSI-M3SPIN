@@ -1,20 +1,23 @@
 package aitsi.m3spin.pkb.interfaces;
 
+import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.commons.interfaces.TNode;
 
 import java.util.List;
 
 public interface Parent {
 
-    List<TNode> getParentedBy(TNode p);
+    Statement setParent(Statement parent, Statement child);
 
-    TNode getParent(TNode c);
+    List<Statement> getParentedBy(Statement parent);
 
-    TNode getParent$(TNode c);
+    Statement getParent(Statement child);
 
-    List<TNode> getParented$By(TNode p);
+    Statement getParentT(Statement child);
 
-    Boolean isParent(TNode p, TNode c);
+    List<Statement> getParentedByT(Statement parent);
 
-    Boolean isParent$(TNode p, TNode c);
+    Boolean isParent(Statement parent, Statement child);
+
+    Boolean isParentT(Statement parent, Statement child);
 }

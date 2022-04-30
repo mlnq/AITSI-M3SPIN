@@ -3,83 +3,84 @@ package aitsi.m3spin.pkb.impl;
 import aitsi.m3spin.commons.interfaces.Procedure;
 import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.commons.interfaces.Variable;
-import aitsi.m3spin.pkb.impl.helpers.ProcedureVariableRelation;
-import aitsi.m3spin.pkb.impl.helpers.StatementVariableRelation;
 import aitsi.m3spin.pkb.interfaces.Uses;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class UsesImpl implements Uses {
 
-    List<StatementVariableRelation> usesStatementList = new ArrayList<>();
-    List<ProcedureVariableRelation> usesProcedureList = new ArrayList<>();
+    HashMap<Statement, List<Variable>> varsUsedByStmt = new HashMap<>();
+    HashMap<Procedure, List<Variable>> varsUsedByProc = new HashMap<>();
 
     @Override
     public void setUses(Statement stmt, Variable var) {
-        usesStatementList.add(new StatementVariableRelation(stmt, var));
+        if(varsUsedByStmt.containsKey(stmt)) {
+            varsUsedByStmt.get(stmt).add(var);
+        }
+        else{
+            List<Variable> varList = new ArrayList<>();
+            varList.add(var);
+            varsUsedByStmt.put(stmt,varList);
+        }
     }
 
     @Override
     public void setUses(Procedure proc, Variable var) {
-        usesProcedureList.add(new ProcedureVariableRelation(proc, var));
-    }
-
-    @Override
-    public List<Variable> getUses(Statement stmt) {
-        List<Variable> variableList = new ArrayList<>();
-        for(StatementVariableRelation mel : usesStatementList){
-            if(mel.getStatement().getStmtLine() == stmt.getStmtLine())
-                variableList.add(mel.getVariable());
+        if(varsUsedByProc.containsKey(proc)) {
+            varsUsedByProc.get(proc).add(var);
         }
-        return variableList;
-    }
-
-    @Override
-    public List<Variable> getUses(Procedure proc) {
-        List<Variable> variableList = new ArrayList<>();
-        for(ProcedureVariableRelation mel : usesProcedureList){
-            if(mel.getProcedure().getAttribute() == proc.getAttribute())
-                variableList.add(mel.getVariable());
+        else{
+            List<Variable> varList = new ArrayList<>();
+            varList.add(var);
+            varsUsedByProc.put(proc,varList);
         }
-        return variableList;
     }
 
     @Override
-    public List<Statement> getUsesStmt(Variable var) {
+    public List<Variable> getVarsUsedByStmt(Statement stmt) {
+        return varsUsedByStmt.get(stmt);
+    }
+
+    @Override
+    public List<Variable> getVarsUsedByProc(Procedure proc) {
+        return varsUsedByProc.get(proc);
+    }
+
+    @Override
+    public List<Statement> getStmtsUsingVar(Variable var) {
         List<Statement> statementList = new ArrayList<>();
-        for(StatementVariableRelation mel : usesStatementList){
-            if(mel.getVariable().getId() == var.getId())
-                statementList.add(mel.getStatement());
+        for (Statement stmt : varsUsedByStmt.keySet()) {
+            if(varsUsedByStmt.get(stmt).contains(var))
+                statementList.add(stmt);
         }
         return statementList;
     }
 
     @Override
-    public List<Procedure> getUsesProc(Variable var) {
+    public List<Procedure> getProcsUsingVar(Variable var) {
         List<Procedure> procedureList = new ArrayList<>();
-        for(ProcedureVariableRelation mel : usesProcedureList){
-            if(mel.getVariable().getId() == var.getId())
-                procedureList.add(mel.getProcedure());
+        for (Procedure proc : varsUsedByProc.keySet()) {
+            if(varsUsedByProc.get(proc).contains(var))
+                procedureList.add(proc);
         }
         return procedureList;
     }
 
     @Override
     public Boolean isUsed(Variable var, Statement stat) {
-        for(StatementVariableRelation mel : usesStatementList){
-            if(mel.getVariable().getId() == var.getId() & mel.getStatement().getStmtLine() == stat.getStmtLine())
-                return true;
-        }
+
+        if(varsUsedByStmt.containsKey(stat))
+            return varsUsedByStmt.get(stat).contains(var);
         return false;
     }
 
     @Override
     public Boolean isUsed(Variable var, Procedure proc) {
-        for(ProcedureVariableRelation mel : usesProcedureList){
-            if(mel.getVariable().getId() == var.getId() & mel.getProcedure().getAttribute() == proc.getAttribute())
-                return true;
-        }
+
+        if(varsUsedByProc.containsKey(proc))
+            return varsUsedByProc.get(proc).contains(var);
         return false;
     }
 }

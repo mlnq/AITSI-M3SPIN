@@ -1,5 +1,6 @@
 package aitsi.m3spin.pkb.impl;
 
+import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.interfaces.Parent;
 
@@ -9,41 +10,51 @@ import java.util.List;
 public class ParentImpl implements Parent {
 
     @Override
-    public List<TNode> getParentedBy(TNode p) {
+    public Statement setParent(Statement parent, Statement child) {
+        child.setParent(parent);
+        parent.setChild(child);
+        return parent;
+    }
 
-        TNode n = p;
-        List<TNode> childList = new ArrayList<TNode>();
+    @Override
+    public List<Statement> getParentedBy(Statement parent) {
 
-        while(n.getChild() != null)
+        Statement currentStmt = parent;
+        List<Statement> childList = new ArrayList<Statement>();
+
+        while(currentStmt.getRightSibling() != null)
         {
-            n = n.getChild();
-            childList.add(n);
+            currentStmt = (Statement) currentStmt.getRightSibling();
+            childList.add(currentStmt);
         }
         return childList;
     }
 
     @Override
-    public TNode getParent(TNode c) {
-        return c.getParent();
+    public Statement getParent(Statement child) {
+        while(child.getParent() == null){
+            child = (Statement) child.getLeftSibling();
+        }
+        return (Statement) child.getParent();
     }
 
     @Override
-    public TNode getParent$(TNode c) {
+    public Statement getParentT(Statement child) {
         return null;
     }
 
     @Override
-    public List<TNode> getParented$By(TNode p) {
+    public List<Statement> getParentedByT(Statement parent) {
         return null;
     }
 
     @Override
-    public Boolean isParent(TNode p, TNode c) {
-        return c.getParent() == p;
+    public Boolean isParent(Statement parent, Statement c) {
+        return c.getParent() == parent;
     }
 
     @Override
-    public Boolean isParent$(TNode p, TNode c) {
+    public Boolean isParentT(Statement parent, Statement c) {
         return null;
     }
 }

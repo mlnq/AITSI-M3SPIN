@@ -11,13 +11,13 @@ public interface Uses {
 
     void setUses(Procedure proc, Variable var);
 
-    List<Variable> getUses(Statement stmt);
+    List<Variable> getVarsUsedByStmt(Statement stmt);
 
-    List<Variable> getUses(Procedure proc);
+    List<Variable> getVarsUsedByProc(Procedure proc);
 
-    List<Statement> getUsesStmt(Variable var);
+    List<Statement> getStmtsUsingVar(Variable var);
 
-    List<Procedure> getUsesProc(Variable var);
+    List<Procedure> getProcsUsingVar(Variable var);
 
     Boolean isUsed(Variable var, Statement stat);
 

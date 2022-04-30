@@ -3,83 +3,84 @@ package aitsi.m3spin.pkb.impl;
 import aitsi.m3spin.commons.interfaces.Procedure;
 import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.commons.interfaces.Variable;
-import aitsi.m3spin.pkb.impl.helpers.ProcedureVariableRelation;
-import aitsi.m3spin.pkb.impl.helpers.StatementVariableRelation;
 import aitsi.m3spin.pkb.interfaces.Modifies;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ModifiesImpl implements Modifies {
 
-    List<StatementVariableRelation> modifiedStatementList = new ArrayList<>();
-    List<ProcedureVariableRelation> modifiedProcList = new ArrayList<>();
+    HashMap<Statement, List<Variable>> varsModifiedByStmt = new HashMap<>();
+    HashMap<Procedure, List<Variable>> varsModifiedByProc = new HashMap<>();
 
     @Override
     public void setModifies(Statement stmt, Variable var) {
-        modifiedStatementList.add(new StatementVariableRelation(stmt, var));
+        if(varsModifiedByStmt.containsKey(stmt)) {
+            varsModifiedByStmt.get(stmt).add(var);
+        }
+        else{
+            List<Variable> varList = new ArrayList<>();
+            varList.add(var);
+            varsModifiedByStmt.put(stmt,varList);
+        }
     }
 
     @Override
     public void setModifies(Procedure proc, Variable var) {
-        modifiedProcList.add(new ProcedureVariableRelation(proc, var));
+        if(varsModifiedByProc.containsKey(proc)) {
+            varsModifiedByProc.get(proc).add(var);
+        }
+        else{
+            List<Variable> varList = new ArrayList<>();
+            varList.add(var);
+            varsModifiedByProc.put(proc,varList);
+        }
     }
 
     @Override
     public List<Variable> getModified(Statement stmt) {
-        List<Variable> variableList = new ArrayList<>();
-        for(StatementVariableRelation mel : modifiedStatementList){
-            if(mel.getStatement().getStmtLine() == stmt.getStmtLine())
-                variableList.add(mel.getVariable());
-        }
-        return variableList;
+        return varsModifiedByStmt.get(stmt);
     }
 
     @Override
     public List<Variable> getModified(Procedure proc) {
-        List<Variable> variableList = new ArrayList<>();
-        for(ProcedureVariableRelation mel : modifiedProcList){
-            if(mel.getProcedure().getAttribute() == proc.getAttribute())
-                variableList.add(mel.getVariable());
-        }
-        return variableList;
+        return varsModifiedByProc.get(proc);
     }
 
     @Override
-    public List<Statement> getModifiesSTMT(Variable var) {
+    public List<Statement> getModifiesStmt(Variable var) {
         List<Statement> statementList = new ArrayList<>();
-        for(StatementVariableRelation mel : modifiedStatementList){
-            if(mel.getVariable().getId() == var.getId())
-                statementList.add(mel.getStatement());
+        for (Statement stmt : varsModifiedByStmt.keySet()) {
+            if(varsModifiedByStmt.get(stmt).contains(var))
+                statementList.add(stmt);
         }
         return statementList;
     }
 
     @Override
-    public List<Procedure> getModifiesPROC(Variable var) {
+    public List<Procedure> getModifiesProc(Variable var) {
         List<Procedure> procedureList = new ArrayList<>();
-        for(ProcedureVariableRelation mel : modifiedProcList){
-            if(mel.getVariable().getId() == var.getId())
-                procedureList.add(mel.getProcedure());
+        for (Procedure proc : varsModifiedByProc.keySet()) {
+            if(varsModifiedByProc.get(proc).contains(var))
+                procedureList.add(proc);
         }
         return procedureList;
     }
 
     @Override
     public Boolean isModified(Variable var, Statement stat) {
-        for(StatementVariableRelation mel : modifiedStatementList){
-            if(mel.getVariable().getId() == var.getId() & mel.getStatement().getStmtLine() == stat.getStmtLine())
-                return true;
-        }
+
+        if(varsModifiedByStmt.containsKey(stat))
+            return varsModifiedByStmt.get(stat).contains(var);
         return false;
     }
 
     @Override
     public Boolean isModified(Variable var, Procedure proc) {
-        for(ProcedureVariableRelation mel : modifiedProcList){
-            if(mel.getVariable().getId() == var.getId() & mel.getProcedure().getAttribute() == proc.getAttribute())
-                return true;
-        }
+
+        if(varsModifiedByProc.containsKey(proc))
+            return varsModifiedByProc.get(proc).contains(var);
         return false;
     }
 }

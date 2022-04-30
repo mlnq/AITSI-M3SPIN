@@ -71,7 +71,4 @@ public interface Ast {
      * @return true if nodes are connected by link or false if not
      */
     Boolean isLinked(LinkType link, TNode node1, TNode node2) throws IllegalLinkTypeException;
-
-    TNode setParent(TNode p, TNode c);
-
 }
