@@ -1,34 +1,14 @@
 package aitsi.m3spin.parser;
 
+import lombok.*;
+
+@Getter
+@Setter
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@AllArgsConstructor
 public class CodePosition {
-    private int line;
-    private int column;
-
-    CodePosition() {
-        this.line = 0;
-        this.column = 0;
-    }
-
-    public CodePosition(int line, int column) {
-        this.line = line;
-        this.column = column;
-    }
-
-    public int getLine() {
-        return line;
-    }
-
-    private void setLine(int line) {
-        this.line = line;
-    }
-
-    public int getColumn() {
-        return column;
-    }
-
-    private void setColumn(int column) {
-        this.column = column;
-    }
+    private int line = 0;
+    private int column = 0;
 
     void moveColumnBy(int n) {
         this.setColumn(this.column + n);

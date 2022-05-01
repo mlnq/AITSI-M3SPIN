@@ -3,9 +3,11 @@ package aitsi.m3spin.parser;
 import aitsi.m3spin.parser.exception.IllegalCharacterException;
 import aitsi.m3spin.parser.exception.MissingCharacterException;
 import aitsi.m3spin.parser.exception.SimpleParserException;
+import lombok.Getter;
 
 import java.util.List;
 
+@Getter
 public class CodeScanner {
     private CodePosition currentPosition;
     private List<String> codeLines;
@@ -13,14 +15,6 @@ public class CodeScanner {
     CodeScanner(List<String> codeLines) {
         this.codeLines = codeLines;
         this.currentPosition = new CodePosition();
-    }
-
-    CodePosition getCurrentPosition() {
-        return currentPosition;
-    }
-
-    public List<String> getCodeLines() {
-        return codeLines;
     }
 
     boolean hasCurrentChar() {

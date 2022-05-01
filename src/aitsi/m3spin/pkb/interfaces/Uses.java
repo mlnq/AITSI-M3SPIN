@@ -1,4 +1,4 @@
-package aitsi.m3spin.pkb.Interfaces;
+package aitsi.m3spin.pkb.interfaces;
 
 import aitsi.m3spin.commons.interfaces.Procedure;
 import aitsi.m3spin.commons.interfaces.Statement;
@@ -15,11 +15,11 @@ public interface Uses {
 
     List<Variable> getUses(Procedure proc);
 
-    List<Statement> getUsesSTMT(Variable var);
+    List<Statement> getUsesStmt(Variable var);
 
-    List<Procedure> getUsesPROC(Variable var);
+    List<Procedure> getUsesProc(Variable var);
 
     Boolean isUsed(Variable var, Statement stat);
 
-    Boolean isUseded(Variable var, Procedure proc);
+    Boolean isUsed(Variable var, Procedure proc);
 }
