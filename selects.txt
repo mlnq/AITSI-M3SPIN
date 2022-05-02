@@ -1,6 +1,7 @@
 stmt s1, s2; assign a; while w;
 Select s1 such that Follows (s1, s2)
 Select a such that Follows* (20, a)
+Select s1 such that Follows (s1, s2) with s2.stmt#= 5
 Select a such that Modifies (a, “x”)
 Select s1 such that Follows (s1, s2) with s2.stmt#= 5
 Select a such that Follows* (20, a) with a.stmt#= 10

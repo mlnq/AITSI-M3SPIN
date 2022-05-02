@@ -34,20 +34,75 @@ public class QueryPreprocessor {
     private void parseQueries() throws SimpleParserException, NameNotDeclaredException, UnknownRelationTypeException {
         while (PqlEntityEnum.SELECT.getPqlEntityName().equals(codeScanner.getCurrentString(6))) {
             this.queryList.add(parseQuery());
+            codeScanner.incrementPosition();
+//            codeScanner.skipLine();
         }
     }
 
     private Query parseQuery() throws SimpleParserException, NameNotDeclaredException, UnknownRelationTypeException {
         codeScanner.skipWhitespaces();
-        return new Query(parseSelectedDeclaration(), parseSuchThatList(), parseWithList());
+        Query query = new Query(parseSelectedDeclaration(), parseSuchThatList(), parseWithList());
+        return query ;
+    }
+
+    private List<WithClause> parseWithList() throws SimpleParserException, NameNotDeclaredException, UnknownRelationTypeException {
+
+        int line = codeScanner.getCurrentPosition().getLine();
+        int column = codeScanner.getCurrentPosition().getColumn();
+
+
+        codeScanner.getCurrentPosition();
+        codeScanner.skipWhitespaces();
+        //Select s1 such that Follows (s1, s2) with s2.stmt#= 5
+        if (PqlEntityEnum.WITH.getPqlEntityName().equals(codeScanner.getCurrentString(4))) {
+            codeScanner.skipWhitespaces();
+            Declaration withDeclaration = parseSelectedDeclaration();
+            if (this.codeScanner.hasCurrentChar('.'))
+                parseChar('.', true);
+
+            String parsedAttributeName = parseAttributeName();
+
+            Optional<AttributeNameEnum> attributeNameEnumOptional = Stream.of(AttributeNameEnum.values())
+                    .filter(re -> re.getAttrName().equals(parsedAttributeName))
+                    .findFirst();
+            AttributeNameEnum attributeNameEnum;
+
+            if (attributeNameEnumOptional.isPresent()) {
+                attributeNameEnum = attributeNameEnumOptional.get();
+            } else {
+                throw new UnknownRelationTypeException(parsedAttributeName);
+            }
+            codeScanner.skipWhitespaces();
+            if (this.codeScanner.hasCurrentChar('=')) {
+                parseChar('=', false);
+                codeScanner.skipWhitespaces();
+            }
+                RelationArgument withArgument = parseRelationArgument();
+
+            return Collections.singletonList(new WithClause(withDeclaration, attributeNameEnum, withArgument));
+        } else {
+            if(codeScanner.getCurrentPosition().getLine() != line){
+                codeScanner.getCurrentPosition().setLine(line);
+                codeScanner.getCurrentPosition().setColumn(column);
+            }
+            return Collections.emptyList();
+        }
     }
 
     private List<SuchThat> parseSuchThatList() throws SimpleParserException, UnknownRelationTypeException {
-        if (PqlEntityEnum.SUCH_THAT.getPqlEntityName()
-                .equals(codeScanner.getCurrentString(
-                        PqlEntityEnum.SUCH_THAT.getPqlEntityName().length())
-                )) {
+        String parsedName = parseName();
+        codeScanner.skipWhitespaces();
+        String parsedName2 = parseName();
+        StringBuilder such_that = new StringBuilder(parsedName);
+        such_that.append(" ");
+        such_that.append(parsedName2);
+        if (PqlEntityEnum.SUCH_THAT.getPqlEntityName().equals(new String(such_that))) {
+//        if (PqlEntityEnum.SUCH_THAT.getPqlEntityName()
+//                .equals(codeScanner.getCurrentString(
+//                        PqlEntityEnum.SUCH_THAT.getPqlEntityName().length())
+//                )) {
 
+            codeScanner.skipWhitespaces();
             String parsedRelationName = parseRelationName();
 
             Optional<RelationEnum> relationEnumOptional = Stream.of(RelationEnum.values())
@@ -60,24 +115,45 @@ public class QueryPreprocessor {
             } else {
                 throw new UnknownRelationTypeException(parsedRelationName);
             }
-
+            codeScanner.skipWhitespaces();
             parseChar('(');
             RelationArgument firstRelationArgument = parseRelationArgument();
             parseChar(',');
+            codeScanner.skipWhitespaces();
             RelationArgument secondRelationArgument = parseRelationArgument();
-            parseChar(')');
+            parseChar(')', false);
+            codeScanner.getCurrentPosition();
 
             return Collections.singletonList(new SuchThat(relationEnum, firstRelationArgument, secondRelationArgument));
         } else {
             return Collections.emptyList();
         }
     }
+    private String parseAttributeName() throws SimpleParserException {
+        StringBuilder name = new StringBuilder(String.valueOf(parseLetter()));
+
+        while (codeScanner.hasCurrentChar()) {
+            char currentChar = codeScanner.getCurrentChar();
+            if (Character.isLetter(currentChar)) {
+                name.append(parseLetter());
+            } else if (Character.isDigit(currentChar)) {
+                name.append(parseDigit());
+            } else if (currentChar == '#') {
+                name.append('#');
+            } else {
+                break;
+            }
+        }
+        return String.valueOf(name);
+    }
 
     private RelationArgument parseRelationArgument() throws SimpleParserException {
         if(codeScanner.hasCurrentChar('"')){
             codeScanner.incrementPosition();
-            return new SimpleEntityName(parseName());
-            //parseChar('"');
+            String simpleEntityName = parseName();
+            parseChar(codeScanner.getCurrentChar());
+            codeScanner.getCurrentPosition();
+            return new SimpleEntityName(simpleEntityName);
         } else if(Character.isLetter(codeScanner.getCurrentChar())) {
             return new Declaration(parseName());
         } else if (Character.isDigit(codeScanner.getCurrentChar())){
@@ -117,16 +193,13 @@ public class QueryPreprocessor {
         return String.valueOf(name);
     }
 
-    private List<WithClause> parseWithList() {
-        return null;
-    }
-
     private Declaration parseSelectedDeclaration() throws SimpleParserException, NameNotDeclaredException {
         String parsedName = parseName();
         Optional<Declaration> declarationOptional = declarationList.stream()
                 .filter(d -> d.getName().equals(parsedName))
                 .findFirst();
         if (declarationOptional.isPresent()) {
+            codeScanner.incrementPosition();
             return declarationOptional.get();
         } else {
             throw new NameNotDeclaredException(parsedName);

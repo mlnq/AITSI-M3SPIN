@@ -68,6 +68,10 @@ public boolean hasCurrentChar(char c) throws MissingCharacterException {
             skipWhitespaces();
         }
     }
+    public void skipLine() {
+        currentPosition.setLine(currentPosition.getLine() + 1);
+        currentPosition.setColumn(0);
+    }
 
     public char getCurrentDigit() throws SimpleParserException {
         char currentChar = this.getCurrentChar();

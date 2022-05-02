@@ -7,6 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum PqlEntityEnum {
     SELECT("Select"),
+    SUCH("such"),
     SUCH_THAT("such that"),
     WITH("with");
 
