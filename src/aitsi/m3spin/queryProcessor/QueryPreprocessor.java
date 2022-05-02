@@ -25,13 +25,13 @@ public class QueryPreprocessor {
     }
 
     //TODO zmienić exception
-    public void parse() throws SimpleParserException, NameNotDeclaredException {
+    public void parse() throws SimpleParserException, NameNotDeclaredException, UnknownRelationTypeException {
         parseDeclarations();
         parseQueries();
     }
 
     //todo ogarnac wyjatki
-    private void parseQueries() throws SimpleParserException, NameNotDeclaredException {
+    private void parseQueries() throws SimpleParserException, NameNotDeclaredException, UnknownRelationTypeException {
         while (PqlEntityEnum.SELECT.getPqlEntityName().equals(codeScanner.getCurrentString(6))) {
             this.queryList.add(parseQuery());
         }
@@ -77,12 +77,13 @@ public class QueryPreprocessor {
         if(codeScanner.hasCurrentChar('"')){
             codeScanner.incrementPosition();
             return new SimpleEntityName(parseName());
-            parseChar('"');
+            //parseChar('"');
         } else if(Character.isLetter(codeScanner.getCurrentChar())) {
             return new Declaration(parseName());
         } else if (Character.isDigit(codeScanner.getCurrentChar())){
             return new Constant(parseConst());
         }
+        else return null;
     }
 
     private int parseConst() throws SimpleParserException {
@@ -163,26 +164,27 @@ public class QueryPreprocessor {
 
 
     private void parseDeclarations() throws SimpleParserException {
-        String firstWord = parseName();
-        codeScanner.skipWhitespaces();
+        while (!this.codeScanner.hasCurrentChar('S')) {
+            codeScanner.skipWhitespaces();
+            String firstWord = parseName();
+            codeScanner.skipWhitespaces();
 
-//       Stream.of(EntityType.values())
-//               .anyMatch(value => {})
-
-        if (EntityType.ASSIGNMENT.getETName().equals(firstWord)) {
-            //tworzenie listy obiektów 1. zliczyc ilosć, do średnika ;
-            parseDeclaration(EntityType.ASSIGNMENT);
-        } else if (EntityType.WHILE.getETName().equals(firstWord)) {
-            parseDeclaration(EntityType.WHILE);
-        } else if (EntityType.STATEMENT.getETName().equals(firstWord)) {
-            parseDeclaration(EntityType.STATEMENT);
-        } else if (EntityType.VARIABLE.getETName().equals(firstWord)) {
-            parseDeclaration(EntityType.VARIABLE);
-        } else if (EntityType.CONSTANT.getETName().equals(firstWord)) {
-            parseDeclaration(EntityType.CONSTANT);
-        } else if (EntityType.PROG_LINE.getETName().equals(firstWord)) {
-            parseDeclaration(EntityType.PROG_LINE);
-        }
+    //       Stream.of(EntityType.values())
+    //               .anyMatch(value => {})
+            if (EntityType.ASSIGNMENT.getETName().equals(firstWord)) {
+                //tworzenie listy obiektów 1. zliczyc ilosć, do średnika ;
+                parseDeclaration(EntityType.ASSIGNMENT);
+            } else if (EntityType.WHILE.getETName().equals(firstWord)) {
+                parseDeclaration(EntityType.WHILE);
+            } else if (EntityType.STATEMENT.getETName().equals(firstWord)) {
+                parseDeclaration(EntityType.STATEMENT);
+            } else if (EntityType.VARIABLE.getETName().equals(firstWord)) {
+                parseDeclaration(EntityType.VARIABLE);
+            } else if (EntityType.CONSTANT.getETName().equals(firstWord)) {
+                parseDeclaration(EntityType.CONSTANT);
+            } else if (EntityType.PROG_LINE.getETName().equals(firstWord)) {
+                parseDeclaration(EntityType.PROG_LINE);
+            }}
     }
 
     private void parseChar(char c, boolean incFlag) throws MissingCharacterException { //todo do CodeScannera stąd i z parsera
@@ -210,6 +212,7 @@ public class QueryPreprocessor {
                 parseChar(',', true);
             codeScanner.skipWhitespaces();
         }
+        codeScanner.incrementPosition();
     }
 
 

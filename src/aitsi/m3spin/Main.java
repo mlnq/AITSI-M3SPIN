@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) throws SimpleParserException {//todo obsłużyć ten wyjątek
+    public static void main(String[] args) throws SimpleParserException, NameNotDeclaredException, UnknownRelationTypeException {//todo obsłużyć ten wyjątek
 
         System.out.println("Welcome to our AITSI PROJECT.\nChoose number and then accept using ENTER"+"\u001B[34m"+"\n"+ "[1] Parser\n"+"\u001B[35m"+"[2] QueryProcessor "+"\u001B[0m");
         System.out.println("Waiting for input");
