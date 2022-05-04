@@ -31,7 +31,7 @@ public class FollowsImpl implements Follows {
     }
 
     @Override
-    public List<Statement> getFollowed$By(Statement statement) {
+    public List<Statement> getFollowedByT(Statement statement) {
         return null;
     }
 

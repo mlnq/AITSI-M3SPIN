@@ -19,13 +19,13 @@ public class ParentImpl implements Parent {
     @Override
     public List<Statement> getParentedBy(Statement parent) {
 
-        Statement currentStmt = parent;
+        Statement currentStmt = (Statement) parent.getChild();
         List<Statement> childList = new ArrayList<Statement>();
 
         while(currentStmt.getRightSibling() != null)
         {
-            currentStmt = (Statement) currentStmt.getRightSibling();
             childList.add(currentStmt);
+            currentStmt = (Statement) currentStmt.getRightSibling();
         }
         return childList;
     }
@@ -39,7 +39,7 @@ public class ParentImpl implements Parent {
     }
 
     @Override
-    public Statement getParentT(Statement child) {
+    public List<Statement> getParentT(Statement child) {
         return null;
     }
 
@@ -50,7 +50,7 @@ public class ParentImpl implements Parent {
 
     @Override
     public Boolean isParent(Statement parent, Statement c) {
-        return c.getParent() == parent;
+        return c.getParent().equals(parent);
     }
 
     @Override

@@ -16,22 +16,6 @@ public class AstImpl implements Ast {
     private int procId = 0;
     private int varId = 0;
     private TNode root;
-    private Parent parentMethods = new ParentImpl();
-    private Follows followsMethods = new FollowsImpl();
-    private Modifies modifiesMethods = new ModifiesImpl();
-    private Uses usesMethods = new UsesImpl();
-
-    @Override
-    public Parent getParentMethods(){return parentMethods;}
-
-    @Override
-    public Follows getFollowsMethods(){return followsMethods;}
-
-    @Override
-    public Modifies getModifiesMethods(){return modifiesMethods;}
-
-    @Override
-    public Uses getUsesMethods(){return usesMethods;}
 
     @Override
     public TNode createTNode(EntityType et) throws IllegalNodeTypeException {

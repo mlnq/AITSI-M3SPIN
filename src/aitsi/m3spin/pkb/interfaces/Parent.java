@@ -13,7 +13,7 @@ public interface Parent {
 
     Statement getParent(Statement child);
 
-    Statement getParentT(Statement child);
+    List<Statement> getParentT(Statement child);
 
     List<Statement> getParentedByT(Statement parent);
 

@@ -14,7 +14,7 @@ public interface Follows {
 
     Statement getFollowedBy(Statement statement);
 
-    List<Statement> getFollowed$By(Statement statement);
+    List<Statement> getFollowedByT(Statement statement);
 
     Boolean isFollowed(Statement statement1, Statement statement2);
 

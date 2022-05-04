@@ -14,10 +14,6 @@ public interface Ast {
     TNode createTNode(EntityType et) throws IllegalNodeTypeException;
 
     TNode setRoot(TNode node);
-    Parent getParentMethods();
-    Follows getFollowsMethods();
-    Modifies getModifiesMethods();
-    Uses getUsesMethods();
     void setAttr(TNode n, String attr);
     TNode setChild(TNode parent, TNode child);
 
