@@ -1,14 +1,33 @@
 package aitsi.m3spin.spafrontend.parser;
 
-import aitsi.m3spin.commons.enums.EntityType;
-import aitsi.m3spin.commons.impl.*;
-import aitsi.m3spin.commons.interfaces.*;
-import aitsi.m3spin.pkb.impl.Pkb;
-import aitsi.m3spin.spafrontend.parser.exception.*;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import aitsi.m3spin.commons.enums.EntityType;
+import aitsi.m3spin.commons.impl.AssignmentImpl;
+import aitsi.m3spin.commons.impl.ConstantImpl;
+import aitsi.m3spin.commons.impl.ExpressionImpl;
+import aitsi.m3spin.commons.impl.ProcedureImpl;
+import aitsi.m3spin.commons.impl.StatementListImpl;
+import aitsi.m3spin.commons.impl.VariableImpl;
+import aitsi.m3spin.commons.impl.WhileImpl;
+import aitsi.m3spin.commons.interfaces.Assignment;
+import aitsi.m3spin.commons.interfaces.Call;
+import aitsi.m3spin.commons.interfaces.Expression;
+import aitsi.m3spin.commons.interfaces.Factor;
+import aitsi.m3spin.commons.interfaces.If;
+import aitsi.m3spin.commons.interfaces.Procedure;
+import aitsi.m3spin.commons.interfaces.Statement;
+import aitsi.m3spin.commons.interfaces.StatementList;
+import aitsi.m3spin.commons.interfaces.Variable;
+import aitsi.m3spin.commons.interfaces.While;
+import aitsi.m3spin.pkb.impl.Pkb;
+import aitsi.m3spin.spafrontend.parser.exception.MissingCharacterException;
+import aitsi.m3spin.spafrontend.parser.exception.MissingCodeEntityException;
+import aitsi.m3spin.spafrontend.parser.exception.MissingSimpleKeywordException;
+import aitsi.m3spin.spafrontend.parser.exception.SimpleParserException;
+import aitsi.m3spin.spafrontend.parser.exception.UnrecognizedStatementTypeExcepton;
 
 public class Parser {
 
@@ -20,7 +39,7 @@ public class Parser {
     }
 
     public List<Procedure> parse() throws SimpleParserException {
-        System.out.println("Parsing SIMPLE code...");// todo dodać logger, żeby nie używać soutów - task na trello dodać
+        System.out.println("Parsing SIMPLE code...");
         Procedure rootProc = parseProcedure();
         System.out.println("Parsing completed.");
         return Collections.singletonList(rootProc);
@@ -39,7 +58,7 @@ public class Parser {
         Procedure rootProc = procedures.get(0);
         rootProc = (Procedure) pkb.getAst().setRoot(rootProc);
         fillPkb(rootProc);
-        System.out.println("Filling PKB with completed.");
+        System.out.println("Filling PKB with data completed.");
     }
 
     private void fillPkb(Procedure procedure) throws UnrecognizedStatementTypeExcepton {
@@ -55,14 +74,14 @@ public class Parser {
     }
 
     private RelationshipsInfo fillPkb(StatementList stmtList) throws UnrecognizedStatementTypeExcepton {
-        Statement firstStmt = (Statement) pkb.getAst().setChild(stmtList, stmtList.getStmtList().get(0));
+        Statement firstStmt = (Statement) pkb.getAst().setChild(stmtList, stmtList.getStatements().get(0));
         RelationshipsInfo stmtListRelationshipsInfo = fillPkb(firstStmt);
 
         Statement currentStmt = firstStmt;
 
-        for (int i = 1; i < stmtList.getStmtList().size(); i++) {
-            pkb.getFollowsInterface().setFollows(currentStmt, stmtList.getStmtList().get(i));
-            currentStmt = (Statement) pkb.getAst().setSibling(currentStmt, stmtList.getStmtList().get(i));
+        for (int i = 1; i < stmtList.getStatements().size(); i++) {
+            pkb.getFollowsInterface().setFollows(currentStmt, stmtList.getStatements().get(i));
+            currentStmt = (Statement) pkb.getAst().setSibling(currentStmt, stmtList.getStatements().get(i));
             stmtListRelationshipsInfo = RelationshipsInfo.merge(stmtListRelationshipsInfo, fillPkb(currentStmt));
         }
 
@@ -96,7 +115,7 @@ public class Parser {
         relationshipsInfo.getUsedVariables()
                 .forEach(usedVar -> pkb.getUsesInterface().setUses(whileStmt, usedVar));
 
-        whileStmt.getStmtList().getStmtList()
+        whileStmt.getStmtList().getStatements()
                 .forEach(statement -> pkb.getParentInterface().setParent(whileStmt, statement));
 
         return relationshipsInfo;
@@ -165,11 +184,11 @@ public class Parser {
         parseChar('}');
     }
 
-    private void parseChar(char c) throws MissingCharacterException {//todo do codeScannera
+    private void parseChar(char c) throws MissingCharacterException {//todo do codeScannera (zadanie #11)
         parseChar(c, true);
     }
 
-    private void parseChar(char c, boolean incFlag) throws MissingCharacterException {//todo do codeScannera
+    private void parseChar(char c, boolean incFlag) throws MissingCharacterException {//todo do codeScannera (zadanie #11)
         this.codeScanner.skipWhitespaces();
         if (this.codeScanner.hasCurrentChar(c)) {
             if (incFlag) {
@@ -180,7 +199,7 @@ public class Parser {
         }
     }
 
-    private String parseName() throws SimpleParserException {//todo do codeScannera
+    private String parseName() throws SimpleParserException {//todo do codeScannera (zadanie #11)
         StringBuilder name = new StringBuilder(String.valueOf(parseLetter()));
         while (codeScanner.hasCurrentChar()) {
             char currentChar = codeScanner.getCurrentChar();
@@ -195,19 +214,19 @@ public class Parser {
         return String.valueOf(name);
     }
 
-    private char parseDigit() throws SimpleParserException {//todo do codeScannera
+    private char parseDigit() throws SimpleParserException {//todo do codeScannera (zadanie #11)
         char digit = this.codeScanner.getCurrentDigit();
         this.codeScanner.incrementPosition();
         return digit;
     }
 
-    private char parseLetter() throws SimpleParserException {//todo do codeScannera
+    private char parseLetter() throws SimpleParserException {//todo do codeScannera (zadanie #11)
         char letter = this.codeScanner.getCurrentLetter();
         this.codeScanner.incrementPosition();
         return letter;
     }
 
-    private void parseKeyword(EntityType keyword) throws MissingCodeEntityException {//todo do codescannera, ale jako argument string
+    private void parseKeyword(EntityType keyword) throws MissingCodeEntityException {//todo do codescannera, ale jako argument string (zadanie #11)
         String keywordStr = codeScanner.getCurrentString(keyword.getETName().length());
         if (!keyword.getETName().equals(keywordStr)) {
             throw new MissingSimpleKeywordException(keyword, codeScanner.getCurrentPosition());

@@ -3,7 +3,11 @@ package aitsi.m3spin.commons.impl;
 import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.interfaces.Expression;
 import aitsi.m3spin.commons.interfaces.Factor;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -11,7 +15,6 @@ import lombok.*;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class ExpressionImpl extends TNodeImpl implements Expression {
-    private static final EntityType TYPE = EntityType.EXPRESSION;
 
     private Factor factor;
     private Expression expression;
@@ -23,6 +26,6 @@ public class ExpressionImpl extends TNodeImpl implements Expression {
 
     @Override
     public EntityType getType() {
-        return TYPE;
+        return EntityType.EXPRESSION;
     }
 }

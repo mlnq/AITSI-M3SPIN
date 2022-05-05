@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Getter
 public class ProcedureImpl extends TNodeImpl implements Procedure {
-    private static final EntityType TYPE = EntityType.PROCEDURE;
 
     private StatementList statementList;
     private int id;
@@ -37,6 +36,6 @@ public class ProcedureImpl extends TNodeImpl implements Procedure {
 
     @Override
     public EntityType getType() {
-        return TYPE;
+        return EntityType.PROCEDURE;
     }
 }

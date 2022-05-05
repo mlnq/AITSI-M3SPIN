@@ -1,16 +1,16 @@
 package aitsi.m3spin;
 
-import aitsi.m3spin.spafrontend.parser.Parser;
-import aitsi.m3spin.spafrontend.parser.exception.SimpleParserException;
-import aitsi.m3spin.ui.SimpleReader;
-
 import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Scanner;
 
+import aitsi.m3spin.spafrontend.parser.Parser;
+import aitsi.m3spin.spafrontend.parser.exception.SimpleParserException;
+import aitsi.m3spin.ui.SimpleReader;
+
 public class Main {
 
-    public static void main(String[] args) throws SimpleParserException {//todo obsłużyć ten wyjątek
+    public static void main(String[] args) throws SimpleParserException {
 
         System.out.println("Waiting for input");
         char uiOption = readUiOption();

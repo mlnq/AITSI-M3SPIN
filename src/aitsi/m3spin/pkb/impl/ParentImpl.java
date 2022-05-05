@@ -1,12 +1,13 @@
 package aitsi.m3spin.pkb.impl;
 
+import java.util.List;
+
 import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.interfaces.Parent;
 
-import java.util.List;
-
 public class ParentImpl implements Parent {
+
     @Override
     public void setParent(Statement parent, Statement child) {
 
@@ -18,7 +19,7 @@ public class ParentImpl implements Parent {
     }
 
     @Override
-    public TNode getParentT(TNode child) {
+    public List<TNode> getParentT(TNode child) {
         return null;
     }
 
@@ -28,7 +29,7 @@ public class ParentImpl implements Parent {
     }
 
     @Override
-    public List<TNode> getParentedTBy(TNode parent) {
+    public List<TNode> getParentedByT(TNode parent) {
         return null;
     }
 
