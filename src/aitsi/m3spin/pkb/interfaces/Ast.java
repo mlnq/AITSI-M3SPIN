@@ -5,9 +5,6 @@ import aitsi.m3spin.commons.enums.LinkType;
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.exception.IllegalLinkTypeException;
 import aitsi.m3spin.pkb.exception.IllegalNodeTypeException;
-import aitsi.m3spin.pkb.impl.ParentImpl;
-
-import java.util.List;
 
 public interface Ast {
     //: Creates a new node of type ‘et’ and returns a reference to it

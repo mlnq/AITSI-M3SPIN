@@ -1,10 +1,7 @@
 package aitsi.m3spin.pkb.impl;
 
 import aitsi.m3spin.commons.interfaces.Statement;
-import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.interfaces.Follows;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class FollowsImpl implements Follows {
@@ -36,12 +33,12 @@ public class FollowsImpl implements Follows {
     }
 
     @Override
-    public Boolean isFollowed(Statement statement1, Statement statement2) {
-        return statement1.getRightSibling() == statement2;
+    public boolean isFollowed(Statement statement1, Statement statement2) {
+        return statement1.getRightSibling().equals(statement2);
     }
 
     @Override
-    public Boolean isFollowedT(Statement statement1, Statement statement2) {
-        return null;
+    public boolean isFollowedT(Statement statement1, Statement statement2) {
+        return false;
     }
 }

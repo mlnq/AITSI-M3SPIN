@@ -4,15 +4,15 @@ import aitsi.m3spin.commons.interfaces.Procedure;
 import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.commons.interfaces.Variable;
 import aitsi.m3spin.pkb.interfaces.Uses;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 public class UsesImpl implements Uses {
 
-    HashMap<Statement, List<Variable>> varsUsedByStmt = new HashMap<>();
-    HashMap<Procedure, List<Variable>> varsUsedByProc = new HashMap<>();
+    HashMap<Statement, HashSet<Variable>> varsUsedByStmt = new HashMap<>();
+    HashMap<Procedure, HashSet<Variable>> varsUsedByProc = new HashMap<>();
 
     @Override
     public void setUses(Statement stmt, Variable var) {
@@ -20,7 +20,7 @@ public class UsesImpl implements Uses {
             varsUsedByStmt.get(stmt).add(var);
         }
         else{
-            List<Variable> varList = new ArrayList<>();
+            HashSet<Variable> varList = new HashSet<>();
             varList.add(var);
             varsUsedByStmt.put(stmt,varList);
         }
@@ -32,7 +32,7 @@ public class UsesImpl implements Uses {
             varsUsedByProc.get(proc).add(var);
         }
         else{
-            List<Variable> varList = new ArrayList<>();
+            HashSet<Variable> varList = new HashSet<>();
             varList.add(var);
             varsUsedByProc.put(proc,varList);
         }
@@ -40,12 +40,12 @@ public class UsesImpl implements Uses {
 
     @Override
     public List<Variable> getVarsUsedByStmt(Statement stmt) {
-        return varsUsedByStmt.get(stmt);
+        return (List<Variable>) varsUsedByStmt.get(stmt);
     }
 
     @Override
     public List<Variable> getVarsUsedByProc(Procedure proc) {
-        return varsUsedByProc.get(proc);
+        return (List<Variable>) varsUsedByProc.get(proc);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class UsesImpl implements Uses {
     }
 
     @Override
-    public Boolean isUsed(Variable var, Statement stat) {
+    public boolean isUsed(Variable var, Statement stat) {
 
         if(varsUsedByStmt.containsKey(stat))
             return varsUsedByStmt.get(stat).contains(var);
@@ -77,7 +77,7 @@ public class UsesImpl implements Uses {
     }
 
     @Override
-    public Boolean isUsed(Variable var, Procedure proc) {
+    public boolean isUsed(Variable var, Procedure proc) {
 
         if(varsUsedByProc.containsKey(proc))
             return varsUsedByProc.get(proc).contains(var);

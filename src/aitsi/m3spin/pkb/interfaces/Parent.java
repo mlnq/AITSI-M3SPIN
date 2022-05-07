@@ -1,8 +1,6 @@
 package aitsi.m3spin.pkb.interfaces;
 
 import aitsi.m3spin.commons.interfaces.Statement;
-import aitsi.m3spin.commons.interfaces.TNode;
-
 import java.util.List;
 
 public interface Parent {
@@ -17,7 +15,7 @@ public interface Parent {
 
     List<Statement> getParentedByT(Statement parent);
 
-    Boolean isParent(Statement parent, Statement child);
+    boolean isParent(Statement parent, Statement child);
 
-    Boolean isParentT(Statement parent, Statement child);
+    boolean isParentT(Statement parent, Statement child);
 }

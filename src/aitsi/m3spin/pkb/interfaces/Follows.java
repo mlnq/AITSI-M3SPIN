@@ -1,7 +1,6 @@
 package aitsi.m3spin.pkb.interfaces;
 
 import aitsi.m3spin.commons.interfaces.Statement;
-import aitsi.m3spin.commons.interfaces.TNode;
 
 import java.util.List;
 
@@ -16,7 +15,7 @@ public interface Follows {
 
     List<Statement> getFollowedByT(Statement statement);
 
-    Boolean isFollowed(Statement statement1, Statement statement2);
+    boolean isFollowed(Statement statement1, Statement statement2);
 
-    Boolean isFollowedT(Statement statement1, Statement statement2);
+    boolean isFollowedT(Statement statement1, Statement statement2);
 }

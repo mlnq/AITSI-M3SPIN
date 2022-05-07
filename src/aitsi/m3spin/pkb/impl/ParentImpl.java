@@ -1,9 +1,7 @@
 package aitsi.m3spin.pkb.impl;
 
 import aitsi.m3spin.commons.interfaces.Statement;
-import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.interfaces.Parent;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,12 +47,12 @@ public class ParentImpl implements Parent {
     }
 
     @Override
-    public Boolean isParent(Statement parent, Statement c) {
+    public boolean isParent(Statement parent, Statement c) {
         return c.getParent().equals(parent);
     }
 
     @Override
-    public Boolean isParentT(Statement parent, Statement c) {
-        return null;
+    public boolean isParentT(Statement parent, Statement c) {
+        return false;
     }
 }

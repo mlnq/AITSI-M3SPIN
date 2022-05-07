@@ -4,15 +4,15 @@ import aitsi.m3spin.commons.interfaces.Procedure;
 import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.commons.interfaces.Variable;
 import aitsi.m3spin.pkb.interfaces.Modifies;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 public class ModifiesImpl implements Modifies {
 
-    HashMap<Statement, List<Variable>> varsModifiedByStmt = new HashMap<>();
-    HashMap<Procedure, List<Variable>> varsModifiedByProc = new HashMap<>();
+    HashMap<Statement, HashSet<Variable>> varsModifiedByStmt = new HashMap<>();
+    HashMap<Procedure, HashSet<Variable>> varsModifiedByProc = new HashMap<>();
 
     @Override
     public void setModifies(Statement stmt, Variable var) {
@@ -20,7 +20,7 @@ public class ModifiesImpl implements Modifies {
             varsModifiedByStmt.get(stmt).add(var);
         }
         else{
-            List<Variable> varList = new ArrayList<>();
+            HashSet<Variable> varList = new HashSet<>();
             varList.add(var);
             varsModifiedByStmt.put(stmt,varList);
         }
@@ -32,7 +32,7 @@ public class ModifiesImpl implements Modifies {
             varsModifiedByProc.get(proc).add(var);
         }
         else{
-            List<Variable> varList = new ArrayList<>();
+            HashSet<Variable> varList = new HashSet<>();
             varList.add(var);
             varsModifiedByProc.put(proc,varList);
         }
@@ -40,12 +40,12 @@ public class ModifiesImpl implements Modifies {
 
     @Override
     public List<Variable> getModified(Statement stmt) {
-        return varsModifiedByStmt.get(stmt);
+        return (List<Variable>) varsModifiedByStmt.get(stmt);
     }
 
     @Override
     public List<Variable> getModified(Procedure proc) {
-        return varsModifiedByProc.get(proc);
+        return (List<Variable>) varsModifiedByProc.get(proc);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class ModifiesImpl implements Modifies {
     }
 
     @Override
-    public Boolean isModified(Variable var, Statement stat) {
+    public boolean isModified(Variable var, Statement stat) {
 
         if(varsModifiedByStmt.containsKey(stat))
             return varsModifiedByStmt.get(stat).contains(var);
@@ -77,7 +77,7 @@ public class ModifiesImpl implements Modifies {
     }
 
     @Override
-    public Boolean isModified(Variable var, Procedure proc) {
+    public boolean isModified(Variable var, Procedure proc) {
 
         if(varsModifiedByProc.containsKey(proc))
             return varsModifiedByProc.get(proc).contains(var);

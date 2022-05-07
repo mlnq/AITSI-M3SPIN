@@ -3,7 +3,6 @@ package aitsi.m3spin.pkb.interfaces;
 import aitsi.m3spin.commons.interfaces.Procedure;
 import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.commons.interfaces.Variable;
-
 import java.util.List;
 
 public interface Modifies {
@@ -19,7 +18,7 @@ public interface Modifies {
 
     List<Procedure> getModifiesProc(Variable var);
 
-    Boolean isModified(Variable var, Statement stat);
+    boolean isModified(Variable var, Statement stat);
 
-    Boolean isModified(Variable var, Procedure proc);
+    boolean isModified(Variable var, Procedure proc);
 }

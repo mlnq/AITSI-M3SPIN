@@ -9,5 +9,5 @@ public interface ProcTable {
     int getProcIndex(String procName);
 
     int getSize();
-    Boolean isIn (String procName);
+    boolean isIn (String procName);
 }

@@ -3,7 +3,6 @@ package aitsi.m3spin.pkb.interfaces;
 import aitsi.m3spin.commons.interfaces.Procedure;
 import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.commons.interfaces.Variable;
-
 import java.util.List;
 
 public interface Uses {
@@ -19,7 +18,7 @@ public interface Uses {
 
     List<Procedure> getProcsUsingVar(Variable var);
 
-    Boolean isUsed(Variable var, Statement stat);
+    boolean isUsed(Variable var, Statement stat);
 
-    Boolean isUsed(Variable var, Procedure proc);
+    boolean isUsed(Variable var, Procedure proc);
 }

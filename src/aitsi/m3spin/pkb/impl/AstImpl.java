@@ -7,10 +7,6 @@ import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.interfaces.*;
 import aitsi.m3spin.pkb.exception.IllegalLinkTypeException;
 import aitsi.m3spin.pkb.exception.IllegalNodeTypeException;
-import lombok.Getter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class AstImpl implements Ast {
     private int procId = 0;

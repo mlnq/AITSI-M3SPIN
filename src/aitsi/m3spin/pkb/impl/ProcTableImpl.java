@@ -25,7 +25,7 @@ public class ProcTableImpl implements ProcTable {
     }
 
     @Override
-    public Boolean isIn(String procName) {
-        return null;
+    public boolean isIn(String procName) {
+        return false;
     }
 }

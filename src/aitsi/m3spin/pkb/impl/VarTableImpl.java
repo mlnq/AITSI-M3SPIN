@@ -4,8 +4,6 @@ import aitsi.m3spin.pkb.interfaces.VarTable;
 
 public class VarTableImpl implements VarTable {
 
-
-
     @Override
     public int insertVar(String varName) {
         return 0;
@@ -27,7 +25,7 @@ public class VarTableImpl implements VarTable {
     }
 
     @Override
-    public Boolean isIn(String varName) {
-        return null;
+    public boolean isIn(String varName) {
+        return false;
     }
 }
