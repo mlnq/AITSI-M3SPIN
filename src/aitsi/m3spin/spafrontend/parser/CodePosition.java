@@ -1,4 +1,4 @@
-package aitsi.m3spin.parser;
+package aitsi.m3spin.spafrontend.parser;
 
 import lombok.*;
 

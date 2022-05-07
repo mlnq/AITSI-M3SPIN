@@ -1,4 +1,5 @@
 package aitsi.m3spin.commons.interfaces;
 
-public interface If extends Statement {
+public interface Call extends Statement {
+
 }
