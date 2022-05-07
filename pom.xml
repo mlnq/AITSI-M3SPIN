@@ -6,7 +6,7 @@
 
     <groupId>aitsi.m3spin</groupId>
     <artifactId>AITSI-M3SPIN</artifactId>
-    <version>0.2-PIPE-TESTER-TEST</version>
+    <version>0.2-PIPE-TESTER-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
