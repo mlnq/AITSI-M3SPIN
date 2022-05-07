@@ -1,4 +1,4 @@
-package aitsi.m3spin.parser.exception;
+package aitsi.m3spin.spafrontend.parser.exception;
 
 public class SimpleParserException extends Exception {
     public SimpleParserException(String err) {

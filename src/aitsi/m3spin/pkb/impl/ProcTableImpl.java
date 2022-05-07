@@ -15,7 +15,7 @@ public class ProcTableImpl implements ProcTable {
     }
 
     @Override
-    public int getProcIndex(String procName) {
+    public int getProcId(String procName) {
         return 0;
     }
 
@@ -25,7 +25,8 @@ public class ProcTableImpl implements ProcTable {
     }
 
     @Override
-    public Boolean isIn(String procName) {
-        return null;
+    public boolean isIn(String procName) {
+        return false;
     }
+
 }

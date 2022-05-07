@@ -5,18 +5,17 @@ import aitsi.m3spin.commons.interfaces.TNode;
 import java.util.List;
 
 public interface Follows {
-    void setFollows(TNode p, TNode c);
+    void setFollows(TNode node1, TNode node2);
 
-    TNode getFollows(TNode n);
+    TNode getFollows(TNode node);
 
-    List<TNode> getFollows$(TNode n);
+    List<TNode> getFollowsT(TNode node);
 
-    TNode getFollowedBy(TNode n);
+    TNode getFollowedBy(TNode node);
 
-    List<TNode> getFollowed$By(TNode n);
+    List<TNode> getFollowedTBy(TNode n);
 
+    Boolean isFollowed(TNode node1, TNode node2);
 
-    Boolean isFollowed(TNode n1, TNode n2);
-
-    Boolean isFollowed$(TNode n1, TNode n2);
+    Boolean isFollowedT(TNode node1, TNode node2);
 }
