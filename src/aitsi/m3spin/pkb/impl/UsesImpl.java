@@ -4,10 +4,8 @@ import aitsi.m3spin.commons.interfaces.Procedure;
 import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.commons.interfaces.Variable;
 import aitsi.m3spin.pkb.interfaces.Uses;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+
+import java.util.*;
 
 public class UsesImpl implements Uses {
 
@@ -39,13 +37,13 @@ public class UsesImpl implements Uses {
     }
 
     @Override
-    public List<Variable> getVarsUsedByStmt(Statement stmt) {
-        return (List<Variable>) varsUsedByStmt.get(stmt);
+    public Set<Variable> getVarsUsedByStmt(Statement stmt) {
+        return varsUsedByStmt.get(stmt);
     }
 
     @Override
-    public List<Variable> getVarsUsedByProc(Procedure proc) {
-        return (List<Variable>) varsUsedByProc.get(proc);
+    public Set<Variable> getVarsUsedByProc(Procedure proc) {
+        return varsUsedByProc.get(proc);
     }
 
     @Override

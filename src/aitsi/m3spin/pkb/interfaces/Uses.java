@@ -4,15 +4,16 @@ import aitsi.m3spin.commons.interfaces.Procedure;
 import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.commons.interfaces.Variable;
 import java.util.List;
+import java.util.Set;
 
 public interface Uses {
     void setUses(Statement stmt, Variable var);
 
     void setUses(Procedure proc, Variable var);
 
-    List<Variable> getVarsUsedByStmt(Statement stmt);
+    Set<Variable> getVarsUsedByStmt(Statement stmt);
 
-    List<Variable> getVarsUsedByProc(Procedure proc);
+    Set<Variable> getVarsUsedByProc(Procedure proc);
 
     List<Statement> getStmtsUsingVar(Variable var);
 

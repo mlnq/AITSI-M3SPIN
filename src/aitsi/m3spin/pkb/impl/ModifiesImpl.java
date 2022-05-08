@@ -4,10 +4,8 @@ import aitsi.m3spin.commons.interfaces.Procedure;
 import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.commons.interfaces.Variable;
 import aitsi.m3spin.pkb.interfaces.Modifies;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+
+import java.util.*;
 
 public class ModifiesImpl implements Modifies {
 
@@ -39,13 +37,13 @@ public class ModifiesImpl implements Modifies {
     }
 
     @Override
-    public List<Variable> getModified(Statement stmt) {
-        return (List<Variable>) varsModifiedByStmt.get(stmt);
+    public Set<Variable> getModified(Statement stmt) {
+        return varsModifiedByStmt.get(stmt);
     }
 
     @Override
-    public List<Variable> getModified(Procedure proc) {
-        return (List<Variable>) varsModifiedByProc.get(proc);
+    public Set<Variable> getModified(Procedure proc) {
+        return varsModifiedByProc.get(proc);
     }
 
     @Override
