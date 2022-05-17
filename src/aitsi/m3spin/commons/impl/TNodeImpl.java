@@ -12,9 +12,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode
 public abstract class TNodeImpl implements TNode {
+    @EqualsAndHashCode.Exclude
     protected TNode leftSibling;
+    @EqualsAndHashCode.Exclude
     protected TNode rightSibling;
+    @EqualsAndHashCode.Exclude
     protected TNode parent;
+    @EqualsAndHashCode.Exclude
     protected TNode child;
     protected String attribute;
 
