@@ -6,7 +6,7 @@
 
     <groupId>aitsi.m3spin</groupId>
     <artifactId>AITSI-M3SPIN</artifactId>
-    <version>0.2.1-PIPE-TEST-CONFLICTS</version>
+    <version>0.2.3-PIPTEST-CONFLICTS-2</version>
     <!--iteracja.develop.wersja-->
 
     <properties>
