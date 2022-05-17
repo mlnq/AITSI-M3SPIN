@@ -15,7 +15,7 @@ public class VarTableImpl implements VarTable {
     }
 
     @Override
-    public int getVarId(String varName) {
+    public int getVarIndex(String varName) {
         return 0;
     }
 
