@@ -7,6 +7,10 @@ public class UnknownStatementType extends SimpleParserException {
         super(err);
     }
 
+    public UnknownStatementType() {
+        super("Statement type not recognized.");
+    }
+
     public UnknownStatementType(CodePosition codePosition) {
         super("Encountered unknown statement type at line " +
                 codePosition.getLine() + ", column " + codePosition.getColumn());
