@@ -62,7 +62,7 @@ public interface Ast {
     /**
      * Gets information if node2 is connected with node1 by connection of link type
      *
-     * @param link  type of relation
+     * @param link type of relation
      * @param node1 first checked node
      * @param node2 second checked node
      * @return true if nodes are connected by link or false if not
