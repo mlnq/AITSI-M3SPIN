@@ -4,7 +4,6 @@ import aitsi.m3spin.commons.interfaces.Procedure;
 import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.commons.interfaces.Variable;
 import aitsi.m3spin.pkb.interfaces.Uses;
-
 import java.util.*;
 
 public class UsesImpl implements Uses {

@@ -8,10 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class PlusImpl extends TNodeImpl implements Plus {
-    private static final EntityType TYPE = EntityType.PLUS;
 
     @Override
     public EntityType getType() {
-        return TYPE;
+        return EntityType.PLUS;
     }
 }

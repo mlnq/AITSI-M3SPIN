@@ -8,10 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class FactorImpl extends TNodeImpl implements Factor {
-    private static final EntityType TYPE = EntityType.FACTOR;
 
     @Override
     public EntityType getType() {
-        return TYPE;
+        return EntityType.FACTOR;
     }
 }

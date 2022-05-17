@@ -1,31 +1,42 @@
 package aitsi.m3spin.pkb.interfaces;
-
-import aitsi.m3spin.commons.interfaces.Procedure;
 import java.util.List;
 
+import aitsi.m3spin.commons.interfaces.Procedure;
+
 public interface Calls {
-    //TODO impl: CallsTable[][]
 
-    //Procedure p calls q
-    void setCalls (Procedure p, Procedure q);
+    /**
+     * Adds fact: procedure procedure1 calls procedure2
+     */
+    void setCalls(Procedure procedure1, Procedure procedure2);
 
-    //Which procedures call procedure q?
-    List<Procedure> getCalledBy (Procedure q);
+    /**
+     * @return list of procedures which call procedure passed as parameter directly
+     */
+    List<Procedure> getCalledBy(Procedure procedure);
 
-    //Which procedures are called from p?
-    List<Procedure> getCalledFrom (Procedure p);
+    /**
+     * @return list of procedures which call procedure passed as parameter both directly and indirectly
+     */
+    List<Procedure> getCalledByT(Procedure procedure);
 
-    //Does procedure p call q?
-    Boolean isCalled (Procedure p, Procedure q);
+    /**
+     * @return list of procedures which are called directly from procedure passed as parameter
+     */
+    List<Procedure> getCalledFrom(Procedure procedure);
 
-//TODO co robimy z Calls*
+    /**
+     * @return list of procedures which are called both directly and indirectly from procedure passed as parameter
+     */
+    List<Procedure> getCalledFromT(Procedure p);
 
-//    //Which procedures call procedure q?
-    List<Procedure> getCalls$ (Procedure q);
-//
-//    //Which procedures are called from p?
-    List<Procedure> getCalled$From (Procedure p);
-//
-//    //Does procedure p call q?
-    Boolean isCalls$ (Procedure p, Procedure q);
+    /**
+     * @return true if procedure1 calls procedure2 directly
+     */
+    Boolean isCalled(Procedure procedure1, Procedure procedure2);
+
+    /**
+     * @return true if procedure1 calls procedure2 either directly or indirectly
+     */
+    Boolean isCalledT(Procedure procedure1, Procedure procedure2);
 }

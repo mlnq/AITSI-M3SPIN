@@ -2,7 +2,14 @@ package aitsi.m3spin.pkb.impl;
 
 import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.enums.LinkType;
-import aitsi.m3spin.commons.impl.*;
+import aitsi.m3spin.commons.impl.AssignmentImpl;
+import aitsi.m3spin.commons.impl.ConstantImpl;
+import aitsi.m3spin.commons.impl.IfImpl;
+import aitsi.m3spin.commons.impl.MinusImpl;
+import aitsi.m3spin.commons.impl.PlusImpl;
+import aitsi.m3spin.commons.impl.ProcedureImpl;
+import aitsi.m3spin.commons.impl.VariableImpl;
+import aitsi.m3spin.commons.impl.WhileImpl;
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.interfaces.*;
 import aitsi.m3spin.pkb.exception.IllegalLinkTypeException;
@@ -15,7 +22,7 @@ public class AstImpl implements Ast {
 
     @Override
     public TNode createTNode(EntityType et) throws IllegalNodeTypeException {
-        switch (et){
+        switch (et) {
             case ASSIGNMENT:
                 return new AssignmentImpl();
             case CONSTANT:
@@ -44,7 +51,7 @@ public class AstImpl implements Ast {
     }
 
     @Override
-    public void setAttr(TNode n, String attr) {
+    public void setName(TNode n, String attr) {
         n.setAttribute(attr);
     }
 
@@ -64,8 +71,7 @@ public class AstImpl implements Ast {
 
     @Override
     public TNode setLink(LinkType relation, TNode node1, TNode node2) throws IllegalLinkTypeException {
-        switch (relation)
-        {
+        switch (relation) {
             case CHILD:
                 node2.setChild(node1);
                 node1.setParent(node2);
@@ -94,7 +100,7 @@ public class AstImpl implements Ast {
     }
 
     @Override
-    public String getAttr(TNode node) {
+    public String getName(TNode node) {
         return node.getAttribute();
     }
 
@@ -105,7 +111,7 @@ public class AstImpl implements Ast {
 
     @Override
     public TNode getLinkedNode(LinkType link, TNode node) throws IllegalLinkTypeException {
-        switch(link) {
+        switch (link) {
             case CHILD:
                 return node.getChild();
             case PARENT:

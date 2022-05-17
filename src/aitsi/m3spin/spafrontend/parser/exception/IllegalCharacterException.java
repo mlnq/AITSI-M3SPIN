@@ -1,6 +1,6 @@
-package aitsi.m3spin.parser.exception;
+package aitsi.m3spin.spafrontend.parser.exception;
 
-import aitsi.m3spin.parser.CodePosition;
+import aitsi.m3spin.spafrontend.parser.CodePosition;
 
 public class IllegalCharacterException extends SimpleParserException {
     public IllegalCharacterException(char c, CodePosition cp, String placeOfOccurrence) {

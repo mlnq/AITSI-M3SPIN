@@ -1,7 +1,9 @@
 package aitsi.m3spin.pkb.interfaces;
 
-import aitsi.m3spin.commons.interfaces.Statement;
 import java.util.List;
+
+import aitsi.m3spin.commons.interfaces.Statement;
+import aitsi.m3spin.commons.interfaces.TNode;
 
 public interface Parent {
 

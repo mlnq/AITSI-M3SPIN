@@ -15,7 +15,7 @@ public class VarTableImpl implements VarTable {
     }
 
     @Override
-    public int getVarIndex(String varName) {
+    public int getVarId(String varName) {
         return 0;
     }
 
@@ -28,4 +28,5 @@ public class VarTableImpl implements VarTable {
     public boolean isIn(String varName) {
         return false;
     }
+
 }
