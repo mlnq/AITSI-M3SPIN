@@ -69,6 +69,4 @@ public interface Ast {
      * @throws IllegalLinkTypeException link is not a valid link type
      */
     Boolean isLinked(LinkType link, TNode node1, TNode node2) throws IllegalLinkTypeException;
-
-    TNode setParent(TNode parent, TNode child);
 }

@@ -7,17 +7,17 @@ import aitsi.m3spin.commons.interfaces.TNode;
 
 public interface Parent {
 
-    void setParent(Statement parent, Statement child);
+    Statement setParent(Statement parent, Statement child);
 
-    TNode getParent(TNode child);
+    List<Statement> getParentedBy(Statement parent);
 
-    List<TNode> getParentT(TNode child);
+    Statement getParent(Statement child);
 
-    List<TNode> getParentedBy(TNode parent);
+    List<Statement> getParentT(Statement child);
 
-    List<TNode> getParentedByT(TNode parent);
+    List<Statement> getParentedByT(Statement parent);
 
-    Boolean isParent(TNode parent, TNode child);
+    boolean isParent(Statement parent, Statement child);
 
-    Boolean isParentT(TNode parent, TNode child);
+    boolean isParentT(Statement parent, Statement child);
 }

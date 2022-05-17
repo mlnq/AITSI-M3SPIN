@@ -11,9 +11,9 @@ import aitsi.m3spin.commons.impl.ProcedureImpl;
 import aitsi.m3spin.commons.impl.VariableImpl;
 import aitsi.m3spin.commons.impl.WhileImpl;
 import aitsi.m3spin.commons.interfaces.TNode;
+import aitsi.m3spin.pkb.interfaces.*;
 import aitsi.m3spin.pkb.exception.IllegalLinkTypeException;
 import aitsi.m3spin.pkb.exception.IllegalNodeTypeException;
-import aitsi.m3spin.pkb.interfaces.Ast;
 
 public class AstImpl implements Ast {
     private int procId = 0;
@@ -143,12 +143,5 @@ public class AstImpl implements Ast {
             return false;
         }
         return linkedNode.equals(node2);
-    }
-
-    @Override
-    public TNode setParent(TNode parent, TNode child) {
-        child.setParent(parent);
-        parent.setChild(child);
-        return parent;
     }
 }

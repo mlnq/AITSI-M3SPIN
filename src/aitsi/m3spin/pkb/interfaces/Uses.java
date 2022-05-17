@@ -3,23 +3,23 @@ package aitsi.m3spin.pkb.interfaces;
 import aitsi.m3spin.commons.interfaces.Procedure;
 import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.commons.interfaces.Variable;
-
 import java.util.List;
+import java.util.Set;
 
 public interface Uses {
     void setUses(Statement stmt, Variable var);
 
     void setUses(Procedure proc, Variable var);
 
-    List<Variable> getUses(Statement stmt);
+    Set<Variable> getVarsUsedByStmt(Statement stmt);
 
-    List<Variable> getUses(Procedure proc);
+    Set<Variable> getVarsUsedByProc(Procedure proc);
 
-    List<Statement> getUsesStmt(Variable var);
+    List<Statement> getStmtsUsingVar(Variable var);
 
-    List<Procedure> getUsesProc(Variable var);
+    List<Procedure> getProcsUsingVar(Variable var);
 
-    Boolean isUsed(Variable var, Statement stmt);
+    boolean isUsed(Variable var, Statement stat);
 
-    Boolean isUsed(Variable var, Procedure proc);
+    boolean isUsed(Variable var, Procedure proc);
 }

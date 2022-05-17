@@ -1,43 +1,44 @@
 package aitsi.m3spin.pkb.impl;
 
-import aitsi.m3spin.commons.interfaces.TNode;
+import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.pkb.interfaces.Follows;
-
 import java.util.List;
 
 public class FollowsImpl implements Follows {
-    @Override
-    public void setFollows(TNode node1, TNode node2) {
 
+    @Override
+    public void setFollows(Statement l, Statement r) {
+        l.setRightSibling(r);
+        r.setLeftSibling(l);
     }
 
     @Override
-    public TNode getFollows(TNode node) {
+    public Statement getFollows(Statement statement) {
+        return (Statement) statement.getRightSibling();
+    }
+
+    @Override
+    public List<Statement> getFollowsT(Statement statement) {
         return null;
     }
 
     @Override
-    public List<TNode> getFollowsT(TNode node) {
+    public Statement getFollowedBy(Statement statement) {
+        return (Statement) statement.getLeftSibling();
+    }
+
+    @Override
+    public List<Statement> getFollowedByT(Statement statement) {
         return null;
     }
 
     @Override
-    public TNode getFollowedBy(TNode node) {
-        return null;
+    public boolean isFollowed(Statement statement1, Statement statement2) {
+        return statement1.getRightSibling().equals(statement2);
     }
 
     @Override
-    public List<TNode> getFollowedTBy(TNode n) {
-        return null;
-    }
-
-    @Override
-    public Boolean isFollowed(TNode node1, TNode node2) {
-        return null;
-    }
-
-    @Override
-    public Boolean isFollowedT(TNode node1, TNode node2) {
-        return null;
+    public boolean isFollowedT(Statement statement1, Statement statement2) {
+        return false;
     }
 }
