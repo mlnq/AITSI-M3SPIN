@@ -19,7 +19,7 @@ public interface Uses {
 
     List<Procedure> getUsesProc(Variable var);
 
-    Boolean isUsed(Variable var, Statement stat);
+    Boolean isUsed(Variable var, Statement stmt);
 
     Boolean isUsed(Variable var, Procedure proc);
 }

@@ -6,19 +6,20 @@ import aitsi.m3spin.commons.interfaces.Expression;
 import aitsi.m3spin.commons.interfaces.Variable;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@Getter
 public class AssignmentImpl extends StatementImpl implements Assignment {
-    private static final EntityType TYPE = EntityType.ASSIGNMENT;
 
-    private Variable var;
-    private Expression expr;
+    private Variable variable;
+    private Expression expression;
 
     @Override
     public EntityType getType() {
-        return TYPE;
+        return EntityType.ASSIGNMENT;
     }
 }

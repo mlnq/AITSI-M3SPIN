@@ -1,9 +1,9 @@
 package aitsi.m3spin.commons.enums;
 
-public enum EntityType{
+public enum EntityType {
     //    PROGRAM("PROGRAM"),
     PROCEDURE("procedure"),
-    //    STMT_LIST("STMTLIST"),
+    STMT_LIST("statementList"),
     //    STMT("STMT"),
     EQUALS("="),
     CALL("call"),

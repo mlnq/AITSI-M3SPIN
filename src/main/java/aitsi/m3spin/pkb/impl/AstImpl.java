@@ -7,19 +7,15 @@ import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.exception.IllegalLinkTypeException;
 import aitsi.m3spin.pkb.exception.IllegalNodeTypeException;
 import aitsi.m3spin.pkb.interfaces.Ast;
-import aitsi.m3spin.pkb.interfaces.Follows;
-import aitsi.m3spin.pkb.interfaces.Parent;
 
-import java.util.List;
-
-public class AstImpl implements Ast, Follows, Parent {
+public class AstImpl implements Ast {
     private int procId = 0;
     private int varId = 0;
     private TNode root;
 
     @Override
     public TNode createTNode(EntityType et) throws IllegalNodeTypeException {
-        switch (et){
+        switch (et) {
             case ASSIGNMENT:
                 return new AssignmentImpl();
             case CONSTANT:
@@ -48,7 +44,7 @@ public class AstImpl implements Ast, Follows, Parent {
     }
 
     @Override
-    public void setAttr(TNode n, String attr) {
+    public void setName(TNode n, String attr) {
         n.setAttribute(attr);
     }
 
@@ -68,8 +64,7 @@ public class AstImpl implements Ast, Follows, Parent {
 
     @Override
     public TNode setLink(LinkType relation, TNode node1, TNode node2) throws IllegalLinkTypeException {
-        switch (relation)
-        {
+        switch (relation) {
             case CHILD:
                 node2.setChild(node1);
                 node1.setParent(node2);
@@ -98,7 +93,7 @@ public class AstImpl implements Ast, Follows, Parent {
     }
 
     @Override
-    public String getAttr(TNode node) {
+    public String getName(TNode node) {
         return node.getAttribute();
     }
 
@@ -109,7 +104,7 @@ public class AstImpl implements Ast, Follows, Parent {
 
     @Override
     public TNode getLinkedNode(LinkType link, TNode node) throws IllegalLinkTypeException {
-        switch(link) {
+        switch (link) {
             case CHILD:
                 return node.getChild();
             case PARENT:
@@ -148,70 +143,5 @@ public class AstImpl implements Ast, Follows, Parent {
         child.setParent(parent);
         parent.setChild(child);
         return parent;
-    }
-
-    @Override
-    public TNode getParent(TNode c) {
-        return c.getParent();
-    }
-
-    @Override
-    public List<TNode> getParentedBy(TNode p) {
-        return null;
-    }
-
-    @Override
-    public TNode getParent$(TNode c) {
-        return null;
-    }
-
-    @Override
-    public List<TNode> getParented$By(TNode p) {
-        return null;
-    }
-
-    @Override
-    public void setFollows(TNode p, TNode c) {
-
-    }
-
-    @Override
-    public TNode getFollows(TNode n) {
-        return null;
-    }
-
-    @Override
-    public List<TNode> getFollows$(TNode n) {
-        return null;
-    }
-
-    @Override
-    public TNode getFollowedBy(TNode n) {
-        return null;
-    }
-
-    @Override
-    public List<TNode> getFollowed$By(TNode n) {
-        return null;
-    }
-
-    @Override
-    public Boolean isFollowed(TNode n1, TNode n2) {
-        return null;
-    }
-
-    @Override
-    public Boolean isFollowed$(TNode n1, TNode n2) {
-        return null;
-    }
-
-    @Override
-    public Boolean isParent(TNode p, TNode c) {
-        return c.getParent() == p;
-    }
-
-    @Override
-    public Boolean isParent$(TNode p, TNode c) {
-        return null;
     }
 }
