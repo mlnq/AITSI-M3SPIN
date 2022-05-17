@@ -1,4 +1,4 @@
-stmt s1, s2; assign a; while w;
+stmt s1, s2; assign a, v; while w;
 Select s1 such that Follows (s1, s2)
 Select a such that Follows* (20, a)
 Select s1 such that Follows (s1, s2) with s2.stmt#= 5

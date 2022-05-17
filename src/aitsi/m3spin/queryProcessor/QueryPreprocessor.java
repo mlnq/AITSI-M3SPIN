@@ -34,74 +34,39 @@ public class QueryPreprocessor {
     private void parseQueries() throws SimpleParserException, NameNotDeclaredException, UnknownRelationTypeException {
         while (PqlEntityEnum.SELECT.getPqlEntityName().equals(codeScanner.getCurrentString(6))) {
             this.queryList.add(parseQuery());
-            codeScanner.incrementPosition();
-//            codeScanner.skipLine();
         }
     }
 
     private Query parseQuery() throws SimpleParserException, NameNotDeclaredException, UnknownRelationTypeException {
         codeScanner.skipWhitespaces();
         Query query = new Query(parseSelectedDeclaration(), parseSuchThatList(), parseWithList());
-        return query ;
+        return query;
     }
 
     private List<WithClause> parseWithList() throws SimpleParserException, NameNotDeclaredException, UnknownRelationTypeException {
-
-        int line = codeScanner.getCurrentPosition().getLine();
-        int column = codeScanner.getCurrentPosition().getColumn();
-
-
-        codeScanner.getCurrentPosition();
         codeScanner.skipWhitespaces();
-        //Select s1 such that Follows (s1, s2) with s2.stmt#= 5
-        if (PqlEntityEnum.WITH.getPqlEntityName().equals(codeScanner.getCurrentString(4))) {
+        if (PqlEntityEnum.WITH.getPqlEntityName().equals(codeScanner.getCurrentString(4, false))) {
+            codeScanner.incrementPosition(4);
             codeScanner.skipWhitespaces();
             Declaration withDeclaration = parseSelectedDeclaration();
-            if (this.codeScanner.hasCurrentChar('.'))
-                parseChar('.', true);
-
-            String parsedAttributeName = parseAttributeName();
-
-            Optional<AttributeNameEnum> attributeNameEnumOptional = Stream.of(AttributeNameEnum.values())
-                    .filter(re -> re.getAttrName().equals(parsedAttributeName))
-                    .findFirst();
-            AttributeNameEnum attributeNameEnum;
-
-            if (attributeNameEnumOptional.isPresent()) {
-                attributeNameEnum = attributeNameEnumOptional.get();
-            } else {
-                throw new UnknownRelationTypeException(parsedAttributeName);
-            }
+            parseChar('.', true);
+            AttributeNameEnum parsedAttributeName = parseAttributeName();
             codeScanner.skipWhitespaces();
-            if (this.codeScanner.hasCurrentChar('=')) {
-                parseChar('=', false);
-                codeScanner.skipWhitespaces();
-            }
-                RelationArgument withArgument = parseRelationArgument();
+            parseChar('=');
+            codeScanner.skipWhitespaces();
+            RelationArgument withArgument = parseRelationArgument();
 
-            return Collections.singletonList(new WithClause(withDeclaration, attributeNameEnum, withArgument));
+            return Collections.singletonList(new WithClause(withDeclaration, parsedAttributeName, withArgument));
         } else {
-            if(codeScanner.getCurrentPosition().getLine() != line){
-                codeScanner.getCurrentPosition().setLine(line);
-                codeScanner.getCurrentPosition().setColumn(column);
-            }
             return Collections.emptyList();
         }
     }
 
-    private List<SuchThat> parseSuchThatList() throws SimpleParserException, UnknownRelationTypeException {
-        String parsedName = parseName();
+    private List<SuchThat> parseSuchThatList() throws SimpleParserException, UnknownRelationTypeException, NameNotDeclaredException {
         codeScanner.skipWhitespaces();
-        String parsedName2 = parseName();
-        StringBuilder such_that = new StringBuilder(parsedName);
-        such_that.append(" ");
-        such_that.append(parsedName2);
-        if (PqlEntityEnum.SUCH_THAT.getPqlEntityName().equals(new String(such_that))) {
-//        if (PqlEntityEnum.SUCH_THAT.getPqlEntityName()
-//                .equals(codeScanner.getCurrentString(
-//                        PqlEntityEnum.SUCH_THAT.getPqlEntityName().length())
-//                )) {
-
+        if (PqlEntityEnum.SUCH_THAT.getPqlEntityName()
+                .equals(codeScanner.getCurrentString(9)
+                )) {
             codeScanner.skipWhitespaces();
             String parsedRelationName = parseRelationName();
 
@@ -121,7 +86,7 @@ public class QueryPreprocessor {
             parseChar(',');
             codeScanner.skipWhitespaces();
             RelationArgument secondRelationArgument = parseRelationArgument();
-            parseChar(')', false);
+            parseChar(')');
             codeScanner.getCurrentPosition();
 
             return Collections.singletonList(new SuchThat(relationEnum, firstRelationArgument, secondRelationArgument));
@@ -129,7 +94,8 @@ public class QueryPreprocessor {
             return Collections.emptyList();
         }
     }
-    private String parseAttributeName() throws SimpleParserException {
+
+    private AttributeNameEnum parseAttributeName() throws SimpleParserException, UnknownRelationTypeException {
         StringBuilder name = new StringBuilder(String.valueOf(parseLetter()));
 
         while (codeScanner.hasCurrentChar()) {
@@ -139,14 +105,23 @@ public class QueryPreprocessor {
             } else if (Character.isDigit(currentChar)) {
                 name.append(parseDigit());
             } else if (currentChar == '#') {
-                name.append('#');
+                name.append(parseChar('#'));
             } else {
                 break;
             }
         }
-        return String.valueOf(name);
+        String parsedName = String.valueOf(name);
+        Optional<AttributeNameEnum> attributeNameEnumOptional = Stream.of(AttributeNameEnum.values())
+                .filter(re -> re.getAttrName().equals(parsedName))
+                .findFirst();
+        if (attributeNameEnumOptional.isPresent()) {
+            return attributeNameEnumOptional.get();
+        } else {
+            throw new UnknownRelationTypeException(parsedName);
+        }
     }
 
+    //TODO ogarnąć jakie '"' są w pql
     private RelationArgument parseRelationArgument() throws SimpleParserException {
         if(codeScanner.hasCurrentChar('"')){
             codeScanner.incrementPosition();
@@ -154,12 +129,11 @@ public class QueryPreprocessor {
             parseChar(codeScanner.getCurrentChar());
             codeScanner.getCurrentPosition();
             return new SimpleEntityName(simpleEntityName);
-        } else if(Character.isLetter(codeScanner.getCurrentChar())) {
+        } else if (Character.isLetter(codeScanner.getCurrentChar())) {
             return new Declaration(parseName());
-        } else if (Character.isDigit(codeScanner.getCurrentChar())){
+        } else if (Character.isDigit(codeScanner.getCurrentChar())) {
             return new Constant(parseConst());
-        }
-        else return null;
+        } else return null;
     }
 
     private int parseConst() throws SimpleParserException {
@@ -185,7 +159,8 @@ public class QueryPreprocessor {
             } else if (Character.isDigit(currentChar)) {
                 name.append(parseDigit());
             } else if (currentChar == '*') {
-                name.append('*');
+                name.append(parseChar('*'));
+
             } else {
                 break;
             }
@@ -199,7 +174,6 @@ public class QueryPreprocessor {
                 .filter(d -> d.getName().equals(parsedName))
                 .findFirst();
         if (declarationOptional.isPresent()) {
-            codeScanner.incrementPosition();
             return declarationOptional.get();
         } else {
             throw new NameNotDeclaredException(parsedName);
@@ -225,14 +199,13 @@ public class QueryPreprocessor {
 
     private char parseDigit() throws SimpleParserException {//todo do CodeScannera stąd i z parsera
         char digit = this.codeScanner.getCurrentDigit();
-        this.codeScanner.incrementPosition();
-        return digit;
+        return parseChar(digit);
     }
 
     private char parseLetter() throws SimpleParserException {//todo do CodeScannera stąd i z parsera
         char letter = this.codeScanner.getCurrentLetter();
-        this.codeScanner.incrementPosition();
-        return letter;
+        return parseChar(letter);
+
     }
 
 
@@ -242,8 +215,8 @@ public class QueryPreprocessor {
             String firstWord = parseName();
             codeScanner.skipWhitespaces();
 
-    //       Stream.of(EntityType.values())
-    //               .anyMatch(value => {})
+            //       Stream.of(EntityType.values())
+            //               .anyMatch(value => {})
             if (EntityType.ASSIGNMENT.getETName().equals(firstWord)) {
                 //tworzenie listy obiektów 1. zliczyc ilosć, do średnika ;
                 parseDeclaration(EntityType.ASSIGNMENT);
@@ -257,19 +230,21 @@ public class QueryPreprocessor {
                 parseDeclaration(EntityType.CONSTANT);
             } else if (EntityType.PROG_LINE.getETName().equals(firstWord)) {
                 parseDeclaration(EntityType.PROG_LINE);
-            }}
+            }
+        }
     }
 
-    private void parseChar(char c, boolean incFlag) throws MissingCharacterException { //todo do CodeScannera stąd i z parsera
+    private char parseChar(char c, boolean incFlag) throws MissingCharacterException { //todo do CodeScannera stąd i z parsera
         this.codeScanner.skipWhitespaces();
 
         if (this.codeScanner.hasCurrentChar(c)) {
             if (incFlag) this.codeScanner.incrementPosition();
+            return c;
         } else throw new MissingCharacterException(c, this.codeScanner.getCurrentPosition());
     }
 
-    private void parseChar(char c) throws MissingCharacterException {//todo do CodeScannera stąd i z parsera
-        parseChar(c, true);
+    private char parseChar(char c) throws MissingCharacterException {//todo do CodeScannera stąd i z parsera
+        return parseChar(c, true);
     }
 
 

@@ -10,6 +10,11 @@ public class CodePosition {
     private int line = 0;
     private int column = 0;
 
+    public CodePosition(CodePosition codePosition) {
+        this.line = codePosition.getLine();
+        this.column = codePosition.getColumn();
+    }
+
     void moveColumnBy(int n) {
         this.setColumn(this.column + n);
     }

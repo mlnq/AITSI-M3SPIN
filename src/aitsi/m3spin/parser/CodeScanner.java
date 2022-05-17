@@ -37,9 +37,11 @@ public boolean hasCurrentChar(char c) throws MissingCharacterException {
         else throw new IllegalCharacterException(currentChar, this.currentPosition);
     }
 
-    private void incrementPosition(int n) {
+    public void incrementPosition(int n) {
         if (currentPosition.getColumn() + n < getCurrentLine().length()) currentPosition.moveColumnBy(n);
+
         else {
+            if(currentPosition.getLine() >= codeLines.size()-1) return;
             currentPosition.moveLine();
             incrementPosition(Math.max(currentPosition.getColumn() + n - getCurrentLine().length() - 1, 0));
         }
@@ -54,10 +56,17 @@ public boolean hasCurrentChar(char c) throws MissingCharacterException {
     }
 
     public String getCurrentString(int length) throws MissingCharacterException {
+        return getCurrentString(length, true);
+    }
+    public String getCurrentString(int length, boolean increment) throws MissingCharacterException {
         StringBuilder stringBuilder = new StringBuilder(length);
+        CodePosition oldPosition = new CodePosition(this.currentPosition);
         for (int i = 0; i < length; i++) {
             stringBuilder.append(getCurrentChar());
-            incrementPosition();
+                incrementPosition();
+        }
+        if(!increment){
+            this.currentPosition = oldPosition;
         }
         return String.valueOf(stringBuilder);
     }
