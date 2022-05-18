@@ -1,45 +1,58 @@
 package aitsi.m3spin.pkb.impl;
 
 import aitsi.m3spin.commons.interfaces.Statement;
-import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.interfaces.Parent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ParentImpl implements Parent {
 
     @Override
-    public void setParent(Statement parent, Statement child) {
-
+    public Statement setParent(Statement parent, Statement child) {
+        child.setParent(parent);
+        parent.setChild(child);
+        return parent;
     }
 
     @Override
-    public TNode getParent(TNode child) {
-        return null;
+    public List<Statement> getParentedBy(Statement parent) {
+
+        Statement currentStmt = (Statement) parent.getChild();
+        List<Statement> childList = new ArrayList<>();
+
+        while (currentStmt.getRightSibling() != null) {
+            childList.add(currentStmt);
+            currentStmt = (Statement) currentStmt.getRightSibling();
+        }
+        return childList;
     }
 
     @Override
-    public List<TNode> getParentT(TNode child) {
-        return null;
+    public Statement getParent(Statement child) {
+        while (child.getParent() == null) {
+            child = (Statement) child.getLeftSibling();
+        }
+        return (Statement) child.getParent();
     }
 
     @Override
-    public List<TNode> getParentedBy(TNode parent) {
-        return null;
+    public List<Statement> getParentT(Statement child) {
+        return null;//todo po 1 iteracji
     }
 
     @Override
-    public List<TNode> getParentedByT(TNode parent) {
-        return null;
+    public List<Statement> getParentedByT(Statement parent) {
+        return null;//todo po 1 iteracji
     }
 
     @Override
-    public Boolean isParent(TNode parent, TNode child) {
-        return null;
+    public boolean isParent(Statement parent, Statement c) {
+        return c.getParent().equals(parent);
     }
 
     @Override
-    public Boolean isParentT(TNode parent, TNode child) {
-        return null;
+    public boolean isParentT(Statement parent, Statement c) {
+        return false;
     }
 }

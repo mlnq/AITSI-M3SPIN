@@ -137,11 +137,4 @@ public class AstImpl implements Ast {
         }
         return linkedNode.equals(node2);
     }
-
-    @Override
-    public TNode setParent(TNode parent, TNode child) {
-        child.setParent(parent);
-        parent.setChild(child);
-        return parent;
-    }
 }
