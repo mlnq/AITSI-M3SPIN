@@ -137,4 +137,14 @@ public class AstImpl implements Ast {
         }
         return linkedNode.equals(node2);
     }
+
+    @Override
+    public boolean hasChild(TNode parent) {
+        return parent.getChild() != null;
+    }
+
+    @Override
+    public boolean hasRightSibling(TNode node) {
+        return node.getRightSibling() != null;
+    }
 }
