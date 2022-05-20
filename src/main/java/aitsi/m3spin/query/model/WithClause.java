@@ -11,3 +11,6 @@ public class WithClause {
     //nazwa zmiennej lub integer
     private RelationArgument value;
 }
+
+/*while w, stmt s, var v;
+select w such that Parent(w, s) with v.varName = 'duoawołowa'*/

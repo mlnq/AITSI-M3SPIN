@@ -47,7 +47,13 @@ public interface Ast {
 
     String getName(TNode node);
 
-    TNode getChild(TNode p);
+    TNode getChild(TNode parent);
+
+    TNode getRightSibling(TNode node);
+
+    boolean hasChild(TNode parent);
+
+    boolean hasRightSibling(TNode node);
 
     /**
      * Gets node connected by relation of given type with given node (argument)
@@ -61,6 +67,11 @@ public interface Ast {
 
     /**
      * Gets information if node2 is connected with node1 by connection of link type
+     *
+     *      * Relation types:
+     *      * - PARENT: node1 is parent and node2 is child
+     *      * - CHILD: node1 is child and node2 is parent
+     *      * - SIBLING: node1 is left sibling and node2 is right sibling
      *
      * @param link type of relation
      * @param node1 first checked node
