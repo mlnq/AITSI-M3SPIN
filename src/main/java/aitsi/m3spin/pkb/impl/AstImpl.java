@@ -98,8 +98,13 @@ public class AstImpl implements Ast {
     }
 
     @Override
-    public TNode getChild(TNode p) {
-        return p.getChild();
+    public TNode getChild(TNode parent) {
+        return parent.getChild();
+    }
+
+    @Override
+    public TNode getRightSibling(TNode node) {
+        return node.getRightSibling();
     }
 
     @Override

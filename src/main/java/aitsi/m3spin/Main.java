@@ -2,7 +2,7 @@ package aitsi.m3spin;
 
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.impl.Pkb;
-import aitsi.m3spin.query.QueryEvaluator;
+import aitsi.m3spin.query.evaluator.QueryEvaluator;
 import aitsi.m3spin.query.QueryPreprocessor;
 import aitsi.m3spin.query.QueryResultProjector;
 import aitsi.m3spin.spafrontend.extractor.DesignExtractor;
