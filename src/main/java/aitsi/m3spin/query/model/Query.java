@@ -10,7 +10,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Query {
-    private Declaration select;
+    private SelectedResult selectedResult;
     private List<SuchThat> suchThatList;
     private List<WithClause> withList;
+    private List<Pattern> patternList;
 }

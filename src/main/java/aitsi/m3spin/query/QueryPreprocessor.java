@@ -1,6 +1,6 @@
 package aitsi.m3spin.query;
 
-import aitsi.m3spin.query.model.Declaration;
+import aitsi.m3spin.query.model.Synonym;
 import aitsi.m3spin.query.model.Query;
 import aitsi.m3spin.spafrontend.parser.CodeScanner;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 public class QueryPreprocessor {
-    private final List<Declaration> declarationList = new ArrayList<>();
+    private final List<Synonym> synonymList = new ArrayList<>();
     private final List<Query> queryList = new ArrayList<>();
     private CodeScanner codeScanner;
 

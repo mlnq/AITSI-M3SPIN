@@ -5,12 +5,20 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class WithClause {
-    private Declaration synonym;
-    private AttributeEnum attribute;
-    //nazwa zmiennej lub integer
-    private RelationArgument value;
-}
+public class WithClause implements PqlClause {
+    private Reference leftHandReference;
+    private Reference rightHandReference;
 
-/*while w, stmt s, var v;
-select w such that Parent(w, s) with v.varName = 'duoawołowa'*/
+    @Override
+    public boolean usesSynonym(Synonym synonym) {
+        return usesSynonym(leftHandReference, synonym) || usesSynonym(rightHandReference, synonym);
+    }
+
+    public boolean usesSynonym(Reference reference, Synonym synonym) {
+        if (reference instanceof Synonym) {
+            return ((Synonym) reference).equals(synonym);
+        } else if (reference instanceof AttributeReference) {
+            return ((AttributeReference) reference).getSynonym().equals(synonym);
+        }
+    }
+}

@@ -15,6 +15,7 @@ import aitsi.m3spin.ui.SimpleReader;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.Set;
 
 public class Main {
 
@@ -29,7 +30,7 @@ public class Main {
             if (args != null && args.length == 1) {
                 simpleReader.readFile(args[0]);
 
-                processSimpleCodeAndPreparePkb(simpleReader.getCodeLines());
+                Pkb pkb = processSimpleCodeAndPreparePkb(simpleReader.getCodeLines());
 
                 System.out.println("Ready");
 
@@ -39,8 +40,8 @@ public class Main {
                     QueryPreprocessor qp = new QueryPreprocessor(pqlLines);
                     qp.parsePql();
 
-                    QueryEvaluator queryEvaluator = new QueryEvaluator(qp.getDeclarationList(), qp.getQueryList());
-                    List<TNode> rawResult = queryEvaluator.evaluateQueries();
+                    QueryEvaluator queryEvaluator = new QueryEvaluator(pkb, qp.getSynonymList() );
+                    List<Set<TNode>> rawResult = queryEvaluator.evaluateQueries(qp.getQueryList());
 
                     QueryResultProjector queryResultProjector = new QueryResultProjector();
                     String formattedResult = queryResultProjector.formatResult(rawResult);
@@ -63,13 +64,14 @@ public class Main {
         charset.set(null, null);
     }
 
-    private static void processSimpleCodeAndPreparePkb(List<String> codeLines) throws SimpleParserException {
+    private static Pkb processSimpleCodeAndPreparePkb(List<String> codeLines) throws SimpleParserException {
         Pkb pkb = new Pkb();
         Parser parser = new Parser(codeLines, pkb);
         parser.parse();
 
         DesignExtractor designExtractor = new DesignExtractor(pkb);
         designExtractor.extractDesigns();
+        return pkb;
     }
 
     private static String formatException(Exception e) {

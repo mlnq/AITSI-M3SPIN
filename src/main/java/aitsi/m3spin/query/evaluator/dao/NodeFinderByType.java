@@ -1,12 +1,9 @@
-package aitsi.m3spin.query.evaluator;
+package aitsi.m3spin.query.evaluator.dao;
 
 import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.impl.Pkb;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import sun.security.krb5.internal.crypto.EType;
 
 import java.util.Set;
 

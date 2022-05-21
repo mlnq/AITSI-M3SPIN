@@ -1,4 +1,4 @@
-package aitsi.m3spin.query.evaluator;
+package aitsi.m3spin.query.evaluator.dao;
 
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.impl.Pkb;
