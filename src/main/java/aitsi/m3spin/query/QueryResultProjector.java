@@ -1,10 +1,9 @@
 package aitsi.m3spin.query;
 
-import aitsi.m3spin.commons.interfaces.TNode;
+import aitsi.m3spin.query.model.result.QueryResult;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.Set;
 
 @NoArgsConstructor
 public class QueryResultProjector {
@@ -19,7 +18,7 @@ public class QueryResultProjector {
     *
     * Elementy odpowiedzi są unikalne, tzn. bez powtórzeń. - ewentualnie do Evaluatora
     * */
-    public String formatResult(List<Set<TNode>> rawResult) {
+    public String formatResult(List<QueryResult> rawResult) {
         return null;
     }
 }

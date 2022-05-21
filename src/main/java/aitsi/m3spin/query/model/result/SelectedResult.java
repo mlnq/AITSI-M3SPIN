@@ -1,6 +1,7 @@
-package aitsi.m3spin.query.model;
+package aitsi.m3spin.query.model.result;
 
 import aitsi.m3spin.query.evaluator.exception.NoSynonymInSelectedResultException;
+import aitsi.m3spin.query.model.Synonym;
 
 public interface SelectedResult {
     static Synonym extractSynonym(SelectedResult selectedResult) throws NoSynonymInSelectedResultException {

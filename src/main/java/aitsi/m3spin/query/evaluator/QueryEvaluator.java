@@ -6,10 +6,12 @@ import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.impl.Pkb;
 import aitsi.m3spin.query.evaluator.dao.NodeDao;
-import aitsi.m3spin.query.evaluator.exception.NoSuchAttributeException;
 import aitsi.m3spin.query.evaluator.exception.QueryEvaluatorException;
-import aitsi.m3spin.query.evaluator.exception.UnknownPqlClauseException;
 import aitsi.m3spin.query.model.*;
+import aitsi.m3spin.query.model.clauses.PqlClause;
+import aitsi.m3spin.query.model.result.BooleanResult;
+import aitsi.m3spin.query.model.result.QueryResult;
+import aitsi.m3spin.query.model.result.SelectedResult;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,62 +27,50 @@ public class QueryEvaluator {
         this.synonymList = synonymList;
     }
 
-    public List<Set<TNode>> evaluateQueries(List<Query> queryList) throws QueryEvaluatorException {//todo zmienić typ zwracany na QueryResult
-        List<Set<TNode>> results = new ArrayList<>();
+    public List<QueryResult> evaluateQueries(List<Query> queryList) throws QueryEvaluatorException {
+        List<QueryResult> results = new ArrayList<>();
         for (Query query : queryList) {
             results.add(evaluateQuery(query));
         }
         return results;
     }
 
-    public QueryResult evaluateQuery(Query query) throws QueryEvaluatorException {
+    public QueryResult evaluateQuery(Query query) throws QueryEvaluatorException {//todo rozbuć na mniejsze
         SelectedResult selectedResult = query.getSelectedResult();
 
-        List<PqlClause> queryClauses = query.getWithList().stream()
-                .map(withClause -> (PqlClause) withClause)
-                .collect(Collectors.toList());
-
-        queryClauses.addAll(
-                query.getSuchThatList().stream()
-                        .map(suchThat -> (PqlClause) suchThat)
-                        .collect(Collectors.toList())
-        );
+        List<PqlClause> queryClauses = query.getAllClauses();
 
         if (selectedResult instanceof BooleanResult) { //Select BOOLEAN
             for (PqlClause clause : queryClauses) {
-                if (!evaluateClause(clause)) {
-                    return false;
+                if (!clause.evaluate()) {
+                    return QueryResult.ofBoolean(false);
                 }
             }
-            return true;
+            return QueryResult.ofBoolean(true);
+
         } else { // Select synonym | Select synonym.attr
             Synonym selectedSynonym = SelectedResult.extractSynonym(selectedResult);
             Set<TNode> result = nodeDao.findAllByType(pkb.getAst().getRoot(), selectedSynonym.getType());
 
             for (PqlClause clause : queryClauses) {
                 if (clause.usesSynonym(selectedSynonym))
-                    result = evaluateClause(clause, result);
+                    result = clause.evaluate(result);
                 else {
-                    if (!evaluateClause(clause)) {
-                        return Collections.emptySet();
+                    if (!clause.evaluate()) {
+                        return QueryResult.ofTNodeSet(Collections.emptySet());
                     }
                 }
             }
-            return result;
+
+            if (selectedResult instanceof Synonym) return QueryResult.ofTNodeSet(result);
+            else return QueryResult.ofAttrList(
+                    result.stream()
+                            .map(TNode::getAttribute)
+                            .collect(Collectors.toList()));
         }
     }
 
-    private boolean evaluateClause(PqlClause clause) throws NoSuchAttributeException, UnknownPqlClauseException {
-        if (clause instanceof WithClause) return !evaluateWithClause((WithClause) clause).isEmpty();
-        else if (clause instanceof SuchThat) return !evaluateSuchThat((SuchThat) clause).isEmpty();
-        else throw new UnknownPqlClauseException(clause);
-    }
-
-    private Set<TNode> evaluateClause(PqlClause clause, Set<TNode> result) {
-        return null;
-    }
-
-//    private Set<TNode> evaluateWithList(List<WithClause> withList) throws NoSuchAttributeException {
+//    private Set<TNode> evaluateWithList(List<WithClause> withList) throws IncompatibleTypesComparisionException {//todo chyba do wywalenia
 //        Set<TNode> result = new HashSet<>();
 //        withList.forEach(withClause -> {
 //            result.addAll(evaluateWithClause(withClause));
@@ -88,40 +78,17 @@ public class QueryEvaluator {
 //        return result;
 //    }
 
-    private Set<TNode> evaluateWithClause(WithClause withClause) throws NoSuchAttributeException {
-        if (!withClause.getSynonym().getType().equals(withClause.getAttribute().getEntityType()))//todo ten if  do preprocessora
-            throw new NoSuchAttributeException(withClause.getSynonym(), withClause.getAttribute());
-        Set<TNode> nodes = nodeDao.findAllByType(pkb.getAst().getRoot(), withClause.getSynonym().getType());
-        nodes.stream()
-                .filter(node -> node.getAttribute().equals(withClause.getValue()));
-        return nodes;
-    }
-    //TODO ogarnąć atrybuty - zadanie #20
 
-
-    private Set<TNode> evaluateSuchThatList(List<SuchThat> suchThatList, Set<TNode> foundNodes, Synonym searched) {
-        Set<TNode> result;
-        //suchThatList.forEach(suchThat -> {
-        result = evaluateSuchThat(suchThatList.get(0));
-        //});
-        return result;
-    }
-
-    private Set<TNode> evaluateSuchThat(SuchThat suchThat) {
-        Set<TNode> result = new HashSet<>();
-        Set<TNode> firstArgumentNodes = getNodesFor(suchThat.getFirstArgument());
-        Set<TNode> secondArgumentNodes = getNodesFor(suchThat.getSecondArgument());
-
-        RelationEnum relation = suchThat.getRelation();
-        firstArgumentNodes.forEach(node -> {
-            if (suchThat.getFirstArgument() instanceof Synonym)
-                findNodesInRelation(node, relation);
-        });
-        return result;
-    }
+//    private Set<TNode> evaluateSuchThatList(List<SuchThat> suchThatList, Set<TNode> foundNodes, Synonym searched) { todo chyba do wywalenia
+//        Set<TNode> result;
+//        //suchThatList.forEach(suchThat -> {
+//        result = evaluateSuchThat(suchThatList.get(0));
+//        //});
+//        return result;
+//    }
 
     private Set<TNode> getNodesFor(RelationArgument relationArgument) {
-        Set<TNode> result = new HashSet<>();
+        Set<TNode> result;
         if (relationArgument instanceof Synonym) {
             Synonym synonym = (Synonym) relationArgument;
             result = nodeDao.findAllByType(pkb.getAst().getRoot(), synonym.getType());
@@ -139,7 +106,7 @@ public class QueryEvaluator {
         Set<TNode> result = new HashSet<>();
         switch (relation) {
             case FOLLOWS_T:
-                pkb.getFollowsInterface().getFollowsT((Statement) node).forEach(res -> result.add(res));
+                pkb.getFollowsInterface().getFollowsT((Statement) node).forEach(result::add);
                 break;
             case FOLLOWS:
                 result.add(pkb.getFollowsInterface().getFollows((Statement) node));

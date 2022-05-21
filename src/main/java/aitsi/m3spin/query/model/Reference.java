@@ -1,4 +1,12 @@
 package aitsi.m3spin.query.model;
 
-public interface Reference extends SelectedResult{
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@Getter
+public abstract class Reference {
+    private final ReferenceType type;
+
+    public abstract boolean equalsToSynonym(Synonym synonym);
 }

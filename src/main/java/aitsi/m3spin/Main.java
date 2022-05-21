@@ -1,10 +1,10 @@
 package aitsi.m3spin;
 
-import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.impl.Pkb;
-import aitsi.m3spin.query.evaluator.QueryEvaluator;
 import aitsi.m3spin.query.QueryPreprocessor;
 import aitsi.m3spin.query.QueryResultProjector;
+import aitsi.m3spin.query.evaluator.QueryEvaluator;
+import aitsi.m3spin.query.model.result.QueryResult;
 import aitsi.m3spin.spafrontend.extractor.DesignExtractor;
 import aitsi.m3spin.spafrontend.parser.Parser;
 import aitsi.m3spin.spafrontend.parser.exception.SimpleParserException;
@@ -15,7 +15,6 @@ import aitsi.m3spin.ui.SimpleReader;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.util.List;
-import java.util.Set;
 
 public class Main {
 
@@ -40,8 +39,8 @@ public class Main {
                     QueryPreprocessor qp = new QueryPreprocessor(pqlLines);
                     qp.parsePql();
 
-                    QueryEvaluator queryEvaluator = new QueryEvaluator(pkb, qp.getSynonymList() );
-                    List<Set<TNode>> rawResult = queryEvaluator.evaluateQueries(qp.getQueryList());
+                    QueryEvaluator queryEvaluator = new QueryEvaluator(pkb, qp.getSynonymList());
+                    List<QueryResult> rawResult = queryEvaluator.evaluateQueries(qp.getQueryList());
 
                     QueryResultProjector queryResultProjector = new QueryResultProjector();
                     String formattedResult = queryResultProjector.formatResult(rawResult);
