@@ -5,7 +5,7 @@ import aitsi.m3spin.commons.interfaces.Procedure;
 import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.impl.Pkb;
-import aitsi.m3spin.query.evaluator.dao.NodeDao;
+import aitsi.m3spin.query.evaluator.dao.TNodeDao;
 import aitsi.m3spin.query.evaluator.exception.QueryEvaluatorException;
 import aitsi.m3spin.query.model.*;
 import aitsi.m3spin.query.model.clauses.PqlClause;
@@ -18,12 +18,12 @@ import java.util.stream.Collectors;
 
 public class QueryEvaluator {
     private final Pkb pkb;
-    private final NodeDao nodeDao;
+    private final TNodeDao TNodeDao;
     private final List<Synonym> synonymList;
 
     public QueryEvaluator(Pkb pkb, List<Synonym> synonymList) {
         this.pkb = pkb;
-        this.nodeDao = new NodeDao(pkb);
+        this.TNodeDao = new TNodeDao(pkb);
         this.synonymList = synonymList;
     }
 
@@ -50,7 +50,7 @@ public class QueryEvaluator {
 
         } else { // Select synonym | Select synonym.attr
             Synonym selectedSynonym = SelectedResult.extractSynonym(selectedResult);
-            Set<TNode> result = nodeDao.findAllByType(pkb.getAst().getRoot(), selectedSynonym.getType());
+            Set<TNode> result = TNodeDao.findAllByType(pkb.getAst().getRoot(), selectedSynonym.getType());
 
             for (PqlClause clause : queryClauses) {
                 if (clause.usesSynonym(selectedSynonym))
@@ -91,13 +91,13 @@ public class QueryEvaluator {
         Set<TNode> result;
         if (relationArgument instanceof Synonym) {
             Synonym synonym = (Synonym) relationArgument;
-            result = nodeDao.findAllByType(pkb.getAst().getRoot(), synonym.getType());
+            result = TNodeDao.findAllByType(pkb.getAst().getRoot(), synonym.getType());
         } else if (relationArgument instanceof Constant) {
             Constant constant = (Constant) relationArgument;
-            result = nodeDao.findAllConstants(constant.getValue(), pkb.getAst().getRoot());
+            result = TNodeDao.findAllConstants(constant.getValue(), pkb.getAst().getRoot());
         } else {
             SimpleEntityName simpleEntityName = (SimpleEntityName) relationArgument;
-            result = nodeDao.findAllByAttribute(pkb.getAst().getRoot(), simpleEntityName.getEntityName());
+            result = TNodeDao.findAllByAttribute(pkb.getAst().getRoot(), simpleEntityName.getEntityName());
         }
         return result;
     }

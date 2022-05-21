@@ -20,24 +20,6 @@ public class WithClause implements PqlClause {
         return usesSynonym(leftHandReference, synonym) || usesSynonym(rightHandReference, synonym);
     }
 
-    @Override
-    public boolean evaluate() throws IncompatibleTypesComparisionException {
-        if (!leftHandReference.getType().equals(rightHandReference.getType()))//todo ten if  do preprocessora
-            throw new IncompatibleTypesComparisionException(leftHandReference.getType(), rightHandReference.getType());
-
-        Set<TNode> nodes = nodeDao.findAllByType(pkb.getAst().getRoot(), withClause.getSynonym().getType());//todo rozkminić, może singletonek?
-//        najłatwiej to by było wstrzuknąć zależności Springiem
-
-        nodes.stream()
-                .filter(node -> node.getAttribute().equals(withClause.getValue()));
-        return nodes;
-    }
-
-    @Override
-    public Set<TNode> evaluate(Set<TNode> previousResult) {
-        return null;
-    }
-
     public boolean usesSynonym(Reference reference, Synonym synonym) {
         return reference.equalsToSynonym(synonym);
     }

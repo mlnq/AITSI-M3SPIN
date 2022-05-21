@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.Set;
 
 @RequiredArgsConstructor
-public class NodeDao {
+public class TNodeDao {
     private final Pkb pkb;
 
     public Set<TNode> findAllConstants(int constValue, TNode startingNode) {

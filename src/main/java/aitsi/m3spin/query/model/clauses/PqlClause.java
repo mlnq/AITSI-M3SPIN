@@ -8,8 +8,4 @@ import java.util.Set;
 
 public interface PqlClause {
     boolean usesSynonym(Synonym synonym);
-
-    boolean evaluate() throws IncompatibleTypesComparisionException;
-
-    Set<TNode> evaluate(Set<TNode> previousResult);
 }

@@ -20,23 +20,4 @@ public class SuchThat implements PqlClause {
     public boolean usesSynonym(Synonym synonym) {
         return firstArgument.equals(synonym) || secondArgument.equals(synonym);//todo
     }
-
-    @Override
-    public boolean evaluate() throws IncompatibleTypesComparisionException {
-        Set<TNode> result = new HashSet<>();
-        Set<TNode> firstArgumentNodes = getNodesFor(suchThat.getFirstArgument());
-        Set<TNode> secondArgumentNodes = getNodesFor(suchThat.getSecondArgument());
-
-        RelationEnum relation = suchThat.getRelation();
-        firstArgumentNodes.forEach(node -> {
-            if (suchThat.getFirstArgument() instanceof Synonym)
-                findNodesInRelation(node, relation);
-        });
-        return result;
-    }
-
-    @Override
-    public Set<TNode> evaluate(Set<TNode> previousResult) {
-        return null;
-    }
 }
