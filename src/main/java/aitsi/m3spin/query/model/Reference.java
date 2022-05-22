@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public abstract class Reference {
-    private final ReferenceType type;
+    private final ReferenceType referenceType;
 
     public abstract boolean equalsToSynonym(Synonym synonym);
 }

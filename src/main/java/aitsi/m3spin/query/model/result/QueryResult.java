@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.Set;
 
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class QueryResult {
     public static QueryResult ofBoolean(boolean booleanResult) {
         return new BooleanResult(booleanResult);

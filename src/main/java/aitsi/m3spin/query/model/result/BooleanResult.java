@@ -1,8 +1,8 @@
 package aitsi.m3spin.query.model.result;
 
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
-@Data
+@RequiredArgsConstructor
 public class BooleanResult extends QueryResult implements SelectedResult {
     private final boolean result;
 }

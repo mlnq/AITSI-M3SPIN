@@ -11,12 +11,12 @@ import lombok.Getter;
 @Getter
 public class Synonym extends Reference {
     private final String name;
-    private final EntityType type;
+    private final EntityType synonymType;
 
     public Synonym(String name, EntityType type) {
         super(ReferenceType.SYNONYM);
         this.name = name;
-        this.type = type;
+        this.synonymType = type;
     }
 
     @Override
