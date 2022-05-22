@@ -5,46 +5,78 @@ import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.commons.interfaces.Variable;
 import aitsi.m3spin.pkb.interfaces.Modifies;
 
-import java.util.List;
+import java.util.*;
 
 public class ModifiesImpl implements Modifies {
-    @Override
-    public void setModifies(Statement stmt, Variable var) {
 
+    HashMap<Statement, HashSet<Variable>> varsModifiedByStmt = new HashMap<>();
+    HashMap<Procedure, HashSet<Variable>> varsModifiedByProc = new HashMap<>();
+
+    @Override
+    public void setModifies(Statement stmt, Variable variable) {
+        if (varsModifiedByStmt.containsKey(stmt)) {
+            varsModifiedByStmt.get(stmt).add(variable);
+        } else {
+            HashSet<Variable> varList = new HashSet<>();
+            varList.add(variable);
+            varsModifiedByStmt.put(stmt, varList);
+        }
     }
 
     @Override
-    public void setModifies(Procedure proc, Variable var) {
-
+    public void setModifies(Procedure proc, Variable variable) {
+        if (varsModifiedByProc.containsKey(proc)) {
+            varsModifiedByProc.get(proc).add(variable);
+        } else {
+            HashSet<Variable> varList = new HashSet<>();
+            varList.add(variable);
+            varsModifiedByProc.put(proc, varList);
+        }
     }
 
     @Override
-    public List<Variable> getModified(Statement stmt) {
-        return null;
+    public Set<Variable> getModified(Statement stmt) {
+        return varsModifiedByStmt.get(stmt);
     }
 
     @Override
-    public List<Variable> getModified(Procedure proc) {
-        return null;
+    public Set<Variable> getModified(Procedure proc) {
+        return varsModifiedByProc.get(proc);
     }
 
     @Override
-    public List<Statement> getModifiesStmt(Variable var) {
-        return null;
+    public List<Statement> getModifiesStmt(Variable variable) {
+        List<Statement> statementList = new ArrayList<>();
+        for (Map.Entry<Statement, HashSet<Variable>> entry : varsModifiedByStmt.entrySet()) {
+            if (entry.getValue().contains(variable))
+                statementList.add(entry.getKey());
+        }
+        return statementList;
     }
 
     @Override
-    public List<Procedure> getModifiesProc(Variable var) {
-        return null;
+    public List<Procedure> getModifiesProc(Variable variable) {
+        List<Procedure> procedureList = new ArrayList<>();
+        for (Map.Entry<Procedure, HashSet<Variable>> entry : varsModifiedByProc.entrySet()) {
+            if (entry.getValue().contains(variable))
+                procedureList.add(entry.getKey());
+        }
+        return procedureList;
     }
 
     @Override
-    public Boolean isModified(Variable var, Statement stmt) {
-        return null;
+    public boolean isModified(Variable variable, Statement stmt) {
+
+        if (varsModifiedByStmt.containsKey(stmt))
+            return varsModifiedByStmt.get(stmt).contains(variable);
+        return false;
     }
 
     @Override
-    public Boolean isModified(Variable var, Procedure proc) {
-        return null;
+    public boolean isModified(Variable variable, Procedure proc) {
+
+        if (varsModifiedByProc.containsKey(proc))
+            return varsModifiedByProc.get(proc).contains(variable);
+        return false;
     }
 }
