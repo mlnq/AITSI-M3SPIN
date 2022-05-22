@@ -1,9 +1,7 @@
-package aitsi.m3spin.query.model.result;
+package aitsi.m3spin.query.model.references;
 
 import aitsi.m3spin.query.model.AttributeEnum;
-import aitsi.m3spin.query.model.Reference;
-import aitsi.m3spin.query.model.ReferenceType;
-import aitsi.m3spin.query.model.Synonym;
+import aitsi.m3spin.query.model.result.SelectedResult;
 import lombok.Getter;
 
 @Getter
@@ -20,5 +18,10 @@ public class AttributeReference extends Reference implements SelectedResult {
     @Override
     public boolean equalsToSynonym(Synonym synonym) {
         return this.synonym.equals(synonym);
+    }
+
+    @Override
+    public boolean isConstantValue() {
+        return false;
     }
 }

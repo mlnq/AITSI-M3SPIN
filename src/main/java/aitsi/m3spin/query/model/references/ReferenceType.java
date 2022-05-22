@@ -1,5 +1,6 @@
-package aitsi.m3spin.query.model;
+package aitsi.m3spin.query.model.references;
 
+import aitsi.m3spin.query.model.AttributeTypeEnum;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

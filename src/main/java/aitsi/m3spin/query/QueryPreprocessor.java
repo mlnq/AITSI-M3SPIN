@@ -1,7 +1,7 @@
 package aitsi.m3spin.query;
 
-import aitsi.m3spin.query.model.Synonym;
 import aitsi.m3spin.query.model.Query;
+import aitsi.m3spin.query.model.references.Synonym;
 import aitsi.m3spin.spafrontend.parser.CodeScanner;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

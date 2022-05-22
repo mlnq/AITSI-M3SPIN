@@ -1,4 +1,4 @@
-package aitsi.m3spin.query.model;
+package aitsi.m3spin.query.model.references;
 
 
 import aitsi.m3spin.commons.enums.EntityType;
@@ -22,5 +22,10 @@ public class Synonym extends Reference {
     @Override
     public boolean equalsToSynonym(Synonym synonym) {
         return this.equals(synonym);
+    }
+
+    @Override
+    public boolean isConstantValue() {
+        return false;
     }
 }

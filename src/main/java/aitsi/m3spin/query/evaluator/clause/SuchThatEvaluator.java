@@ -5,8 +5,8 @@ import aitsi.m3spin.pkb.impl.Pkb;
 import aitsi.m3spin.query.evaluator.dao.TNodeDao;
 import aitsi.m3spin.query.model.Constant;
 import aitsi.m3spin.query.model.SimpleEntityName;
-import aitsi.m3spin.query.model.Synonym;
 import aitsi.m3spin.query.model.clauses.PqlClause;
+import aitsi.m3spin.query.model.references.Synonym;
 import aitsi.m3spin.query.model.relationships.RelationshipArgumentRef;
 import lombok.EqualsAndHashCode;
 

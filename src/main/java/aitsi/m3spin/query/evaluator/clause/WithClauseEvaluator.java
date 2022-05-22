@@ -3,8 +3,10 @@ package aitsi.m3spin.query.evaluator.clause;
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.impl.Pkb;
 import aitsi.m3spin.query.evaluator.dao.TNodeDao;
-import aitsi.m3spin.query.evaluator.exception.IncompatibleTypesComparisionException;
+import aitsi.m3spin.query.evaluator.exception.IncompatibleTypesComparisonException;
 import aitsi.m3spin.query.model.clauses.PqlClause;
+import aitsi.m3spin.query.model.clauses.WithClause;
+import aitsi.m3spin.query.model.references.ReferenceType;
 import lombok.EqualsAndHashCode;
 
 import java.util.Collections;
@@ -18,15 +20,19 @@ public class WithClauseEvaluator extends ClauseEvaluator {
     }
 
     @Override
-    public Set<TNode> evaluateClause(Set<TNode> previousResult) throws IncompatibleTypesComparisionException {
-//        WithClause withClause = (WithClause) pqlClause;
-//        ReferenceType leftHandType = withClause.getLeftHandReference().getSynonymType();
-//        ReferenceType rightHandType = withClause.getRightHandReference().getSynonymType();
-//        if (!leftHandType.equals(rightHandType))//todo ten if  do preprocessora
-//            throw new IncompatibleTypesComparisionException(leftHandType, rightHandType);
+    public Set<TNode> evaluateClause(Set<TNode> previousResult) throws IncompatibleTypesComparisonException {
+        WithClause withClause = (WithClause) pqlClause;
+
+        ReferenceType leftHandType = withClause.getLeftHandReference().getReferenceType();
+        ReferenceType rightHandType = withClause.getRightHandReference().getReferenceType();
+        if (!leftHandType.equals(rightHandType))//todo ten if  do preprocessora
+            throw new IncompatibleTypesComparisonException(leftHandType, rightHandType);
+
+//        Arrays.stream(withClause.getBothReferences())
+//                .filter(reference -> !reference.isConstantValue())
+//                .forEach(reference ->);//todo tutaj jestem ~Paweł
 //
-//        Set<TNode> nodes = nodeDao.findAllByType(pkb.getAst().getRoot(), withClause.getSynonym().getType());//todo rozkminić, może singletonek?
-////        najłatwiej to by było wstrzuknąć zależności Springiem
+//        Set<TNode> nodes = super.tNodeDao.findAllByType(pkb.getAst().getRoot(), withClause.get().getType());
 //
 //        nodes.stream()
 //                .filter(node -> node.getAttribute().equals(withClause.getValue()));

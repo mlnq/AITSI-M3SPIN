@@ -2,7 +2,7 @@ package aitsi.m3spin.query.model.clauses;
 
 import aitsi.m3spin.query.evaluator.clause.SuchThatEvaluator;
 import aitsi.m3spin.query.model.RelationEnum;
-import aitsi.m3spin.query.model.Synonym;
+import aitsi.m3spin.query.model.references.Synonym;
 import aitsi.m3spin.query.model.relationships.RelationshipArgumentRef;
 import lombok.Getter;
 

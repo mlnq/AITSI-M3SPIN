@@ -3,7 +3,7 @@ package aitsi.m3spin.query.evaluator.clause;
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.impl.Pkb;
 import aitsi.m3spin.query.evaluator.dao.TNodeDao;
-import aitsi.m3spin.query.evaluator.exception.IncompatibleTypesComparisionException;
+import aitsi.m3spin.query.evaluator.exception.IncompatibleTypesComparisonException;
 import aitsi.m3spin.query.evaluator.exception.UnknownPqlClauseException;
 import aitsi.m3spin.query.model.clauses.Pattern;
 import aitsi.m3spin.query.model.clauses.PqlClause;
@@ -29,17 +29,17 @@ public abstract class ClauseEvaluator {
     }
 
 
-    public boolean evaluateBooleanClause() throws IncompatibleTypesComparisionException {
+    public boolean evaluateBooleanClause() throws IncompatibleTypesComparisonException {
         return evaluateBooleanClause(Collections.emptySet());
     }
 
-    public boolean evaluateBooleanClause(Set<TNode> previousResult) throws IncompatibleTypesComparisionException {
+    public boolean evaluateBooleanClause(Set<TNode> previousResult) throws IncompatibleTypesComparisonException {
         return !evaluateClause(previousResult).isEmpty();
     }
 
-    public Set<TNode> evaluateClause() throws IncompatibleTypesComparisionException {
+    public Set<TNode> evaluateClause() throws IncompatibleTypesComparisonException {
         return evaluateClause(Collections.emptySet());
     }
 
-    public abstract Set<TNode> evaluateClause(Set<TNode> previousResult) throws IncompatibleTypesComparisionException;
+    public abstract Set<TNode> evaluateClause(Set<TNode> previousResult) throws IncompatibleTypesComparisonException;
 }
