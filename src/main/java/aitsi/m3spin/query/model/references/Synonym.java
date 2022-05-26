@@ -2,6 +2,7 @@ package aitsi.m3spin.query.model.references;
 
 
 import aitsi.m3spin.commons.enums.EntityType;
+import aitsi.m3spin.query.model.result.SelectedResult;
 import lombok.Getter;
 
 //@Getter
@@ -9,7 +10,7 @@ import lombok.Getter;
 //@NoArgsConstructor
 //@EqualsAndHashCode
 @Getter
-public class Synonym extends Reference {
+public class Synonym extends ComplexTypeReference implements SelectedResult {
     private final String name;
     private final EntityType synonymType;
 
@@ -27,5 +28,10 @@ public class Synonym extends Reference {
     @Override
     public boolean isConstantValue() {
         return false;
+    }
+
+    @Override
+    public Synonym getSynonym() {
+        return this;
     }
 }

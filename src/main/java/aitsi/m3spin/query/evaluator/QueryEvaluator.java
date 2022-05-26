@@ -12,11 +12,11 @@ import aitsi.m3spin.query.model.references.Synonym;
 import aitsi.m3spin.query.model.result.BooleanResult;
 import aitsi.m3spin.query.model.result.QueryResult;
 import aitsi.m3spin.query.model.result.SelectedResult;
+import aitsi.m3spin.query.model.result.TNodeSetResult;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class QueryEvaluator {
@@ -47,30 +47,30 @@ public class QueryEvaluator {
         if (selectedResult instanceof BooleanResult) { //Select BOOLEAN
             for (PqlClause clause : queryClauses) {
                 ClauseEvaluator clauseEvaluator = clauseEvaluatorFactory.forClause(clause);
-                if (!clauseEvaluator.evaluateBooleanClause()) {
+                if (!clauseEvaluator.evaluateBooleanClause(selectedResult).get()) {
                     return QueryResult.ofBoolean(false);
                 }
             }
             return QueryResult.ofBoolean(true);
 
         } else { // Select synonym | Select synonym.attr
-            Synonym selectedSynonym = SelectedResult.extractSynonym(selectedResult);
-            Set<TNode> result = tNodeDao.findAllByType(pkb.getAst().getRoot(), selectedSynonym.getSynonymType());
+            Synonym selectedSynonym = selectedResult.getSynonym();
+            TNodeSetResult result = new TNodeSetResult(tNodeDao.findAllByType(pkb.getAst().getRoot(), selectedSynonym.getSynonymType()));
 
             for (PqlClause clause : queryClauses) {
                 ClauseEvaluator clauseEvaluator = clauseEvaluatorFactory.forClause(clause);
                 if (clause.usesSynonym(selectedSynonym))
-                    result = clauseEvaluator.evaluateClause(result);
+                    result = (TNodeSetResult) clauseEvaluator.evaluateClause(result, selectedResult);
                 else {
-                    if (!clauseEvaluator.evaluateBooleanClause()) {
+                    if (!clauseEvaluator.evaluateBooleanClause(selectedResult).get()) {
                         return QueryResult.ofTNodeSet(Collections.emptySet());
                     }
                 }
             }
 
-            if (selectedResult instanceof Synonym) return QueryResult.ofTNodeSet(result);
+            if (selectedResult instanceof Synonym) return QueryResult.ofTNodeSet(result.getResult());
             else return QueryResult.ofAttrList(
-                    result.stream()
+                    result.getResult().stream()
                             .map(TNode::getAttribute)
                             .collect(Collectors.toList()));
         }

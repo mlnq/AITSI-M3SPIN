@@ -8,6 +8,9 @@ import aitsi.m3spin.query.model.SimpleEntityName;
 import aitsi.m3spin.query.model.clauses.PqlClause;
 import aitsi.m3spin.query.model.references.Synonym;
 import aitsi.m3spin.query.model.relationships.RelationshipArgumentRef;
+import aitsi.m3spin.query.model.result.QueryResult;
+import aitsi.m3spin.query.model.result.SelectedResult;
+import aitsi.m3spin.query.model.result.TNodeSetResult;
 import lombok.EqualsAndHashCode;
 
 import java.util.Collections;
@@ -21,7 +24,7 @@ public class SuchThatEvaluator extends ClauseEvaluator {
 
 
     @Override
-    public Set<TNode> evaluateClause(Set<TNode> previousResult) {
+    public QueryResult evaluateClause(TNodeSetResult previousResult, SelectedResult selectedResult) {
 //        Set<TNode> result = new HashSet<>();
 //        Set<TNode> firstArgumentNodes = getNodesFor(suchThat.getFirstArgument());
 //        Set<TNode> secondArgumentNodes = getNodesFor(suchThat.getSecondArgument());
@@ -32,7 +35,7 @@ public class SuchThatEvaluator extends ClauseEvaluator {
 //                findNodesInRelation(node, relation);
 //        });
 //        return result; //todo
-        return Collections.emptySet();
+        return new TNodeSetResult(Collections.emptySet());
     }
 
     private Set<TNode> getNodesFor(RelationshipArgumentRef relationshipArgumentRef) {

@@ -9,6 +9,10 @@ import aitsi.m3spin.query.model.clauses.Pattern;
 import aitsi.m3spin.query.model.clauses.PqlClause;
 import aitsi.m3spin.query.model.clauses.SuchThat;
 import aitsi.m3spin.query.model.clauses.WithClause;
+import aitsi.m3spin.query.model.result.BooleanResult;
+import aitsi.m3spin.query.model.result.QueryResult;
+import aitsi.m3spin.query.model.result.SelectedResult;
+import aitsi.m3spin.query.model.result.TNodeSetResult;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collections;
@@ -29,17 +33,17 @@ public abstract class ClauseEvaluator {
     }
 
 
-    public boolean evaluateBooleanClause() throws IncompatibleTypesComparisonException {
-        return evaluateBooleanClause(Collections.emptySet());
+    public BooleanResult evaluateBooleanClause(SelectedResult selectedResult) throws IncompatibleTypesComparisonException {
+        return evaluateBooleanClause(Collections.emptySet(), selectedResult);
     }
 
-    public boolean evaluateBooleanClause(Set<TNode> previousResult) throws IncompatibleTypesComparisonException {
-        return !evaluateClause(previousResult).isEmpty();
+    public BooleanResult evaluateBooleanClause(Set<TNode> previousResult, SelectedResult selectedResult) throws IncompatibleTypesComparisonException {
+        return (BooleanResult) evaluateClause(new TNodeSetResult(previousResult), selectedResult);
     }
 
-    public Set<TNode> evaluateClause() throws IncompatibleTypesComparisonException {
-        return evaluateClause(Collections.emptySet());
+    public QueryResult evaluateClause(SelectedResult selectedResult) throws IncompatibleTypesComparisonException {
+        return evaluateClause(new TNodeSetResult(Collections.emptySet()), selectedResult);
     }
 
-    public abstract Set<TNode> evaluateClause(Set<TNode> previousResult) throws IncompatibleTypesComparisonException;
+    public abstract QueryResult evaluateClause(TNodeSetResult previousResult, SelectedResult selectedResult) throws IncompatibleTypesComparisonException;
 }

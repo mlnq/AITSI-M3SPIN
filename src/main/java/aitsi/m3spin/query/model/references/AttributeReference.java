@@ -5,7 +5,7 @@ import aitsi.m3spin.query.model.result.SelectedResult;
 import lombok.Getter;
 
 @Getter
-public class AttributeReference extends Reference implements SelectedResult {
+public class AttributeReference extends ComplexTypeReference implements SelectedResult {
     private final Synonym synonym;
     private final AttributeEnum attribute;
 
