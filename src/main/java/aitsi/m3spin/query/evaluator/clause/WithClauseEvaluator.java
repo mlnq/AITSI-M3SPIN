@@ -6,18 +6,14 @@ import aitsi.m3spin.query.evaluator.dao.TNodeDao;
 import aitsi.m3spin.query.evaluator.exception.IncompatibleTypesComparisonException;
 import aitsi.m3spin.query.model.clauses.PqlClause;
 import aitsi.m3spin.query.model.clauses.WithClause;
-import aitsi.m3spin.query.model.references.ComplexTypeReference;
-import aitsi.m3spin.query.model.references.PrimitiveTypeReference;
-import aitsi.m3spin.query.model.references.Reference;
-import aitsi.m3spin.query.model.references.ReferenceType;
+import aitsi.m3spin.query.model.references.*;
 import aitsi.m3spin.query.model.result.BooleanResult;
 import aitsi.m3spin.query.model.result.QueryResult;
 import aitsi.m3spin.query.model.result.SelectedResult;
 import aitsi.m3spin.query.model.result.TNodeSetResult;
 import lombok.EqualsAndHashCode;
 
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.Arrays;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = false)
@@ -39,28 +35,35 @@ public class WithClauseEvaluator extends ClauseEvaluator {
         Reference leftHandRef = withClause.getLeftHandReference();
         Reference rightHandRef = withClause.getRightHandReference();
 
-        Set<TNode> leftResult = new HashSet<>();//todo
-        Set<TNode> rightResult = new HashSet<>();
-
-        if (!leftHandRef.isConstantValue()) {
-            ComplexTypeReference complexReference = (ComplexTypeReference) leftHandRef;
-            leftResult = tNodeDao.findAllByType(pkb.getAst().getRoot(), complexReference.getSynonym().getSynonymType());
-        }
-        if (!rightHandRef.isConstantValue()) {
-            ComplexTypeReference complexReference = (ComplexTypeReference) leftHandRef;
-            rightResult = tNodeDao.findAllByType(pkb.getAst().getRoot(), complexReference.getSynonym().getSynonymType());
-        }
-
         if (leftHandRef.isConstantValue() && rightHandRef.isConstantValue()) {
             if (((PrimitiveTypeReference) leftHandRef).getValue()
                     .equals(((PrimitiveTypeReference) rightHandRef).getValue()))
                 return new BooleanResult(true);
             else return new BooleanResult(false);
-        } else if (leftHandRef.isConstantValue() ^ rightHandRef.isConstantValue()) {
-//todo wip Paweł
-        } else {
 
+        } else if (leftHandRef.isConstantValue() ^ rightHandRef.isConstantValue()) {
+            final PrimitiveTypeReference[] primitiveRef = new PrimitiveTypeReference[1];
+            final AttributeReference[] attributeRef = new AttributeReference[1];
+            Arrays.stream(withClause.getBothReferences())
+                    .forEach(reference -> {
+                        if (reference.isConstantValue()) primitiveRef[0] = (PrimitiveTypeReference) reference;
+                        else attributeRef[0] = (AttributeReference) reference;
+                    });
+
+            Set<TNode> tNodes = tNodeDao.findAllByType(pkb.getAst().getRoot(), attributeRef[0].getSynonym().getSynonymType());
+
+            return new TNodeSetResult(tNodes);
+
+        } else {
+            Set<TNode> leftResult = tNodeDao.findAllByType(pkb.getAst().getRoot(),
+                    ((ComplexTypeReference) leftHandRef).getSynonym().getSynonymType());
+
+            Set<TNode> rightResult = tNodeDao.findAllByType(pkb.getAst().getRoot(),
+                    ((ComplexTypeReference) rightHandRef).getSynonym().getSynonymType());
+
+            leftResult.retainAll(rightResult);
+
+            return new TNodeSetResult(leftResult);
         }
-        return new TNodeSetResult(Collections.emptySet());
     }
 }

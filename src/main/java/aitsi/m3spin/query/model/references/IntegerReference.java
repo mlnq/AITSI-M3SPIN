@@ -6,7 +6,7 @@ import lombok.Getter;
 public class IntegerReference extends PrimitiveTypeReference {
     private final int value;
 
-    protected IntegerReference(int value) {
+    public IntegerReference(int value) {
         super(ReferenceType.INTEGER);
         this.value = value;
     }

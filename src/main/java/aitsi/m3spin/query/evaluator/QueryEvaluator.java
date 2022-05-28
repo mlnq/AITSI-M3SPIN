@@ -1,13 +1,14 @@
 package aitsi.m3spin.query.evaluator;
 
-import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.impl.Pkb;
+import aitsi.m3spin.pkb.model.AttributableNode;
 import aitsi.m3spin.query.evaluator.clause.ClauseEvaluator;
 import aitsi.m3spin.query.evaluator.clause.ClauseEvaluatorFactory;
 import aitsi.m3spin.query.evaluator.dao.TNodeDao;
 import aitsi.m3spin.query.evaluator.exception.QueryEvaluatorException;
 import aitsi.m3spin.query.model.Query;
 import aitsi.m3spin.query.model.clauses.PqlClause;
+import aitsi.m3spin.query.model.references.PrimitiveTypeReference;
 import aitsi.m3spin.query.model.references.Synonym;
 import aitsi.m3spin.query.model.result.BooleanResult;
 import aitsi.m3spin.query.model.result.QueryResult;
@@ -71,7 +72,8 @@ public class QueryEvaluator {
             if (selectedResult instanceof Synonym) return QueryResult.ofTNodeSet(result.getResult());
             else return QueryResult.ofAttrList(
                     result.getResult().stream()
-                            .map(TNode::getAttribute)
+                            .map(AttributableNode.class::cast)
+                            .map(attributableNode -> (PrimitiveTypeReference) attributableNode.getAttribute())
                             .collect(Collectors.toList()));
         }
     }

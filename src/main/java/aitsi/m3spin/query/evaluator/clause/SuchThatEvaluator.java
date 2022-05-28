@@ -2,6 +2,7 @@ package aitsi.m3spin.query.evaluator.clause;
 
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.impl.Pkb;
+import aitsi.m3spin.pkb.model.StringAttribute;
 import aitsi.m3spin.query.evaluator.dao.TNodeDao;
 import aitsi.m3spin.query.model.Constant;
 import aitsi.m3spin.query.model.SimpleEntityName;
@@ -39,7 +40,7 @@ public class SuchThatEvaluator extends ClauseEvaluator {
     }
 
     private Set<TNode> getNodesFor(RelationshipArgumentRef relationshipArgumentRef) {
-        Set<TNode> result;
+        Set<? extends TNode> result;
         if (relationshipArgumentRef instanceof Synonym) {
             Synonym synonym = (Synonym) relationshipArgumentRef;
             result = tNodeDao.findAllByType(pkb.getAst().getRoot(), synonym.getSynonymType());
@@ -48,8 +49,8 @@ public class SuchThatEvaluator extends ClauseEvaluator {
             result = tNodeDao.findAllConstants(constant.getValue(), pkb.getAst().getRoot());
         } else {
             SimpleEntityName simpleEntityName = (SimpleEntityName) relationshipArgumentRef;
-            result = tNodeDao.findAllByAttribute(pkb.getAst().getRoot(), simpleEntityName.getEntityName());
+            result = tNodeDao.findAllByAttribute(pkb.getAst().getRoot(), new StringAttribute(simpleEntityName.getEntityName()));
         }
-        return result;
+        return (Set<TNode>) result;//todo
     }
 }

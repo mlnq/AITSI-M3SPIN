@@ -2,9 +2,6 @@ package aitsi.m3spin.query.evaluator.dao;
 
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.impl.Pkb;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;

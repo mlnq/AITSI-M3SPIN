@@ -1,6 +1,7 @@
 package aitsi.m3spin.query.model.result;
 
 import aitsi.m3spin.commons.interfaces.TNode;
+import aitsi.m3spin.query.model.references.PrimitiveTypeReference;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
@@ -17,7 +18,7 @@ public class QueryResult {
         return new TNodeSetResult(tNodeSet);
     }
 
-    public static QueryResult ofAttrList(List<String> attrList) {
+    public static QueryResult ofAttrList(List<PrimitiveTypeReference> attrList) {
         return new AttrListResult(attrList);
     }
 }

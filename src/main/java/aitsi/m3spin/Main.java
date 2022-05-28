@@ -1,5 +1,6 @@
 package aitsi.m3spin;
 
+import aitsi.m3spin.commons.interfaces.Procedure;
 import aitsi.m3spin.pkb.impl.Pkb;
 import aitsi.m3spin.query.QueryPreprocessor;
 import aitsi.m3spin.query.QueryResultProjector;
@@ -14,6 +15,7 @@ import aitsi.m3spin.ui.SimpleReader;
 
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.List;
 
 public class Main {
@@ -66,7 +68,8 @@ public class Main {
     private static Pkb processSimpleCodeAndPreparePkb(List<String> codeLines) throws SimpleParserException {
         Pkb pkb = new Pkb();
         Parser parser = new Parser(codeLines, pkb);
-        parser.parse();
+        List<Procedure> parsedProcedures = parser.parse();
+        parser.fillPkb(parsedProcedures);
 
         DesignExtractor designExtractor = new DesignExtractor(pkb);
         designExtractor.extractDesigns();
@@ -74,6 +77,6 @@ public class Main {
     }
 
     private static String formatException(Exception e) {
-        return "#" + e.getMessage();
+        return "#" + Arrays.toString(e.getStackTrace());
     }
 }

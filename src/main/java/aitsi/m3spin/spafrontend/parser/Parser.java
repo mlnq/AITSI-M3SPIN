@@ -119,13 +119,13 @@ public class Parser {
     }
 
     private RelationshipsInfo fillPkb(Variable variable, Expression expression) {
-        pkb.getVarTable().insertVar(variable.getName());
+        pkb.getVarTable().insertVar(variable.getNameAttr());
         expression = (Expression) pkb.getAst().setSibling(variable, expression);
         return fillPkb(expression);
     }
 
     private RelationshipsInfo fillPkb(Variable variable, StatementList stmtList) throws UnknownStatementType {
-        pkb.getVarTable().insertVar(variable.getName());
+        pkb.getVarTable().insertVar(variable.getNameAttr());
         stmtList = (StatementList) pkb.getAst().setSibling(variable, stmtList);
         return fillPkb(stmtList);
     }
@@ -135,7 +135,7 @@ public class Parser {
             RelationshipsInfo relationshipsInfo = new RelationshipsInfo();
             if (expression.getFactor() instanceof Variable) {
                 Variable variable = (Variable) expression.getFactor();
-                pkb.getVarTable().insertVar(variable.getName());
+                pkb.getVarTable().insertVar(variable.getNameAttr());
                 relationshipsInfo.addUsedVar(variable);
             }
             Factor factor = (Factor) pkb.getAst().setChild(expression, expression.getFactor());

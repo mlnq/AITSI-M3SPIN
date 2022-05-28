@@ -19,9 +19,5 @@ public interface TNode {
 
     void setChild(TNode child);
 
-    String getAttribute();
-
-    void setAttribute(String attribute);
-
     EntityType getType();
 }

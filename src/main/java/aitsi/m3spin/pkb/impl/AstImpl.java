@@ -3,10 +3,12 @@ package aitsi.m3spin.pkb.impl;
 import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.enums.LinkType;
 import aitsi.m3spin.commons.impl.*;
+import aitsi.m3spin.commons.interfaces.NodeAttribute;
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.exception.IllegalLinkTypeException;
 import aitsi.m3spin.pkb.exception.IllegalNodeTypeException;
 import aitsi.m3spin.pkb.interfaces.Ast;
+import aitsi.m3spin.pkb.model.AttributableNode;
 
 public class AstImpl implements Ast {
     private int procId = 0;
@@ -44,8 +46,8 @@ public class AstImpl implements Ast {
     }
 
     @Override
-    public void setName(TNode n, String attr) {
-        n.setAttribute(attr);
+    public void setAttribute(AttributableNode node, NodeAttribute attr) {
+        node.setAttribute(attr);
     }
 
     @Override
@@ -93,7 +95,7 @@ public class AstImpl implements Ast {
     }
 
     @Override
-    public String getName(TNode node) {
+    public NodeAttribute getAttribute(AttributableNode node) {
         return node.getAttribute();
     }
 
