@@ -18,17 +18,31 @@ public class TNodeDao {
         return findAllByTypeAndAttr(startingNode, EntityType.CONSTANT, new IntegerReference(constValue));
     }
 
-    public Set<TNode> findAllByType(TNode startingNode, EntityType type) {
+    private Set<TNode> findAllByType(TNode startingNode, EntityType type) {
         return NodeFinderByType.find(startingNode, pkb, type);
     }
 
-    Set<TNode> findAllByTypeAndAttr(TNode startingNode, EntityType type, NodeAttribute attribute) {
+    public Set<TNode> findAllByType(EntityType type) {
+        return findAllByType(pkb.getAst().getRoot(), type);
+    }
+
+    private Set<TNode> findAllByTypeAndAttr(TNode startingNode, EntityType type, NodeAttribute attribute) {
         return NodeFinderByTypeAndAttribute.find(startingNode, pkb, type, attribute);
     }
 
-    public Set<AttributableNode> findAllByAttribute(TNode startingNode, NodeAttribute attribute) {
+    Set<TNode> findAllByTypeAndAttr(EntityType type, NodeAttribute attribute) {
+        return findAllByTypeAndAttr(pkb.getAst().getRoot(), type, attribute);
+    }
+
+    private Set<AttributableNode> findAllByAttribute(TNode startingNode, NodeAttribute attribute) {
         return NodeFinderByAttribute.find(startingNode, pkb, attribute);
     }
 
+    public Set<AttributableNode> findAllByAttribute(NodeAttribute attribute) {
+        return findAllByAttribute(pkb.getAst().getRoot(), attribute);
+    }
 
+    public Set<TNode> findAll() {
+        return NodeFinderAll.find(pkb.getAst().getRoot(), pkb);
+    }
 }

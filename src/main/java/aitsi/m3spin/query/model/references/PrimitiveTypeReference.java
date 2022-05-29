@@ -3,7 +3,7 @@ package aitsi.m3spin.query.model.references;
 import aitsi.m3spin.commons.interfaces.NodeAttribute;
 import aitsi.m3spin.query.evaluator.exception.IncompatibleTypesComparisonException;
 
-public abstract class PrimitiveTypeReference extends Reference implements NodeAttribute {
+public abstract class PrimitiveTypeReference extends WithArgumentRef implements NodeAttribute {
     protected PrimitiveTypeReference(ReferenceType referenceType) {
         super(referenceType);
     }
@@ -13,5 +13,5 @@ public abstract class PrimitiveTypeReference extends Reference implements NodeAt
         throw new IncompatibleTypesComparisonException(synonym.getReferenceType(), this.getReferenceType());
     }
 
-//    public abstract Object getValue();
+    public abstract NodeAttribute getAsAttribute();
 }

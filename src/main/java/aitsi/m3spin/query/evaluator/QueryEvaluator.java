@@ -23,12 +23,10 @@ import java.util.stream.Collectors;
 public class QueryEvaluator {
     private final Pkb pkb;
     private final TNodeDao tNodeDao;
-    private final List<Synonym> synonymList;
 
-    public QueryEvaluator(Pkb pkb, List<Synonym> synonymList) {
+    public QueryEvaluator(Pkb pkb) {
         this.pkb = pkb;
         this.tNodeDao = new TNodeDao(pkb);
-        this.synonymList = synonymList;
     }
 
     public List<QueryResult> evaluateQueries(List<Query> queryList) throws QueryEvaluatorException {
@@ -39,7 +37,7 @@ public class QueryEvaluator {
         return results;
     }
 
-    public QueryResult evaluateQuery(Query query) throws QueryEvaluatorException {//todo rozbuć na mniejsze
+    public QueryResult evaluateQuery(Query query) throws QueryEvaluatorException {//todo ATS-5 rozbuć na mniejsze
         SelectedResult selectedResult = query.getSelectedResult();
 
         List<PqlClause> queryClauses = query.getAllClauses();
@@ -56,7 +54,7 @@ public class QueryEvaluator {
 
         } else { // Select synonym | Select synonym.attr
             Synonym selectedSynonym = selectedResult.getSynonym();
-            TNodeSetResult result = new TNodeSetResult(tNodeDao.findAllByType(pkb.getAst().getRoot(), selectedSynonym.getSynonymType()));
+            TNodeSetResult result = new TNodeSetResult(tNodeDao.findAllByType(selectedSynonym.getSynonymType()));
 
             for (PqlClause clause : queryClauses) {
                 ClauseEvaluator clauseEvaluator = clauseEvaluatorFactory.forClause(clause);
@@ -77,39 +75,6 @@ public class QueryEvaluator {
                             .collect(Collectors.toList()));
         }
     }
-
-//    private Set<TNode> findNodesInRelation(TNode node, RelationEnum relation) {//todo
-//        Set<TNode> result = new HashSet<>();
-//        switch (relation) {
-//            case FOLLOWS_T:
-//                pkb.getFollowsInterface().getFollowsT((Statement) node).forEach(result::add);
-//                break;
-//            case FOLLOWS:
-//                result.add(pkb.getFollowsInterface().getFollows((Statement) node));
-//                break;
-//            case PARENT_T:
-//                result = pkb.getParentInterface().getParentT((Statement) node);
-//                break;
-//            case PARENT:
-//                result.add(pkb.getParentInterface().getParent((Statement) node));
-//                break;
-//            case USES:
-//                if (((Synonym) node).getSynonymType().equals(EntityType.PROCEDURE)) {
-//                    result = pkb.getUsesInterface().getVarsUsedByProc((Procedure) node);
-//                } else {
-//                    result = pkb.getUsesInterface().getVarsUsedByStmt((Statement) node);
-//                }
-//                break;
-//            case MODIFIES:
-//                if (node instanceof Procedure) {
-//                    result = pkb.getModifiesInterface().getModified((Procedure) node);
-//                } else {
-//                    result = pkb.getModifiesInterface().getModified((Statement) node);
-//                }
-//                break;
-//        }
-//        return result;
-//    }
 
 
 }

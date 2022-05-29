@@ -2,19 +2,19 @@ package aitsi.m3spin.query.model.clauses;
 
 import aitsi.m3spin.query.evaluator.clause.WithClauseEvaluator;
 import aitsi.m3spin.query.evaluator.exception.IncompatibleTypesComparisonException;
-import aitsi.m3spin.query.model.references.Reference;
 import aitsi.m3spin.query.model.references.Synonym;
+import aitsi.m3spin.query.model.references.WithArgumentRef;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
 public class WithClause implements PqlClause {
-    private Reference leftHandReference;
-    private Reference rightHandReference;
+    private WithArgumentRef leftHandReference;
+    private WithArgumentRef rightHandReference;
 
-    public Reference[] getBothReferences() {
-        return new Reference[]{leftHandReference, rightHandReference};
+    public WithArgumentRef[] getBothReferences() {
+        return new WithArgumentRef[]{leftHandReference, rightHandReference};
     }
 
     @Override
@@ -27,7 +27,7 @@ public class WithClause implements PqlClause {
         return WithClauseEvaluator.class;
     }
 
-    public boolean usesSynonym(Reference reference, Synonym synonym) throws IncompatibleTypesComparisonException {
+    public boolean usesSynonym(WithArgumentRef reference, Synonym synonym) throws IncompatibleTypesComparisonException {
         return reference.equalsToSynonym(synonym);
     }
 }

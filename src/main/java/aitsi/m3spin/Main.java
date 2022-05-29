@@ -41,7 +41,7 @@ public class Main {
                     QueryPreprocessor qp = new QueryPreprocessor(pqlLines);
                     qp.parsePql();
 
-                    QueryEvaluator queryEvaluator = new QueryEvaluator(pkb, qp.getSynonymList());
+                    QueryEvaluator queryEvaluator = new QueryEvaluator(pkb);
                     List<QueryResult> rawResult = queryEvaluator.evaluateQueries(qp.getQueryList());
 
                     QueryResultProjector queryResultProjector = new QueryResultProjector();

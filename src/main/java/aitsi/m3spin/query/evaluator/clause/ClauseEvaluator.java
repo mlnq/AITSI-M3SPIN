@@ -4,7 +4,9 @@ import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.impl.Pkb;
 import aitsi.m3spin.query.evaluator.dao.TNodeDao;
 import aitsi.m3spin.query.evaluator.exception.IncompatibleTypesComparisonException;
+import aitsi.m3spin.query.evaluator.exception.QueryEvaluatorException;
 import aitsi.m3spin.query.evaluator.exception.UnknownPqlClauseException;
+import aitsi.m3spin.query.evaluator.exception.UnknownReferenceType;
 import aitsi.m3spin.query.model.clauses.Pattern;
 import aitsi.m3spin.query.model.clauses.PqlClause;
 import aitsi.m3spin.query.model.clauses.SuchThat;
@@ -33,17 +35,17 @@ public abstract class ClauseEvaluator {
     }
 
 
-    public BooleanResult evaluateBooleanClause(SelectedResult selectedResult) throws IncompatibleTypesComparisonException {
+    public BooleanResult evaluateBooleanClause(SelectedResult selectedResult) throws QueryEvaluatorException {
         return evaluateBooleanClause(Collections.emptySet(), selectedResult);
     }
 
-    public BooleanResult evaluateBooleanClause(Set<TNode> previousResult, SelectedResult selectedResult) throws IncompatibleTypesComparisonException {
+    public BooleanResult evaluateBooleanClause(Set<TNode> previousResult, SelectedResult selectedResult) throws QueryEvaluatorException {
         return (BooleanResult) evaluateClause(new TNodeSetResult(previousResult), selectedResult);
     }
 
-    public QueryResult evaluateClause(SelectedResult selectedResult) throws IncompatibleTypesComparisonException {
+    public QueryResult evaluateClause(SelectedResult selectedResult) throws QueryEvaluatorException {
         return evaluateClause(new TNodeSetResult(Collections.emptySet()), selectedResult);
     }
 
-    public abstract QueryResult evaluateClause(TNodeSetResult previousResult, SelectedResult selectedResult) throws IncompatibleTypesComparisonException;
+    public abstract QueryResult evaluateClause(TNodeSetResult previousResult, SelectedResult selectedResult) throws IncompatibleTypesComparisonException, UnknownReferenceType;
 }

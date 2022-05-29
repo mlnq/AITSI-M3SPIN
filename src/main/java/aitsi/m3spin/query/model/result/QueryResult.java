@@ -14,7 +14,7 @@ public class QueryResult {
         return new BooleanResult(booleanResult);
     }
 
-    public static QueryResult ofTNodeSet(Set<TNode> tNodeSet) {
+    public static QueryResult ofTNodeSet(Set<? extends TNode> tNodeSet) {
         return new TNodeSetResult(tNodeSet);
     }
 

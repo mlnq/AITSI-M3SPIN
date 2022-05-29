@@ -1,6 +1,6 @@
 package aitsi.m3spin.query.model.references;
 
-import aitsi.m3spin.query.model.AttributeEnum;
+import aitsi.m3spin.query.model.enums.AttributeEnum;
 import aitsi.m3spin.query.model.result.SelectedResult;
 import lombok.Getter;
 

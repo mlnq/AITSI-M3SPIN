@@ -9,5 +9,5 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Getter
 public class TNodeSetResult extends QueryResult {
-    private final Set<TNode> result;
+    private final Set<? extends TNode> result;
 }

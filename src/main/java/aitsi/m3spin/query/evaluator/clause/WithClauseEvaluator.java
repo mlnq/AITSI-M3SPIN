@@ -2,6 +2,7 @@ package aitsi.m3spin.query.evaluator.clause;
 
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.impl.Pkb;
+import aitsi.m3spin.pkb.model.AttributableNode;
 import aitsi.m3spin.query.evaluator.dao.TNodeDao;
 import aitsi.m3spin.query.evaluator.exception.IncompatibleTypesComparisonException;
 import aitsi.m3spin.query.model.clauses.PqlClause;
@@ -15,6 +16,7 @@ import lombok.EqualsAndHashCode;
 
 import java.util.Arrays;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @EqualsAndHashCode(callSuper = false)
 public class WithClauseEvaluator extends ClauseEvaluator {
@@ -23,7 +25,7 @@ public class WithClauseEvaluator extends ClauseEvaluator {
         super(pkb, tNodeDao, pqlClause);
     }
 
-    @Override
+    @Override//todo rozbić tego kolosa ATS-5
     public QueryResult evaluateClause(TNodeSetResult previousResult, SelectedResult selectedResult) throws IncompatibleTypesComparisonException {
         WithClause withClause = (WithClause) pqlClause;
 
@@ -32,8 +34,8 @@ public class WithClauseEvaluator extends ClauseEvaluator {
         if (!leftHandType.equals(rightHandType))//todo ten if  do preprocessora
             throw new IncompatibleTypesComparisonException(leftHandType, rightHandType);
 
-        Reference leftHandRef = withClause.getLeftHandReference();
-        Reference rightHandRef = withClause.getRightHandReference();
+        WithArgumentRef leftHandRef = withClause.getLeftHandReference();
+        WithArgumentRef rightHandRef = withClause.getRightHandReference();
 
         if (leftHandRef.isConstantValue() && rightHandRef.isConstantValue()) {
             if (((PrimitiveTypeReference) leftHandRef).getValue()
@@ -50,20 +52,33 @@ public class WithClauseEvaluator extends ClauseEvaluator {
                         else attributeRef[0] = (AttributeReference) reference;
                     });
 
-            Set<TNode> tNodes = tNodeDao.findAllByType(pkb.getAst().getRoot(), attributeRef[0].getSynonym().getSynonymType());
+            Set<TNode> tNodes = tNodeDao.findAllByType(attributeRef[0].getSynonym().getSynonymType());
 
             return new TNodeSetResult(tNodes);
 
         } else {
-            Set<TNode> leftResult = tNodeDao.findAllByType(pkb.getAst().getRoot(),
-                    ((ComplexTypeReference) leftHandRef).getSynonym().getSynonymType());
+            Set<AttributableNode> leftResult = tNodeDao.findAllByType(
+                            ((ComplexTypeReference) leftHandRef).getSynonym().getSynonymType()
+                    ).stream()
+                    .map(AttributableNode.class::cast)
+                    .collect(Collectors.toSet());
 
-            Set<TNode> rightResult = tNodeDao.findAllByType(pkb.getAst().getRoot(),
-                    ((ComplexTypeReference) rightHandRef).getSynonym().getSynonymType());
+            Set<AttributableNode> rightResult = tNodeDao.findAllByType(
+                            ((ComplexTypeReference) rightHandRef).getSynonym().getSynonymType()).stream()
+                    .map(AttributableNode.class::cast)
+                    .collect(Collectors.toSet());
 
-            leftResult.retainAll(rightResult);
+            leftResult = leftResult.stream()
+                    .filter(node -> setHasNodeWithAttribute(rightResult, node))
+                    .collect(Collectors.toSet());
 
             return new TNodeSetResult(leftResult);
         }
+    }
+
+    private boolean setHasNodeWithAttribute(Set<AttributableNode> nodeSet, AttributableNode node) {
+        return nodeSet.stream()
+                .map(AttributableNode::getAttribute)
+                .anyMatch(nodeAttribute -> node.getAttribute().equals(nodeAttribute));
     }
 }

@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public abstract class Reference {
+public abstract class WithArgumentRef {
     private final ReferenceType referenceType;
 
     public abstract boolean equalsToSynonym(Synonym synonym) throws IncompatibleTypesComparisonException;

@@ -1,4 +1,4 @@
-package aitsi.m3spin.query.model;
+package aitsi.m3spin.query.model.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

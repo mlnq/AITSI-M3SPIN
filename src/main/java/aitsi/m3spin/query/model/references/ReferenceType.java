@@ -1,13 +1,15 @@
 package aitsi.m3spin.query.model.references;
 
-import aitsi.m3spin.query.model.AttributeTypeEnum;
+import aitsi.m3spin.query.model.enums.AttributeTypeEnum;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum ReferenceType {
     STRING("STRING"),
     INTEGER("INTEGER"),
-    SYNONYM("SYNONYM");
+    SYNONYM("SYNONYM"),
+
+    WILDCARD("WILDCARD");
 
     private final String value;
 
