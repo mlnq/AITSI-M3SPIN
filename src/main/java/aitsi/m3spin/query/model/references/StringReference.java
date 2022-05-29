@@ -10,7 +10,7 @@ import lombok.Getter;
 public class StringReference extends PrimitiveTypeReference implements VariableReference, EntityReference {
     private final String value;
 
-    protected StringReference(String value) {
+    public StringReference(String value) {
         super(ReferenceType.STRING);
         this.value = value;
     }

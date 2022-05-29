@@ -11,10 +11,10 @@ import aitsi.m3spin.query.model.clauses.Pattern;
 import aitsi.m3spin.query.model.clauses.PqlClause;
 import aitsi.m3spin.query.model.clauses.SuchThat;
 import aitsi.m3spin.query.model.clauses.WithClause;
-import aitsi.m3spin.query.model.result.BooleanResult;
-import aitsi.m3spin.query.model.result.QueryResult;
-import aitsi.m3spin.query.model.result.SelectedResult;
-import aitsi.m3spin.query.model.result.TNodeSetResult;
+import aitsi.m3spin.query.model.result.actual.BooleanResult;
+import aitsi.m3spin.query.model.result.actual.QueryResult;
+import aitsi.m3spin.query.model.result.reference.SelectedResult;
+import aitsi.m3spin.query.model.result.actual.TNodeSetResult;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collections;
@@ -47,5 +47,5 @@ public abstract class ClauseEvaluator {
         return evaluateClause(new TNodeSetResult(Collections.emptySet()), selectedResult);
     }
 
-    public abstract QueryResult evaluateClause(TNodeSetResult previousResult, SelectedResult selectedResult) throws IncompatibleTypesComparisonException, UnknownReferenceType;
+    public abstract QueryResult evaluateClause(TNodeSetResult previousResult, SelectedResult selectedResult) throws QueryEvaluatorException;
 }

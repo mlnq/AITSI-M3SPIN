@@ -6,4 +6,8 @@ public class UnknownRelationType extends ClauseEvaluationException {
     public UnknownRelationType(PqlClause pqlClause) {
         super(pqlClause, "encountered unknown relation type during Such that evaluation.");
     }
+
+    public UnknownRelationType() {
+        super("encountered unknown relation type during Such that evaluation.");
+    }
 }

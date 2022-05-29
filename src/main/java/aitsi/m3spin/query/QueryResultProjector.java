@@ -1,6 +1,6 @@
 package aitsi.m3spin.query;
 
-import aitsi.m3spin.query.model.result.QueryResult;
+import aitsi.m3spin.query.model.result.actual.QueryResult;
 import lombok.NoArgsConstructor;
 
 import java.util.List;

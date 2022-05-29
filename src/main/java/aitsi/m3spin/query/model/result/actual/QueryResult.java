@@ -1,4 +1,4 @@
-package aitsi.m3spin.query.model.result;
+package aitsi.m3spin.query.model.result.actual;
 
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.query.model.references.PrimitiveTypeReference;

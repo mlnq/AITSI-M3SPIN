@@ -10,10 +10,10 @@ import aitsi.m3spin.query.model.Query;
 import aitsi.m3spin.query.model.clauses.PqlClause;
 import aitsi.m3spin.query.model.references.PrimitiveTypeReference;
 import aitsi.m3spin.query.model.references.Synonym;
-import aitsi.m3spin.query.model.result.BooleanResult;
-import aitsi.m3spin.query.model.result.QueryResult;
-import aitsi.m3spin.query.model.result.SelectedResult;
-import aitsi.m3spin.query.model.result.TNodeSetResult;
+import aitsi.m3spin.query.model.result.actual.BooleanResult;
+import aitsi.m3spin.query.model.result.actual.QueryResult;
+import aitsi.m3spin.query.model.result.reference.SelectedResult;
+import aitsi.m3spin.query.model.result.actual.TNodeSetResult;
 
 import java.util.ArrayList;
 import java.util.Collections;

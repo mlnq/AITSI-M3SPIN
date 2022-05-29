@@ -6,7 +6,7 @@ import aitsi.m3spin.query.model.relationships.EntityReference;
 import aitsi.m3spin.query.model.relationships.LineReference;
 import aitsi.m3spin.query.model.relationships.StatementReference;
 import aitsi.m3spin.query.model.relationships.VariableReference;
-import aitsi.m3spin.query.model.result.SelectedResult;
+import aitsi.m3spin.query.model.result.reference.SelectedResult;
 import lombok.Getter;
 
 //@Getter

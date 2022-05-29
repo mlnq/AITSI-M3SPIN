@@ -1,7 +1,7 @@
 package aitsi.m3spin.query.model.references;
 
 import aitsi.m3spin.query.model.enums.AttributeEnum;
-import aitsi.m3spin.query.model.result.SelectedResult;
+import aitsi.m3spin.query.model.result.reference.SelectedResult;
 import lombok.Getter;
 
 @Getter

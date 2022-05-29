@@ -14,9 +14,9 @@ public abstract class AbstractNodeFinder {
             nodeSet.add(startingNode);
         }
         if (pkb.getAst().hasChild(startingNode))
-            nodeSet.addAll(findAllBy(startingNode, pkb));
+            nodeSet.addAll(findAllBy(startingNode.getChild(), pkb));
         if (pkb.getAst().hasRightSibling(startingNode))
-            nodeSet.addAll(findAllBy(startingNode, pkb));
+            nodeSet.addAll(findAllBy(startingNode.getRightSibling(), pkb));
 
         return nodeSet;
     }
