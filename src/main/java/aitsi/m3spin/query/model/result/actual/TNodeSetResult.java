@@ -14,4 +14,9 @@ import java.util.Set;
 @ToString
 public class TNodeSetResult extends QueryResult {
     private final Set<? extends TNode> result;
+
+    @Override
+    public boolean isTrue() {
+        return !result.isEmpty();
+    }
 }

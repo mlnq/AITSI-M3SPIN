@@ -15,7 +15,7 @@ public class FollowsTEvaluationStrategy extends TwoStmtsAsArgsEvaluationStrategy
 
     @Override
     public boolean evaluate(TNode firstNode, TNode secondNode, Pkb pkb) throws BadRelationshipArgumentsException {
-        areNodeTypesValid(firstNode, secondNode);
+        if (!super.evaluate(firstNode, secondNode, pkb)) return false;
         List<Statement> actualStmtsWhichFollowFirst = pkb.getFollowsInterface().getFollowsT((Statement) firstNode);
         return actualStmtsWhichFollowFirst.contains(secondNode);//todo all sus calls ATS-5
     }

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class QueryResult {
+public abstract class QueryResult {
     public static QueryResult ofBoolean(boolean booleanResult) {
         return new BooleanResult(booleanResult);
     }
@@ -21,4 +21,6 @@ public class QueryResult {
     public static QueryResult ofAttrList(List<PrimitiveTypeReference> attrList) {
         return new AttrListResult(attrList);
     }
+
+    public abstract boolean isTrue();
 }

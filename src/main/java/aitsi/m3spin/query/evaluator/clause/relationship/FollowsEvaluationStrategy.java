@@ -13,7 +13,7 @@ public class FollowsEvaluationStrategy extends TwoStmtsAsArgsEvaluationStrategy 
 
     @Override
     public boolean evaluate(TNode firstNode, TNode secondNode, Pkb pkb) throws BadRelationshipArgumentsException {
-        areNodeTypesValid(firstNode, secondNode);
+        if (!super.evaluate(firstNode, secondNode, pkb)) return false;
         Statement actualStmtWhichFollowsFirst = pkb.getFollowsInterface().getFollows((Statement) firstNode);
         return secondNode.equals(actualStmtWhichFollowsFirst);
     }

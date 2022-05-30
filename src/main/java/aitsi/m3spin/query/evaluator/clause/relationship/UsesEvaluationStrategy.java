@@ -18,7 +18,7 @@ public class UsesEvaluationStrategy extends VarAsSecondArgEvaluationStrategy {
 
     @Override
     public boolean evaluate(TNode firstNode, TNode secondNode, Pkb pkb) throws BadRelationshipArgumentsException {
-        areNodeTypesValid(firstNode, secondNode);
+        if (!super.evaluate(firstNode, secondNode, pkb)) return false;
         if (EntityType.PROCEDURE.equals(firstNode.getType())) {
             Set<Variable> varsUsedByProc = pkb.getUsesInterface().getVarsUsedByProc((Procedure) firstNode);
             return varsUsedByProc.contains(secondNode);

@@ -15,7 +15,7 @@ public class ParentEvaluationStrategy extends TwoStmtsAsArgsEvaluationStrategy {
 
     @Override
     public boolean evaluate(TNode firstNode, TNode secondNode, Pkb pkb) throws BadRelationshipArgumentsException {
-        areNodeTypesValid(firstNode, secondNode);
+        if (!super.evaluate(firstNode, secondNode, pkb)) return false;
         List<Statement> stmtsParentedByFirst = pkb.getParentInterface().getParentedBy((Statement) firstNode);
         return stmtsParentedByFirst.contains(secondNode);
     }

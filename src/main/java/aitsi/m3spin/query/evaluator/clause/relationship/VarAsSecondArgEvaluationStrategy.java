@@ -4,7 +4,6 @@ import aitsi.m3spin.commons.interfaces.Procedure;
 import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.commons.interfaces.Variable;
-import aitsi.m3spin.query.evaluator.exception.BadRelationshipArgumentsException;
 import aitsi.m3spin.query.model.enums.RelationshipEnum;
 
 public abstract class VarAsSecondArgEvaluationStrategy extends RelationshipEvaluationStrategy {
@@ -13,9 +12,7 @@ public abstract class VarAsSecondArgEvaluationStrategy extends RelationshipEvalu
     }
 
     @Override
-    public void areNodeTypesValid(TNode firstNode, TNode secondNode) throws BadRelationshipArgumentsException {
-        if (!((firstNode instanceof Procedure || firstNode instanceof Statement) && secondNode instanceof Variable))
-            throw new BadRelationshipArgumentsException(
-                    this.relationship, firstNode.getType(), secondNode.getType());
+    public boolean areNodeTypesValid(TNode firstNode, TNode secondNode) {
+        return (firstNode instanceof Procedure || firstNode instanceof Statement) && secondNode instanceof Variable;
     }
 }

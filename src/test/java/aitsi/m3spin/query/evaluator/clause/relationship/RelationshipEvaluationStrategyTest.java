@@ -6,7 +6,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RelationshipEvaluationStrategyTest extends QueryTestingData {
 
@@ -21,17 +22,17 @@ class RelationshipEvaluationStrategyTest extends QueryTestingData {
     }
 
     @Test
-    void evaluateForNode_BadArgsForParentRel_BadArgsExceptionThrown() {
+    void evaluateForNode_BadArgsForParentRel_ReturnedFalse() throws BadRelationshipArgumentsException {
         RelationshipEvaluationStrategy parentStrategy = new ParentEvaluationStrategy();
 
-        assertThrows(BadRelationshipArgumentsException.class, () -> parentStrategy.evaluate(procedure, assignment, pkb));
+        assertFalse(parentStrategy.evaluate(procedure, assignment, pkb));
     }
 
     @Test
-    void evaluateForNode_BadArgsForUsesRel_BadArgsExceptionThrown() {
+    void evaluateForNode_BadArgsForUsesRel_ReturnedFalse() throws BadRelationshipArgumentsException {
         RelationshipEvaluationStrategy strategy = new UsesEvaluationStrategy();
 
-        assertThrows(BadRelationshipArgumentsException.class, () -> strategy.evaluate(procedure, assignment, pkb));
+        assertFalse(strategy.evaluate(procedure, assignment, pkb));
     }
 
     @Test

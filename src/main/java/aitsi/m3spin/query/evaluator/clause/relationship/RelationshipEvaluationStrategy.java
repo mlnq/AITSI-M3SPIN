@@ -16,5 +16,5 @@ public abstract class RelationshipEvaluationStrategy {
         return areNodeTypesValid(firstNode, secondNode);
     }
 
-    abstract boolean areNodeTypesValid(TNode firstNode, TNode secondNode) throws BadRelationshipArgumentsException;
+    abstract boolean areNodeTypesValid(TNode firstNode, TNode secondNode);
 }

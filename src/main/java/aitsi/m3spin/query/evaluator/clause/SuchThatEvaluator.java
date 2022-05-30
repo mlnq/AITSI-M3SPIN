@@ -12,6 +12,7 @@ import aitsi.m3spin.query.model.clauses.PqlClause;
 import aitsi.m3spin.query.model.clauses.SuchThat;
 import aitsi.m3spin.query.model.enums.RelationshipEnum;
 import aitsi.m3spin.query.model.references.PrimitiveTypeReference;
+import aitsi.m3spin.query.model.references.ReferenceType;
 import aitsi.m3spin.query.model.references.Synonym;
 import aitsi.m3spin.query.model.relationships.RelationshipArgumentRef;
 import aitsi.m3spin.query.model.result.actual.QueryResult;
@@ -44,11 +45,22 @@ public class SuchThatEvaluator extends ClauseEvaluator {
     }
 
     private QueryResult chooseResult(QueryResult[] bothResults, SelectedResult selectedResult, SuchThat suchThat) throws NoSynonymInSelectedResultException {
-        Synonym firstSynonym = (Synonym) suchThat.getFirstArgument();
-        Synonym secondSynonym = (Synonym) suchThat.getSecondArgument();
+        RelationshipArgumentRef firstArg = suchThat.getFirstArgument();
+        RelationshipArgumentRef secondArg = suchThat.getSecondArgument();
+        Synonym firstSynonym;
+        Synonym secondSynonym;
 
-        if (selectedResult.getSynonym().equalsToSynonym(firstSynonym)) return bothResults[0];
-        else return bothResults[1];
+        if (firstArg.getReferenceType().equals(ReferenceType.SYNONYM)) {
+            firstSynonym = (Synonym) firstArg;
+            if (selectedResult.getSynonym().equalsToSynonym(firstSynonym)) return bothResults[0];
+        }
+        if (secondArg.getReferenceType().equals(ReferenceType.SYNONYM)) {
+            secondSynonym = (Synonym) secondArg;
+            if (selectedResult.getSynonym().equalsToSynonym(secondSynonym)) return bothResults[1];
+        }
+
+        boolean booleanRes = bothResults[0].isTrue() || bothResults[1].isTrue();
+        return QueryResult.ofBoolean(booleanRes);
     }
 
     private Set<? extends TNode> getNodesFor(RelationshipArgumentRef relationshipArgumentRef) throws UnknownReferenceType {
