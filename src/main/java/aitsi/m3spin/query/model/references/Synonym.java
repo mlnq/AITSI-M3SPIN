@@ -2,10 +2,7 @@ package aitsi.m3spin.query.model.references;
 
 
 import aitsi.m3spin.commons.enums.EntityType;
-import aitsi.m3spin.query.model.relationships.EntityReference;
-import aitsi.m3spin.query.model.relationships.LineReference;
-import aitsi.m3spin.query.model.relationships.StatementReference;
-import aitsi.m3spin.query.model.relationships.VariableReference;
+import aitsi.m3spin.query.model.relationships.RelationshipArgumentRef;
 import aitsi.m3spin.query.model.result.reference.SelectedResult;
 import lombok.Getter;
 
@@ -15,7 +12,7 @@ import lombok.Getter;
 //@EqualsAndHashCode
 @Getter
 public class Synonym extends ComplexTypeReference
-        implements SelectedResult, EntityReference, VariableReference, LineReference, StatementReference {
+        implements SelectedResult, RelationshipArgumentRef {
     private final String name;
     private final EntityType synonymType;
 

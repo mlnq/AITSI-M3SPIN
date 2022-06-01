@@ -1,4 +1,4 @@
-package aitsi.m3spin.spafrontend.parser.exception;
+package aitsi.m3spin.commons.exception;
 
 import aitsi.m3spin.spafrontend.parser.CodePosition;
 

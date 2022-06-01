@@ -1,6 +1,6 @@
 package aitsi.m3spin.query.evaluator;
 
-import aitsi.m3spin.query.evaluator.exception.QueryEvaluatorException;
+import aitsi.m3spin.query.QueryProcessorException;
 import aitsi.m3spin.query.model.Query;
 import aitsi.m3spin.query.model.clauses.WithClause;
 import aitsi.m3spin.query.model.enums.AttributeEnum;
@@ -35,10 +35,11 @@ class QueryEvaluatorTest extends QueryTestingData {
 
     @Test
     void evaluateQueries() {
+        //todo
     }
 
     @Test
-    void evaluateQuery_SingleWithClause_Evaluated() throws QueryEvaluatorException {
+    void evaluateQuery_SingleWithClause_Evaluated() throws QueryProcessorException {
         WithArgumentRef leftRef = new AttributeReference(procSynonym, AttributeEnum.PROC_NAME);
         WithArgumentRef rightRef = new StringReference(PROCEDURE_NAME);
         WithClause withClause = new WithClause(leftRef, rightRef);
@@ -54,7 +55,7 @@ class QueryEvaluatorTest extends QueryTestingData {
     }
 
     @Test
-    void evaluateQuery_SingleSuchThat_Evaluated() throws QueryEvaluatorException {
+    void evaluateQuery_SingleSuchThat_Evaluated() throws QueryProcessorException {
 
         singleSuchThatQuery = new Query(
                 selectedResult,
@@ -62,6 +63,6 @@ class QueryEvaluatorTest extends QueryTestingData {
                 Collections.emptyList(),
                 Collections.emptyList()
         );
-        assertEquals(assignResult, queryEvaluator.evaluateQuery(singleSuchThatQuery));
+        assertEquals(assignResult, queryEvaluator.evaluateQuery(singleSuchThatQuery));//todo wywala się
     }
 }

@@ -1,9 +1,8 @@
 package aitsi.m3spin.query.evaluator.clause;
 
+import aitsi.m3spin.query.QueryProcessorException;
 import aitsi.m3spin.query.evaluator.QueryTestingData;
 import aitsi.m3spin.query.evaluator.dao.TNodeDao;
-import aitsi.m3spin.query.evaluator.exception.QueryEvaluatorException;
-import aitsi.m3spin.query.evaluator.exception.UnknownReferenceType;
 import aitsi.m3spin.query.model.result.actual.TNodeSetResult;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,16 +40,16 @@ class SuchThatEvaluatorTest extends QueryTestingData {
 //    }
 
     @Test
-    void EvaluateClause_WithPreviousResults_ReturnedAllProcedures() throws QueryEvaluatorException {//todo powinno zwracać wszystkie procedury
+    void EvaluateClause_WithPreviousResults_ReturnedAllProcedures() throws QueryProcessorException {//todo powinno zwracać wszystkie procedury
         suchThatEvaluator = new SuchThatEvaluator(pkb, tNodeDao, suchThat);
 
-        assertEquals(procedureResult, suchThatEvaluator.evaluateClause(new TNodeSetResult(Collections.emptySet()), procSynonym));
+        assertEquals(procedureResult, suchThatEvaluator.evaluateClause(new TNodeSetResult(Collections.emptySet()), procSynonym));//todo wywala się
     }
 
     @Test
-    void EvaluateClause_WithPreviousResults_Evaluated() throws QueryEvaluatorException {
+    void EvaluateClause_WithPreviousResults_Evaluated() throws QueryProcessorException {
         suchThatEvaluator = new SuchThatEvaluator(pkb, tNodeDao, suchThat);
 
-        assertEquals(assignResult, suchThatEvaluator.evaluateClause(new TNodeSetResult(Collections.emptySet()), assignSynonym));
+        assertEquals(assignResult, suchThatEvaluator.evaluateClause(new TNodeSetResult(Collections.emptySet()), assignSynonym));//todo
     }
 }

@@ -2,8 +2,7 @@ package aitsi.m3spin.commons.enums;
 
 public enum EntityType {
     PROCEDURE("procedure"),
-    STMT_LIST("statementList"),
-    STATEMENT("statement"),
+    STMT_LIST("stmtLst"),
     EQUALS("="),
     CALL("call"),
     WHILE("while"),
@@ -23,6 +22,15 @@ public enum EntityType {
 
     EntityType(String entityTypeName) {
         this.entityTypeName = entityTypeName;
+    }
+
+    public static boolean contains(String test) {
+        for (EntityType et : EntityType.values()) {
+            if (et.getETName().equals(test)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public String getETName() {

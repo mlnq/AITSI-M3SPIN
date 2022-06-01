@@ -3,7 +3,7 @@ package aitsi.m3spin.query.evaluator.clause.relationship;
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.impl.Pkb;
 import aitsi.m3spin.query.evaluator.exception.BadRelationshipArgumentsException;
-import aitsi.m3spin.query.model.enums.RelationshipEnum;
+import aitsi.m3spin.query.model.enums.RelationshipEvaluatorEnum;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
@@ -13,7 +13,7 @@ public class RelationEvaluator {
     private final Pkb pkb;
     private RelationshipEvaluationStrategy strategy;
 
-    public static RelationshipEvaluationStrategy chooseEvaluationStrategy(RelationshipEnum relationship) {
+    public static RelationshipEvaluationStrategy chooseEvaluationStrategy(RelationshipEvaluatorEnum relationship) {
         switch (relationship) {
             case FOLLOWS_T:
                 return new FollowsTEvaluationStrategy();

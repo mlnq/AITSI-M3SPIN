@@ -11,7 +11,7 @@ import aitsi.m3spin.commons.interfaces.While;
 import aitsi.m3spin.pkb.impl.Pkb;
 import aitsi.m3spin.pkb.model.StringAttribute;
 import aitsi.m3spin.query.model.clauses.SuchThat;
-import aitsi.m3spin.query.model.enums.RelationshipEnum;
+import aitsi.m3spin.query.model.enums.RelationshipPreprocEnum;
 import aitsi.m3spin.query.model.references.Synonym;
 import aitsi.m3spin.query.model.references.WildcardReference;
 import aitsi.m3spin.query.model.result.actual.QueryResult;
@@ -48,7 +48,7 @@ public abstract class QueryTestingData {
         assignSynonym = new Synonym("a", EntityType.ASSIGNMENT);
         selectedResult = procSynonym;
 
-        suchThat = new SuchThat(RelationshipEnum.FOLLOWS, whileSynonym, new WildcardReference());
+        suchThat = new SuchThat(RelationshipPreprocEnum.FOLLOWS, whileSynonym, new WildcardReference());
 
         procedureResult = QueryResult.ofTNodeSet(Collections.singleton(procedure));
         assignResult = QueryResult.ofTNodeSet(Collections.singleton(assignment));

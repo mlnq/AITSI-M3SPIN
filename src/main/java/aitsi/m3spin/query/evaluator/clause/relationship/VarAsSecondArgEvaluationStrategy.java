@@ -4,10 +4,10 @@ import aitsi.m3spin.commons.interfaces.Procedure;
 import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.commons.interfaces.Variable;
-import aitsi.m3spin.query.model.enums.RelationshipEnum;
+import aitsi.m3spin.query.model.enums.RelationshipEvaluatorEnum;
 
 public abstract class VarAsSecondArgEvaluationStrategy extends RelationshipEvaluationStrategy {
-    protected VarAsSecondArgEvaluationStrategy(RelationshipEnum relationship) {
+    protected VarAsSecondArgEvaluationStrategy(RelationshipEvaluatorEnum relationship) {
         super(relationship);
     }
 

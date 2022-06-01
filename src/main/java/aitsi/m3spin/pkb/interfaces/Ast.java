@@ -16,10 +16,6 @@ public interface Ast {
 
     TNode setChild(TNode parent, TNode child);
 
-    TNode getChild(TNode p);
-
-    TNode setFirstChild(TNode parent, TNode child);
-
     /**
      * Sets sibling relation
      *

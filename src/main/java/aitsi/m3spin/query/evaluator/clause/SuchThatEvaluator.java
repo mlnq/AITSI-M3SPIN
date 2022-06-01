@@ -2,15 +2,15 @@ package aitsi.m3spin.query.evaluator.clause;
 
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.impl.Pkb;
+import aitsi.m3spin.query.QueryProcessorException;
 import aitsi.m3spin.query.evaluator.clause.relationship.RelationEvaluator;
 import aitsi.m3spin.query.evaluator.clause.relationship.RelationshipEvaluationStrategy;
 import aitsi.m3spin.query.evaluator.dao.TNodeDao;
 import aitsi.m3spin.query.evaluator.exception.NoSynonymInSelectedResultException;
-import aitsi.m3spin.query.evaluator.exception.QueryEvaluatorException;
 import aitsi.m3spin.query.evaluator.exception.UnknownReferenceType;
 import aitsi.m3spin.query.model.clauses.PqlClause;
 import aitsi.m3spin.query.model.clauses.SuchThat;
-import aitsi.m3spin.query.model.enums.RelationshipEnum;
+import aitsi.m3spin.query.model.enums.RelationshipEvaluatorEnum;
 import aitsi.m3spin.query.model.references.PrimitiveTypeReference;
 import aitsi.m3spin.query.model.references.ReferenceType;
 import aitsi.m3spin.query.model.references.Synonym;
@@ -32,12 +32,12 @@ public class SuchThatEvaluator extends ClauseEvaluator {
 
 
     @Override
-    public QueryResult evaluateClause(TNodeSetResult previousResult, SelectedResult selectedResult) throws QueryEvaluatorException {
+    public QueryResult evaluateClause(TNodeSetResult previousResult, SelectedResult selectedResult) throws QueryProcessorException {
         SuchThat suchThat = (SuchThat) pqlClause;
 
         Set<? extends TNode> firstArgumentNodes = getNodesFor(suchThat.getFirstArgument());
         Set<? extends TNode> secondArgumentNodes = getNodesFor(suchThat.getSecondArgument());
-        RelationshipEnum relation = suchThat.getRelation();
+        RelationshipEvaluatorEnum relation = suchThat.getEvaluatorRelationship();
 
         QueryResult[] bothResults = evaluateRelationship(relation, firstArgumentNodes, secondArgumentNodes);
 
@@ -79,28 +79,25 @@ public class SuchThatEvaluator extends ClauseEvaluator {
         }
     }
 
-    private QueryResult[] evaluateRelationship(RelationshipEnum relationship, Set<? extends TNode> firstArgNodes,
+    private QueryResult[] evaluateRelationship(RelationshipEvaluatorEnum relationship, Set<? extends TNode> firstArgNodes,
                                                Set<? extends TNode> secondArgNodes) {
 
-        Set<TNode> firstResult = new HashSet<TNode>();
-        Set<TNode> secondResult = new HashSet<TNode>();
+        Set<TNode> secondResult = new HashSet<>();
 
-        firstResult.addAll(
-                firstArgNodes.stream()
-                        .filter(node -> secondResult.addAll(filterMatchingNodesFromSet(relationship, node, secondArgNodes)))
-                        .collect(Collectors.toSet()));
+        Set<TNode> firstResult = firstArgNodes.stream()
+                .filter(node -> secondResult.addAll(filterMatchingNodesFromSet(relationship, node, secondArgNodes))).collect(Collectors.toSet());
 
         return new QueryResult[]{QueryResult.ofTNodeSet(firstResult), QueryResult.ofTNodeSet(secondResult)};
     }
 
-    private Set<? extends TNode> filterMatchingNodesFromSet(RelationshipEnum relationship,
+    private Set<? extends TNode> filterMatchingNodesFromSet(RelationshipEvaluatorEnum relationship,
                                                             TNode firstArgNode, Set<? extends TNode> secondArgSet) {
         return secondArgSet.stream()
                 .filter(secondArgNode -> checkIfRelationshipHoldsForNodes(relationship, firstArgNode, secondArgNode))
                 .collect(Collectors.toSet());
     }
 
-    private boolean checkIfRelationshipHoldsForNodes(RelationshipEnum relationship, TNode firstNode, TNode secondNode) {
+    private boolean checkIfRelationshipHoldsForNodes(RelationshipEvaluatorEnum relationship, TNode firstNode, TNode secondNode) {
         RelationEvaluator relationEvaluator = new RelationEvaluator(pkb);
         RelationshipEvaluationStrategy strategy = RelationEvaluator.chooseEvaluationStrategy(relationship);
         relationEvaluator.setStrategy(strategy);

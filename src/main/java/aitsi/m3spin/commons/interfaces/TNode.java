@@ -20,6 +20,4 @@ public interface TNode {
     void setChild(TNode child);
 
     EntityType getType();
-
-    void setFirstChild(TNode child);
 }

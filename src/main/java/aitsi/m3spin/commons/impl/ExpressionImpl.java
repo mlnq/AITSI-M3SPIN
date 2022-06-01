@@ -3,7 +3,6 @@ package aitsi.m3spin.commons.impl;
 import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.interfaces.Expression;
 import aitsi.m3spin.commons.interfaces.Factor;
-import aitsi.m3spin.commons.interfaces.TNode;
 import lombok.*;
 
 @Getter
@@ -26,8 +25,4 @@ public class ExpressionImpl extends TNodeImpl implements Expression {
         return EntityType.EXPRESSION;
     }
 
-    @Override
-    public void setFirstChild(TNode child) {
-
-    }
 }

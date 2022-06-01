@@ -1,11 +1,12 @@
 package aitsi.m3spin;
 
+import aitsi.m3spin.commons.exception.CodeScannerException;
 import aitsi.m3spin.commons.interfaces.Procedure;
 import aitsi.m3spin.pkb.impl.Pkb;
-import aitsi.m3spin.query.QueryPreprocessor;
 import aitsi.m3spin.query.QueryResultProjector;
 import aitsi.m3spin.query.evaluator.QueryEvaluator;
 import aitsi.m3spin.query.model.result.actual.QueryResult;
+import aitsi.m3spin.query.preprocessor.QueryPreprocessor;
 import aitsi.m3spin.spafrontend.extractor.DesignExtractor;
 import aitsi.m3spin.spafrontend.parser.Parser;
 import aitsi.m3spin.spafrontend.parser.exception.SimpleParserException;
@@ -65,7 +66,7 @@ public class Main {
         charset.set(null, null);
     }
 
-    private static Pkb processSimpleCodeAndPreparePkb(List<String> codeLines) throws SimpleParserException {
+    private static Pkb processSimpleCodeAndPreparePkb(List<String> codeLines) throws SimpleParserException, CodeScannerException {
         Pkb pkb = new Pkb();
         Parser parser = new Parser(codeLines, pkb);
         List<Procedure> parsedProcedures = parser.parse();
@@ -77,6 +78,6 @@ public class Main {
     }
 
     private static String formatException(Exception e) {
-        return "#" + Arrays.toString(e.getStackTrace());
+        return "#" + e.toString() + "\n" + Arrays.toString(e.getStackTrace()).replace("),", "),\n");
     }
 }

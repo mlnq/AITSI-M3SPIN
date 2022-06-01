@@ -2,8 +2,7 @@ package aitsi.m3spin.commons.impl;
 
 import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.interfaces.Constant;
-import aitsi.m3spin.commons.interfaces.TNode;
-import lombok.AllArgsConstructor;
+import aitsi.m3spin.pkb.model.IntegerAttribute;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

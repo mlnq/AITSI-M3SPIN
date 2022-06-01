@@ -3,7 +3,6 @@ package aitsi.m3spin.commons.impl;
 import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.interfaces.Assignment;
 import aitsi.m3spin.commons.interfaces.Expression;
-import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.commons.interfaces.Variable;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -20,16 +19,10 @@ public class AssignmentImpl extends StatementImpl implements Assignment {
     private Expression expression;
 
     public AssignmentImpl(Variable firstWord) {
-        this.var = firstWord;
+        this.variable = firstWord;
     }
 
-    @Override
     public EntityType getType() {
         return EntityType.ASSIGNMENT;
-    }
-
-    @Override
-    public void setFirstChild(TNode child) {
-
     }
 }

@@ -1,4 +1,4 @@
-package aitsi.m3spin.queryProcessor.model;
+package aitsi.m3spin.query.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

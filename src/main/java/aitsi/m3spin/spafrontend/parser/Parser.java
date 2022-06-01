@@ -1,10 +1,15 @@
 package aitsi.m3spin.spafrontend.parser;
 
 import aitsi.m3spin.commons.enums.EntityType;
+import aitsi.m3spin.commons.exception.CodeScannerException;
+import aitsi.m3spin.commons.exception.MissingCharacterException;
+import aitsi.m3spin.commons.exception.MissingCodeEntityException;
+import aitsi.m3spin.commons.exception.MissingKeywordException;
 import aitsi.m3spin.commons.impl.*;
 import aitsi.m3spin.commons.interfaces.*;
 import aitsi.m3spin.pkb.impl.Pkb;
-import aitsi.m3spin.spafrontend.parser.exception.*;
+import aitsi.m3spin.spafrontend.parser.exception.SimpleParserException;
+import aitsi.m3spin.spafrontend.parser.exception.UnknownStatementType;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -21,7 +26,7 @@ public class Parser {
         this.pkb = pkb;
     }
 
-    public List<Procedure> parse() throws SimpleParserException {
+    public List<Procedure> parse() throws SimpleParserException, CodeScannerException {
         System.out.println("Parsing SIMPLE code...");
         Procedure rootProc = parseProcedure();
         System.out.println("Parsing completed.");
@@ -145,7 +150,7 @@ public class Parser {
         } else return RelationshipsInfo.emptyInfo();
     }
 
-    private Procedure parseProcedure() throws SimpleParserException {
+    private Procedure parseProcedure() throws SimpleParserException, CodeScannerException {
         parseKeyword(EntityType.PROCEDURE);
         String procName = parseName();
 
@@ -182,7 +187,7 @@ public class Parser {
         }
     }
 
-    private String parseName() throws SimpleParserException {//todo do codeScannera (zadanie #11)
+    private String parseName() throws CodeScannerException {//todo do codeScannera (zadanie #11)
         StringBuilder name = new StringBuilder(String.valueOf(parseLetter()));
         while (codeScanner.hasCurrentChar()) {
             char currentChar = codeScanner.getCurrentChar();
@@ -197,13 +202,13 @@ public class Parser {
         return String.valueOf(name);
     }
 
-    private char parseDigit() throws SimpleParserException {//todo do codeScannera (zadanie #11)
+    private char parseDigit() throws CodeScannerException {//todo do codeScannera (zadanie #11)
         char digit = this.codeScanner.getCurrentDigit();
         this.codeScanner.incrementPosition();
         return digit;
     }
 
-    private char parseLetter() throws SimpleParserException {//todo do codeScannera (zadanie #11)
+    private char parseLetter() throws CodeScannerException {//todo do codeScannera (zadanie #11)
         char letter = this.codeScanner.getCurrentLetter();
         this.codeScanner.incrementPosition();
         return letter;
@@ -212,12 +217,12 @@ public class Parser {
     private void parseKeyword(EntityType keyword) throws MissingCodeEntityException {//todo do codescannera, ale jako argument string (zadanie #11)
         String keywordStr = codeScanner.getCurrentString(keyword.getETName().length());
         if (!keyword.getETName().equals(keywordStr)) {
-            throw new MissingSimpleKeywordException(keyword, codeScanner.getCurrentPosition());
+            throw new MissingKeywordException(keyword, codeScanner.getCurrentPosition());
         }
         codeScanner.skipWhitespaces();
     }
 
-    private StatementList parseStmtList() throws SimpleParserException {
+    private StatementList parseStmtList() throws SimpleParserException, CodeScannerException {
         List<Statement> stmtList = new ArrayList<>();
         stmtList.add(parseStmt());
 
@@ -228,7 +233,7 @@ public class Parser {
         return new StatementListImpl(stmtList);
     }
 
-    private Statement parseStmt() throws SimpleParserException {
+    private Statement parseStmt() throws SimpleParserException, CodeScannerException {
         codeScanner.skipWhitespaces();
         String firstWord = parseName();
 
@@ -247,7 +252,7 @@ public class Parser {
         return null;//todo w przyszłych iteracjach
     }
 
-    private While parseWhile() throws SimpleParserException {
+    private While parseWhile() throws SimpleParserException, CodeScannerException {
         String conditionVar = parseName();
 
         parseStartingBrace();
@@ -258,7 +263,7 @@ public class Parser {
         return new WhileImpl(new VariableImpl(conditionVar), stmtList);
     }
 
-    private Assignment parseAssignmentAfterEquals(String leftSideVar) throws SimpleParserException {
+    private Assignment parseAssignmentAfterEquals(String leftSideVar) throws SimpleParserException, CodeScannerException {
         codeScanner.skipWhitespaces();
         Expression expr = parseExpression();
 
@@ -266,7 +271,7 @@ public class Parser {
         return new AssignmentImpl(new VariableImpl(leftSideVar), expr);
     }
 
-    private Expression parseExpression() throws SimpleParserException {
+    private Expression parseExpression() throws SimpleParserException, CodeScannerException {
 
         codeScanner.skipWhitespaces();
         Factor factor = parseFactor();
@@ -281,7 +286,7 @@ public class Parser {
         }
     }
 
-    private Factor parseFactor() throws SimpleParserException {
+    private Factor parseFactor() throws CodeScannerException {
         codeScanner.skipWhitespaces();
         Factor factor;
         if (Character.isLetter(this.codeScanner.getCurrentChar())) {
@@ -292,7 +297,7 @@ public class Parser {
         return factor;
     }
 
-    private int parseConst() throws SimpleParserException {
+    private int parseConst() throws CodeScannerException {
         StringBuilder name = new StringBuilder(String.valueOf(parseDigit()));
         while (codeScanner.hasCurrentChar()) {
             char currentChar = codeScanner.getCurrentChar();

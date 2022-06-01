@@ -16,4 +16,14 @@ public enum AttributeEnum {
     private final EntityType entityType;
     private final String attrName;
     private final AttributeTypeEnum attrType;
+
+    public static boolean contains(String name) {
+
+        for (AttributeEnum an : AttributeEnum.values()) {
+            if (an.getAttrName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

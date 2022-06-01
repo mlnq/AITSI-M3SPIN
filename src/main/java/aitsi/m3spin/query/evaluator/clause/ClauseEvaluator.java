@@ -2,19 +2,17 @@ package aitsi.m3spin.query.evaluator.clause;
 
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.impl.Pkb;
+import aitsi.m3spin.query.QueryProcessorException;
 import aitsi.m3spin.query.evaluator.dao.TNodeDao;
-import aitsi.m3spin.query.evaluator.exception.IncompatibleTypesComparisonException;
-import aitsi.m3spin.query.evaluator.exception.QueryEvaluatorException;
 import aitsi.m3spin.query.evaluator.exception.UnknownPqlClauseException;
-import aitsi.m3spin.query.evaluator.exception.UnknownReferenceType;
 import aitsi.m3spin.query.model.clauses.Pattern;
 import aitsi.m3spin.query.model.clauses.PqlClause;
 import aitsi.m3spin.query.model.clauses.SuchThat;
 import aitsi.m3spin.query.model.clauses.WithClause;
 import aitsi.m3spin.query.model.result.actual.BooleanResult;
 import aitsi.m3spin.query.model.result.actual.QueryResult;
-import aitsi.m3spin.query.model.result.reference.SelectedResult;
 import aitsi.m3spin.query.model.result.actual.TNodeSetResult;
+import aitsi.m3spin.query.model.result.reference.SelectedResult;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collections;
@@ -35,17 +33,17 @@ public abstract class ClauseEvaluator {
     }
 
 
-    public BooleanResult evaluateBooleanClause(SelectedResult selectedResult) throws QueryEvaluatorException {
+    public BooleanResult evaluateBooleanClause(SelectedResult selectedResult) throws QueryProcessorException {
         return evaluateBooleanClause(Collections.emptySet(), selectedResult);
     }
 
-    public BooleanResult evaluateBooleanClause(Set<TNode> previousResult, SelectedResult selectedResult) throws QueryEvaluatorException {
+    public BooleanResult evaluateBooleanClause(Set<TNode> previousResult, SelectedResult selectedResult) throws QueryProcessorException {
         return (BooleanResult) evaluateClause(new TNodeSetResult(previousResult), selectedResult);
     }
 
-    public QueryResult evaluateClause(SelectedResult selectedResult) throws QueryEvaluatorException {
+    public QueryResult evaluateClause(SelectedResult selectedResult) throws QueryProcessorException {
         return evaluateClause(new TNodeSetResult(Collections.emptySet()), selectedResult);
     }
 
-    public abstract QueryResult evaluateClause(TNodeSetResult previousResult, SelectedResult selectedResult) throws QueryEvaluatorException;
+    public abstract QueryResult evaluateClause(TNodeSetResult previousResult, SelectedResult selectedResult) throws QueryProcessorException;
 }

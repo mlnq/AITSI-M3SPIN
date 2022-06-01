@@ -2,18 +2,18 @@ package aitsi.m3spin.query.evaluator;
 
 import aitsi.m3spin.pkb.impl.Pkb;
 import aitsi.m3spin.pkb.model.AttributableNode;
+import aitsi.m3spin.query.QueryProcessorException;
 import aitsi.m3spin.query.evaluator.clause.ClauseEvaluator;
 import aitsi.m3spin.query.evaluator.clause.ClauseEvaluatorFactory;
 import aitsi.m3spin.query.evaluator.dao.TNodeDao;
-import aitsi.m3spin.query.evaluator.exception.QueryEvaluatorException;
 import aitsi.m3spin.query.model.Query;
 import aitsi.m3spin.query.model.clauses.PqlClause;
 import aitsi.m3spin.query.model.references.PrimitiveTypeReference;
 import aitsi.m3spin.query.model.references.Synonym;
 import aitsi.m3spin.query.model.result.actual.BooleanResult;
 import aitsi.m3spin.query.model.result.actual.QueryResult;
-import aitsi.m3spin.query.model.result.reference.SelectedResult;
 import aitsi.m3spin.query.model.result.actual.TNodeSetResult;
+import aitsi.m3spin.query.model.result.reference.SelectedResult;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,7 +29,7 @@ public class QueryEvaluator {
         this.tNodeDao = new TNodeDao(pkb);
     }
 
-    public List<QueryResult> evaluateQueries(List<Query> queryList) throws QueryEvaluatorException {
+    public List<QueryResult> evaluateQueries(List<Query> queryList) throws QueryProcessorException {
         List<QueryResult> results = new ArrayList<>();
         for (Query query : queryList) {
             results.add(evaluateQuery(query));
@@ -37,7 +37,7 @@ public class QueryEvaluator {
         return results;
     }
 
-    public QueryResult evaluateQuery(Query query) throws QueryEvaluatorException {//todo ATS-5 rozbuć na mniejsze
+    public QueryResult evaluateQuery(Query query) throws QueryProcessorException {//todo ATS-5 rozbuć na mniejsze
         SelectedResult selectedResult = query.getSelectedResult();
 
         List<PqlClause> queryClauses = query.getAllClauses();

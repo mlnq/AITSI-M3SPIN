@@ -8,8 +8,7 @@ public enum ReferenceType {
     STRING("STRING"),
     INTEGER("INTEGER"),
     SYNONYM("SYNONYM"),
-
-    WILDCARD("WILDCARD");
+    WILDCARD("_");
 
     private final String value;
 

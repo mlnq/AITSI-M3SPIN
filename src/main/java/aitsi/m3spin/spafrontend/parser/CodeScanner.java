@@ -1,16 +1,16 @@
 package aitsi.m3spin.spafrontend.parser;
 
-import aitsi.m3spin.spafrontend.parser.exception.IllegalCharacterException;
-import aitsi.m3spin.spafrontend.parser.exception.MissingCharacterException;
-import aitsi.m3spin.spafrontend.parser.exception.SimpleParserException;
+import aitsi.m3spin.commons.exception.CodeScannerException;
+import aitsi.m3spin.commons.exception.IllegalCharacterException;
+import aitsi.m3spin.commons.exception.MissingCharacterException;
 import lombok.Getter;
 
 import java.util.List;
 
 @Getter
 public class CodeScanner {
-    private final CodePosition currentPosition;
     private final List<String> codeLines;
+    private CodePosition currentPosition;
 
     public CodeScanner(List<String> codeLines) {
         this.codeLines = codeLines;
@@ -26,12 +26,12 @@ public class CodeScanner {
         if (hasCurrentChar()) return getCurrentLine().charAt(currentPosition.getColumn());
         else throw new MissingCharacterException(currentPosition);
     }
-///todo nie do konca styka
-public boolean hasCurrentChar(char c) throws MissingCharacterException {
+
+    public boolean hasCurrentChar(char c) throws MissingCharacterException {
         return getCurrentChar() == c;
     }
 
-    public char getCurrentLetter() throws SimpleParserException {
+    public char getCurrentLetter() throws CodeScannerException {
         char currentChar = this.getCurrentChar();
         if (Character.isLetter(currentChar)) return currentChar;
         else throw new IllegalCharacterException(currentChar, this.currentPosition);
@@ -41,7 +41,7 @@ public boolean hasCurrentChar(char c) throws MissingCharacterException {
         if (currentPosition.getColumn() + n < getCurrentLine().length()) currentPosition.moveColumnBy(n);
 
         else {
-            if(currentPosition.getLine() >= codeLines.size()-1) return;
+            if (currentPosition.getLine() >= codeLines.size() - 1) return;
             currentPosition.moveLine();
             incrementPosition(Math.max(currentPosition.getColumn() + n - getCurrentLine().length() - 1, 0));
         }
@@ -58,14 +58,15 @@ public boolean hasCurrentChar(char c) throws MissingCharacterException {
     public String getCurrentString(int length) throws MissingCharacterException {
         return getCurrentString(length, true);
     }
+
     public String getCurrentString(int length, boolean increment) throws MissingCharacterException {
         StringBuilder stringBuilder = new StringBuilder(length);
         CodePosition oldPosition = new CodePosition(this.currentPosition);
         for (int i = 0; i < length; i++) {
             stringBuilder.append(getCurrentChar());
-                incrementPosition();
+            incrementPosition();
         }
-        if(!increment){
+        if (!increment) {
             this.currentPosition = oldPosition;
         }
         return String.valueOf(stringBuilder);
@@ -77,12 +78,13 @@ public boolean hasCurrentChar(char c) throws MissingCharacterException {
             skipWhitespaces();
         }
     }
+
     public void skipLine() {
         currentPosition.setLine(currentPosition.getLine() + 1);
         currentPosition.setColumn(0);
     }
 
-    public char getCurrentDigit() throws SimpleParserException {
+    public char getCurrentDigit() throws CodeScannerException {
         char currentChar = this.getCurrentChar();
         if (Character.isDigit(currentChar)) return currentChar;
         else throw new IllegalCharacterException(currentChar, this.currentPosition);
