@@ -10,15 +10,20 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 public class Parser {
     @Getter
     private final Pkb pkb;
     private final CodeScanner codeScanner;
+    private Integer counter;
 
     public Parser(List<String> code, Pkb pkb) {
         this.codeScanner = new CodeScanner(code);
         this.pkb = pkb;
+        this.counter = 0;
     }
 
     public List<Procedure> parse() throws SimpleParserException {
@@ -153,6 +158,7 @@ public class Parser {
 
         Procedure procedure = new ProcedureImpl(procName, parseStmtList());
 
+
         //Whole endingBrace
         parseChar('}', false);
 
@@ -222,8 +228,15 @@ public class Parser {
         stmtList.add(parseStmt());
 
         while (!this.codeScanner.hasCurrentChar('}')) {
+
             stmtList.add(parseStmt());
             codeScanner.skipWhitespaces();
+        }
+
+        for(Integer i = 1; i < stmtList.size()+1; i++){
+
+            stmtList.get(i-1).setStmtLine(i-1);
+
         }
         return new StatementListImpl(stmtList);
     }
@@ -231,14 +244,19 @@ public class Parser {
     private Statement parseStmt() throws SimpleParserException {
         codeScanner.skipWhitespaces();
         String firstWord = parseName();
+        System.out.println(firstWord);
 
         codeScanner.skipWhitespaces();
         if (this.codeScanner.hasCurrentChar(EntityType.EQUALS.getETName().charAt(0))) {
             this.codeScanner.incrementPosition();
+            this.counter ++;
+            System.out.println(this.counter);
             return parseAssignmentAfterEquals(firstWord);
         } else if (EntityType.IF.getETName().equals(firstWord)) {
             return parseIf();
         } else if (EntityType.WHILE.getETName().equals(firstWord)) {
+            this.counter++;
+            System.out.println(this.counter);
             return parseWhile();
         } else throw new UnknownStatementType(codeScanner.getCurrentPosition());
     }
