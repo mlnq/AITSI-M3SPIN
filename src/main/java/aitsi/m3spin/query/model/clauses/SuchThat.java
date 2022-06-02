@@ -16,8 +16,8 @@ import java.util.Arrays;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SuchThat implements PqlClause {
-    private RelationshipEnum relation;
-    private RelationshipArgumentRef firstArgument;//todo relation argument zrobić jak w handbooku w preprocessorze
+    private RelationshipPreprocEnum relation;
+    private RelationshipArgumentRef firstArgument;
     private RelationshipArgumentRef secondArgument;
 
     @Override
