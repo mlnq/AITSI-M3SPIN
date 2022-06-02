@@ -24,13 +24,22 @@ public enum EntityType {
         this.entityTypeName = entityTypeName;
     }
 
-    public static boolean contains(String test) {
+    public static boolean contains(String name) {
         for (EntityType et : EntityType.values()) {
-            if (et.getETName().equals(test)) {
+            if (et.getETName().equals(name)) {
                 return true;
             }
         }
         return false;
+    }
+
+    public static EntityType fromString(String etName) {
+        for (EntityType et : EntityType.values()) {
+            if (et.entityTypeName.equalsIgnoreCase(etName)) {
+                return et;
+            }
+        }
+        return null;
     }
 
     public String getETName() {

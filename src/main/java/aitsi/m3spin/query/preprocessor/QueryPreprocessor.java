@@ -29,7 +29,6 @@ public class QueryPreprocessor {
         this.codeScanner = new CodeScanner(code);
     }
 
-    //TODO zmienić exception
     public void parsePql() throws CodeScannerException, QueryPreprocessorException {
         parseSynonyms();
         parseQueries();
@@ -100,7 +99,7 @@ public class QueryPreprocessor {
 
     private RelationshipArgumentRef parseRelationArgument(RelationshipPreprocEnum relationEnum, boolean isFirstArgument) throws QueryPreprocessorException, CodeScannerException {
         Set<ReferenceType> referenceTypes = isFirstArgument ? relationEnum.getAllowedFirstArgTypes() : relationEnum.getAllowedSecondArgTypes();
-        if (codeScanner.hasCurrentChar('"')) {
+        if (codeScanner.hasCurrentChar('"')) {//todo rozbićn na mniejsze
             if (referenceTypes.contains(ReferenceType.STRING)) {
                 return parseIdent();
             } else throw new BadRelationshipArgumentTypeException(relationEnum, "String");
@@ -259,7 +258,7 @@ public class QueryPreprocessor {
             String firstWord = parseName();
             codeScanner.skipWhitespaces();
 
-            if (EntityType.contains(firstWord)) parseSynonym(EntityType.valueOf(firstWord));
+            if (EntityType.contains(firstWord)) parseSynonym(EntityType.fromString(firstWord));
             else throw new UnknownSynonymType(firstWord);
         }
     }

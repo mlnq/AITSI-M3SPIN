@@ -9,7 +9,7 @@ public class PqlReader {
         List<String> pqlInput = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
 
-        for (int i = 0; i < numberOfLines; i++) {
+        for (int i = 0; i < 7; i++) {//todo DEBUG numberOfLines zamiast 7
             pqlInput.add(scanner.nextLine());
         }
         return pqlInput;
