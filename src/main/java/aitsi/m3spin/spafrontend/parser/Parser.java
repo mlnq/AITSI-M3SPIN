@@ -15,7 +15,7 @@ public class Parser {
     @Getter
     private final Pkb pkb;
     private final CodeScanner codeScanner;
-    private Integer counter;
+    private int counter;
 
     public Parser(List<String> code, Pkb pkb) {
         this.codeScanner = new CodeScanner(code);
@@ -221,17 +221,10 @@ public class Parser {
 
     private StatementList parseStmtList() throws SimpleParserException {
         List<Statement> stmtList = new ArrayList<>();
-        this.counter+=1;
-
-        Statement stmt = parseStmt();
-        stmt.setStmtLine(this.counter);
-        stmtList.add(stmt);
+        stmtList.add(parseStmt());
 
         while (!this.codeScanner.hasCurrentChar('}')) {
-            this.counter+=1;
-            stmt = parseStmt();
-            stmt.setStmtLine(this.counter);
-            stmtList.add(stmt);
+            stmtList.add(parseStmt());
             codeScanner.skipWhitespaces();
         }
         return new StatementListImpl(stmtList);
@@ -241,16 +234,21 @@ public class Parser {
         codeScanner.skipWhitespaces();
         String firstWord = parseName();
 
-
-
         codeScanner.skipWhitespaces();
+        ++counter;
         if (this.codeScanner.hasCurrentChar(EntityType.EQUALS.getETName().charAt(0))) {
             this.codeScanner.incrementPosition();
-            return parseAssignmentAfterEquals(firstWord);
+            Statement st = parseAssignmentAfterEquals(firstWord);
+            st.setStmtLine(counter);
+            return st;
         } else if (EntityType.IF.getETName().equals(firstWord)) {
-            return parseIf();
+            Statement st = parseIf();
+            st.setStmtLine(counter);
+            return st;
         } else if (EntityType.WHILE.getETName().equals(firstWord)) {
-            return parseWhile();
+            Statement st = parseWhile();
+            st.setStmtLine(counter);
+            return st;
         } else throw new UnknownStatementType(codeScanner.getCurrentPosition());
     }
 
