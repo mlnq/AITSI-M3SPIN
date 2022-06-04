@@ -1,5 +1,6 @@
 package aitsi.m3spin;
 
+import aitsi.m3spin.commons.interfaces.Procedure;
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.impl.Pkb;
 import aitsi.m3spin.query.QueryEvaluator;
@@ -65,11 +66,11 @@ public class Main {
 
     private static void processSimpleCodeAndPreparePkb(List<String> codeLines) throws SimpleParserException {
         Pkb pkb = new Pkb();
-        Parser parser = new Parser(codeLines, pkb);
-        parser.parse();
+        Parser parser = new Parser(codeLines);
+        List<Procedure> procedures = parser.parse();
 
         DesignExtractor designExtractor = new DesignExtractor(pkb);
-        designExtractor.extractDesigns();
+        designExtractor.fillPkb(procedures);
     }
 
     private static String formatException(Exception e) {
