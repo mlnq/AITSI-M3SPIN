@@ -1,5 +1,6 @@
 package aitsi.m3spin.query.evaluator;
 
+import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.impl.Pkb;
 import aitsi.m3spin.pkb.model.AttributableNode;
 import aitsi.m3spin.query.QueryProcessorException;
@@ -18,6 +19,7 @@ import aitsi.m3spin.query.model.result.reference.SelectedResult;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class QueryEvaluator {
@@ -54,7 +56,7 @@ public class QueryEvaluator {
 
         } else { // Select synonym | Select synonym.attr
             Synonym selectedSynonym = selectedResult.getSynonym();
-            TNodeSetResult result = new TNodeSetResult(tNodeDao.findAllByType(selectedSynonym.getSynonymType()));
+            Set<TNode> result = tNodeDao.findAllByType(selectedSynonym.getSynonymType());
 
             for (PqlClause clause : queryClauses) {
                 ClauseEvaluator clauseEvaluator = clauseEvaluatorFactory.forClause(clause);
@@ -67,9 +69,9 @@ public class QueryEvaluator {
                 }
             }
 
-            if (selectedResult instanceof Synonym) return QueryResult.ofTNodeSet(result.getResult());
+            if (selectedResult instanceof Synonym) return QueryResult.ofTNodeSet(result);
             else return QueryResult.ofAttrList(
-                    result.getResult().stream()
+                    result.stream()
                             .map(AttributableNode.class::cast)
                             .map(attributableNode -> (PrimitiveTypeReference) attributableNode.getAttribute())
                             .collect(Collectors.toList()));

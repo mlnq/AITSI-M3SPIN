@@ -17,7 +17,7 @@ public class PatternEvaluator extends ClauseEvaluator {
     }
 
     @Override
-    public QueryResult evaluateClause(TNodeSetResult previousResult, SelectedResult selectedResult) {
+    public TNodeSetResult evaluateClause(TNodeSetResult previousResult, SelectedResult selectedResult) {
         return new TNodeSetResult(Collections.emptySet());//todo przy pattenach
     }
 }
