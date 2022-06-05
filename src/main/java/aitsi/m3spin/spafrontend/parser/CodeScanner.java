@@ -44,11 +44,9 @@ public class CodeScanner {
 
     private void incrementPosition(int n) {
         if (currentPosition.getColumn() + n < getCurrentLine().length()) currentPosition.moveColumnBy(n);
-        else {
-            if(currentPosition.getLine() < codeLines.size() - 1){
-                currentPosition.moveLine();
-                incrementPosition(Math.max(currentPosition.getColumn() + n - getCurrentLine().length() - 1, 0));
-            }
+        else if (currentPosition.getLine() < codeLines.size() - 1) {
+            currentPosition.moveLine();
+            incrementPosition(Math.max(currentPosition.getColumn() + n - getCurrentLine().length() - 1, 0));
         }
     }
 
