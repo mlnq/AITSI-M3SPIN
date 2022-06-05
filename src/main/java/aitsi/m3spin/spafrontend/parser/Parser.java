@@ -15,10 +15,12 @@ public class Parser {
     @Getter
     private final Pkb pkb;
     private final CodeScanner codeScanner;
+    private int counter;
 
     public Parser(List<String> code, Pkb pkb) {
         this.codeScanner = new CodeScanner(code);
         this.pkb = pkb;
+        this.counter = 0;
     }
 
     public List<Procedure> parse() throws SimpleParserException {
@@ -233,14 +235,17 @@ public class Parser {
         String firstWord = parseName();
 
         codeScanner.skipWhitespaces();
+        Statement st;
         if (this.codeScanner.hasCurrentChar(EntityType.EQUALS.getETName().charAt(0))) {
             this.codeScanner.incrementPosition();
-            return parseAssignmentAfterEquals(firstWord);
+            st = parseAssignmentAfterEquals(firstWord);
         } else if (EntityType.IF.getETName().equals(firstWord)) {
-            return parseIf();
+            st = parseIf();
         } else if (EntityType.WHILE.getETName().equals(firstWord)) {
-            return parseWhile();
+            st = parseWhile();
         } else throw new UnknownStatementType(codeScanner.getCurrentPosition());
+        st.setStmtLine(++counter);
+        return st;
     }
 
     private If parseIf() {
