@@ -1,6 +1,8 @@
 package aitsi.m3spin.pkb;
 
-import aitsi.m3spin.commons.impl.StatementImpl;
+import aitsi.m3spin.commons.impl.AssignmentImpl;
+import aitsi.m3spin.commons.impl.IfImpl;
+import aitsi.m3spin.commons.impl.WhileImpl;
 import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.pkb.impl.ParentImpl;
 import aitsi.m3spin.pkb.interfaces.Parent;
@@ -16,27 +18,25 @@ class ParentImplTest {
 
     @Test
     void setParent_SettingCorrectNode_SetsAndReturnsParent() {
-        Statement child = new StatementImpl();
-        Statement parent = new StatementImpl();
+        Statement child = new WhileImpl();
+        Statement parent = new IfImpl();
 
-        assertAll(
-                () -> assertEquals(parent, parentMethods.setParent(parent, child)),
-                () -> assertEquals(parent, parentMethods.getParent(child))
-        );
+        assertEquals(parent, parentMethods.setParent(parent, child));
+        assertEquals(parent, parentMethods.getParent(child));
     }
 
     @Test
     void setParent_SettingNull_ThrowsNullPointerExceptionOnGetParent() {
-        Statement child = new StatementImpl();
+        Statement child = new AssignmentImpl();
         assertThrows(NullPointerException.class, () -> parentMethods.setParent(null, child));
     }
 
     @Test
     void getParentedBy_ParentWithThreeChildren_ReturnsThreeChildren() {
-        Statement parent = new StatementImpl();
-        Statement firstChild = new StatementImpl();
-        Statement secondChild = new StatementImpl();
-        Statement thirdChild = new StatementImpl();
+        Statement parent = new WhileImpl();
+        Statement firstChild = new IfImpl();
+        Statement secondChild = new AssignmentImpl();
+        Statement thirdChild = new AssignmentImpl();
 
         firstChild.setParent(parent);
         parent.setChild(firstChild);
@@ -63,30 +63,30 @@ class ParentImplTest {
 
     @Test
     void getParent_CorrectParent_ReturnsSetParent() {
-        Statement child = new StatementImpl();
-        Statement parent = new StatementImpl();
+        Statement child = new AssignmentImpl();
+        Statement parent = new WhileImpl();
         child.setParent(parent);
         assertEquals(parent, parentMethods.getParent(child));
     }
 
     @Test
     void getParent_NoParent_ThrowsNullPointerException() {
-        Statement child = new StatementImpl();
+        Statement child = new IfImpl();
         assertThrows(NullPointerException.class, () -> parentMethods.getParent(child));
     }
 
     @Test
     void isParent_CorrectPairOfParentAndChild_ReturnsTrue() {
-        Statement child = new StatementImpl();
-        Statement parent = new StatementImpl();
+        Statement child = new AssignmentImpl();
+        Statement parent = new WhileImpl();
         child.setParent(parent);
         assertTrue(parentMethods.isParent(parent, child));
     }
 
     @Test
     void isParent_PairOfIndependentNodes_ThrowsNullPointerException() {
-        Statement child = new StatementImpl();
-        Statement parent = new StatementImpl();
+        Statement child = new WhileImpl();
+        Statement parent = new IfImpl();
         assertThrows(NullPointerException.class, () -> parentMethods.isParent(parent, child));
     }
 

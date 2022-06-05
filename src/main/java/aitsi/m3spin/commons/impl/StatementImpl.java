@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-public class StatementImpl extends TNodeImpl implements Statement  {
+public abstract class StatementImpl extends TNodeImpl implements Statement  {
     protected int stmtLine;
 
     @Override
