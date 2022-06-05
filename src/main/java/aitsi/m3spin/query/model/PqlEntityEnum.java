@@ -9,7 +9,9 @@ public enum PqlEntityEnum {
     SELECT("Select"),
     SUCH("such"),
     SUCH_THAT("such that"),
-    WITH("with");
+    WITH("with"),
+    DECLARATION_DELIMITER(";"),
+    SYNONYM_DELIMITER(",");
 
-    private final String pqlEntityName;
+    private final String name;
 }

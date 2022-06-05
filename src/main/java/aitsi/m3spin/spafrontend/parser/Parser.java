@@ -3,8 +3,6 @@ package aitsi.m3spin.spafrontend.parser;
 import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.exception.CodeScannerException;
 import aitsi.m3spin.commons.exception.MissingCharacterException;
-import aitsi.m3spin.commons.exception.MissingCodeEntityException;
-import aitsi.m3spin.commons.exception.MissingKeywordException;
 import aitsi.m3spin.commons.impl.*;
 import aitsi.m3spin.commons.interfaces.*;
 import aitsi.m3spin.pkb.impl.Pkb;
@@ -151,7 +149,7 @@ public class Parser {
     }
 
     private Procedure parseProcedure() throws SimpleParserException, CodeScannerException {
-        parseKeyword(EntityType.PROCEDURE);
+        codeScanner.parseKeyword(EntityType.PROCEDURE.getETName());
         String procName = parseName();
 
         parseStartingBrace();
@@ -214,14 +212,6 @@ public class Parser {
         return letter;
     }
 
-    private void parseKeyword(EntityType keyword) throws MissingCodeEntityException {//todo do codescannera, ale jako argument string (zadanie #11)
-        String keywordStr = codeScanner.getCurrentString(keyword.getETName().length());
-        if (!keyword.getETName().equals(keywordStr)) {
-            throw new MissingKeywordException(keyword, codeScanner.getCurrentPosition());
-        }
-        codeScanner.skipWhitespaces();
-    }
-
     private StatementList parseStmtList() throws SimpleParserException, CodeScannerException {
         List<Statement> stmtList = new ArrayList<>();
         stmtList.add(parseStmt());
@@ -263,7 +253,7 @@ public class Parser {
         return new WhileImpl(new VariableImpl(conditionVar), stmtList);
     }
 
-    private Assignment parseAssignmentAfterEquals(String leftSideVar) throws SimpleParserException, CodeScannerException {
+    private Assignment parseAssignmentAfterEquals(String leftSideVar) throws CodeScannerException {
         codeScanner.skipWhitespaces();
         Expression expr = parseExpression();
 
@@ -271,7 +261,7 @@ public class Parser {
         return new AssignmentImpl(new VariableImpl(leftSideVar), expr);
     }
 
-    private Expression parseExpression() throws SimpleParserException, CodeScannerException {
+    private Expression parseExpression() throws CodeScannerException {
 
         codeScanner.skipWhitespaces();
         Factor factor = parseFactor();

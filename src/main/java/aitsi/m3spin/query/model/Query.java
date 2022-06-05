@@ -10,10 +10,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Getter
 @AllArgsConstructor
@@ -26,7 +25,10 @@ public class Query {
     private List<Pattern> patternList = Collections.emptyList();
 
     public List<PqlClause> getAllClauses() {
-        return Stream.concat(Stream.concat(suchThatList.stream(), withList.stream()), patternList.stream())
-                .collect(Collectors.toList());
+        List<PqlClause> allClauses = new ArrayList<>();
+        if (suchThatList != null) allClauses.addAll(suchThatList);
+        if (withList != null) allClauses.addAll(withList);
+        if (patternList != null) allClauses.addAll(patternList);
+        return allClauses;
     }
 }

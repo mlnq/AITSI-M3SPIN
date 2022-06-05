@@ -18,6 +18,7 @@ import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
 
@@ -29,15 +30,18 @@ public class Main {
             PqlReader pqlReader = new PqlReader();
             PqlDisplayer pqlDisplayer = new PqlDisplayer();
 
-            if (args != null && args.length == 1) {
+            if (args != null && (args.length == 1 || args.length == 2)) {
                 simpleReader.readFile(args[0]);
 
                 Pkb pkb = processSimpleCodeAndPreparePkb(simpleReader.getCodeLines());
 
                 System.out.println("Ready");
 
+                Scanner scanner = new Scanner(System.in);
+
+                boolean isRunManual = args.length == 2;
                 while (true) {
-                    List<String> pqlLines = pqlReader.readStdin(2);
+                    List<String> pqlLines = pqlReader.readStdin(2, scanner, isRunManual);
 
                     QueryPreprocessor qp = new QueryPreprocessor(pqlLines);
                     qp.parsePql();
