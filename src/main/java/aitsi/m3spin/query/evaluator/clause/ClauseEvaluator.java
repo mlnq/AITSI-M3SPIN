@@ -38,12 +38,13 @@ public abstract class ClauseEvaluator {
     }
 
     public BooleanResult evaluateBooleanClause(Set<TNode> previousResult, SelectedResult selectedResult) throws QueryProcessorException {
-        return (BooleanResult) evaluateClause(new TNodeSetResult(previousResult), selectedResult);
+        TNodeSetResult tNodeSetResult = evaluateClause(new TNodeSetResult(previousResult), selectedResult);
+        return new BooleanResult(tNodeSetResult.isTrue());
     }
 
     public QueryResult evaluateClause(SelectedResult selectedResult) throws QueryProcessorException {
         return evaluateClause(new TNodeSetResult(Collections.emptySet()), selectedResult);
     }
 
-    public abstract QueryResult evaluateClause(TNodeSetResult previousResult, SelectedResult selectedResult) throws QueryProcessorException;
+    public abstract TNodeSetResult evaluateClause(TNodeSetResult previousResult, SelectedResult selectedResult) throws QueryProcessorException;
 }
