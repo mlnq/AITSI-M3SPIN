@@ -235,21 +235,17 @@ public class Parser {
         String firstWord = parseName();
 
         codeScanner.skipWhitespaces();
-        ++counter;
+        Statement st;
         if (this.codeScanner.hasCurrentChar(EntityType.EQUALS.getETName().charAt(0))) {
             this.codeScanner.incrementPosition();
-            Statement st = parseAssignmentAfterEquals(firstWord);
-            st.setStmtLine(counter);
-            return st;
+            st = parseAssignmentAfterEquals(firstWord);
         } else if (EntityType.IF.getETName().equals(firstWord)) {
-            Statement st = parseIf();
-            st.setStmtLine(counter);
-            return st;
+            st = parseIf();
         } else if (EntityType.WHILE.getETName().equals(firstWord)) {
-            Statement st = parseWhile();
-            st.setStmtLine(counter);
-            return st;
+            st = parseWhile();
         } else throw new UnknownStatementType(codeScanner.getCurrentPosition());
+        st.setStmtLine(++counter);
+        return st;
     }
 
     private If parseIf() {
