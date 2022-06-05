@@ -1,5 +1,5 @@
 procedure Main {
 while i {
-y = x+i +2;}
-x   =x     +y+  z;
+y = łżęć+iaiao +2;}
+żółć =x     +y+  z;
 }

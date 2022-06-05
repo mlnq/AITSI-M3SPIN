@@ -6,7 +6,8 @@
 
     <groupId>aitsi.m3spin</groupId>
     <artifactId>AITSI-M3SPIN</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.3.0-PROFESSOR-CODE-PARSING</version>
+    <!--iteracja.wersja(nazwana).build-->
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -23,4 +24,25 @@
         </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>aitsi.m3spin.Main</mainClass>
+                        </manifest>
+                        <manifestEntries>
+                            <Created-By>M3-SPIN</Created-By>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
