@@ -11,7 +11,7 @@ public interface Ast {
     //: Creates a new node of type ‘et’ and returns a reference to it
     TNode createTNode(EntityType et) throws IllegalNodeTypeException;
 
-    void setName(TNode node, String name);
+    void setAttribute(TNode node, String attribute);
 
     TNode setChild(TNode parent, TNode child);
 
@@ -45,7 +45,7 @@ public interface Ast {
 
     EntityType getType(TNode node);
 
-    String getName(TNode node);
+    String getAttribute(TNode node);
 
     TNode getChild(TNode p);
 

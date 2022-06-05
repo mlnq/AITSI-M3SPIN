@@ -39,7 +39,6 @@ class AstImplTest {
         While root = new WhileImpl();
 
         assertEquals(root, ast.setRoot(root));
-        assertEquals(root, ast.getRoot());
     }
 
     @Test
@@ -50,7 +49,7 @@ class AstImplTest {
     @Test
     void setVariableName_SetNameAsX_NameIsSetAsX() {
         Variable variable = new VariableImpl(0);
-        ast.setName(variable, "x");
+        ast.setAttribute(variable, "x");
 
         assertEquals("x", variable.getAttribute());
     }
@@ -58,7 +57,7 @@ class AstImplTest {
     @Test
     void setVariableName_SetNameAsNull_NameIsSetAsNull() {
         Variable variable = new VariableImpl(0);
-        ast.setName(variable, null);
+        ast.setAttribute(variable, null);
 
         assertNull(variable.getAttribute());
     }
@@ -164,17 +163,17 @@ class AstImplTest {
     }
 
     @Test
-    void getName_VariableWithAttributeY_ReturnsY() {
+    void getAttribute_VariableWithAttributeY_ReturnsY() {
         Variable variable = new VariableImpl(0);
         variable.setAttribute("y");
-        assertEquals("y", ast.getName(variable));
+        assertEquals("y", ast.getAttribute(variable));
     }
 
     @Test
-    void getName_VariableWithAttributeSetAsNull_ReturnsNull() {
+    void getAttribute_VariableWithAttributeSetAsNull_ReturnsNull() {
         Variable variable = new VariableImpl(0);
         variable.setAttribute(null);
-        assertNull(ast.getName(variable));
+        assertNull(ast.getAttribute(variable));
     }
 
     @Test

@@ -44,7 +44,7 @@ public class AstImpl implements Ast {
     }
 
     @Override
-    public void setName(TNode n, String attr) {
+    public void setAttribute(TNode n, String attr) {
         n.setAttribute(attr);
     }
 
@@ -93,7 +93,7 @@ public class AstImpl implements Ast {
     }
 
     @Override
-    public String getName(TNode node) {
+    public String getAttribute(TNode node) {
         return node.getAttribute();
     }
 
