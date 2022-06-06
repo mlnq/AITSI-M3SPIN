@@ -14,9 +14,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Getter
 public class ProcedureImpl extends TNodeImpl implements Procedure, AttributableNode {
+    @Getter
     private StatementList statementList;
+    @Getter
     private int id;
     private StringAttribute procName;
 
@@ -29,11 +30,13 @@ public class ProcedureImpl extends TNodeImpl implements Procedure, AttributableN
         this.id = id;
     }
 
-    public String getName() {
+    @Override
+    public String getProcName() {
         return procName.getValue();
     }
 
-    public void setName(String name) {
+    @Override
+    public void setProcName(String name) {
         procName = new StringAttribute(name);
     }
 

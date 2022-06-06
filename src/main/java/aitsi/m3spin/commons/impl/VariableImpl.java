@@ -24,10 +24,12 @@ public class VariableImpl extends TNodeImpl implements Variable, AttributableNod
         this.varName = new StringAttribute(name);
     }
 
+    @Override
     public String getVarName() {
         return varName.getValue();
     }
 
+    @Override
     public void setVarName(String nameAttr) {
         this.varName = new StringAttribute(nameAttr);
     }

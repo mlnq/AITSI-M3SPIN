@@ -15,12 +15,8 @@ public class ClauseEvaluatorFactory {
 
     public ClauseEvaluator forClause(PqlClause pqlClause) throws ClauseEvaluationException {
         try {
-            // 1 sposób - ten chuba lepszy, bo określamy jakie argumenty ma mieć konstruktor, a nie pierwszy lepszy
-//            Class<?>[] constructorArgsTypes = {Pkb.class, TNodeDao.class, PqlClause.class};
-//            Constructor<ClauseEvaluator> constructor = (Constructor<ClauseEvaluator>) pqlClause.getEvaluatorClass().getConstructor(constructorArgsTypes);
-
-            // 2 sposób
-            Constructor<ClauseEvaluator> constructor = (Constructor<ClauseEvaluator>) pqlClause.getEvaluatorClass().getConstructors()[0];
+            Class<?>[] constructorArgsTypes = {Pkb.class, TNodeDao.class, PqlClause.class};
+            Constructor<ClauseEvaluator> constructor = (Constructor<ClauseEvaluator>) pqlClause.getEvaluatorClass().getConstructor(constructorArgsTypes);
 
             return constructor.newInstance(this.pkb, this.tNodeDao, pqlClause);
         } catch (ReflectiveOperationException e) {

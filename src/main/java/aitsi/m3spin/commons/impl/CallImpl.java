@@ -15,18 +15,21 @@ public class CallImpl extends StatementImpl implements Call, AttributableNode {
 
     @Override
     public EntityType getType() {
-        return null;
+        return EntityType.CALL;
     }
 
+    @Override
     public String getProcName() {
         return procName.getValue();
     }
 
+    @Override
     public void setProcName(String procName) {
         this.procName = new StringAttribute(procName);
     }
 
-    @Override
+    @Override//todo zostaje kwestia get i set attribute dla Call. ATS-26
+    // Call ma 2 atrubuty procName i stmt# odziedziczony z Statement
     public NodeAttribute getAttribute() {
         return procName;
     }

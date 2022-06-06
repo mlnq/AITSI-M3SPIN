@@ -6,14 +6,11 @@ import aitsi.m3spin.commons.interfaces.NodeAttribute;
 import aitsi.m3spin.pkb.model.AttributableNode;
 import aitsi.m3spin.pkb.model.IntegerAttribute;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-@Getter
 @EqualsAndHashCode(callSuper = true)
 public class ConstantImpl extends TNodeImpl implements Constant, AttributableNode {
-
     private IntegerAttribute value;
 
     public ConstantImpl(int value) {
@@ -33,5 +30,13 @@ public class ConstantImpl extends TNodeImpl implements Constant, AttributableNod
     @Override
     public void setAttribute(NodeAttribute attribute) {
         this.value = (IntegerAttribute) attribute;
+    }
+
+    public int getValue() {
+        return value.getValue();
+    }
+
+    public void setValue(int value) {
+        this.value = new IntegerAttribute(value);
     }
 }

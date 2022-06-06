@@ -12,3 +12,6 @@ Select s such that Follows* (s, 116)
 null
 procedure p
 Select p
+Main
+prog_line n; assign a1, a2;
+Select a1 such that Follows(n, a2) with n = 30

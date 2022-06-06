@@ -3,7 +3,9 @@ package aitsi.m3spin.spafrontend.parser;
 import aitsi.m3spin.commons.exception.*;
 import lombok.Getter;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 public class CodeScanner {
@@ -13,6 +15,42 @@ public class CodeScanner {
     public CodeScanner(List<String> codeLines) {
         this.codeLines = codeLines;
         this.currentPosition = new CodePosition();
+    }
+
+    public String parseName() throws CodeScannerException { //todo ATS-11 użwać
+        return parseName(Collections.emptySet());
+    }
+
+    public String parseName(Character allowedSpecialChar) throws CodeScannerException { //todo ATS-11 użwać
+        return parseName(Collections.singleton(allowedSpecialChar));
+    }
+
+    public String parseName(Set<Character> allowedSpecialChars) throws CodeScannerException { //todo ATS-11 użwać
+        StringBuilder name = new StringBuilder(String.valueOf(parseLetter()));
+
+        while (hasCurrentChar()) {
+            char currentChar = getCurrentChar();
+            if (Character.isLetter(currentChar)) {
+                name.append(parseLetter());
+            } else if (Character.isDigit(currentChar)) {
+                name.append(parseDigit());
+            } else if (allowedSpecialChars.contains(currentChar)) {
+                name.append(parseChar(currentChar));
+            } else {
+                break;
+            }
+        }
+        return String.valueOf(name);
+    }
+
+    public char parseDigit() throws CodeScannerException {//todo ATS-11
+        char digit = this.getCurrentDigit();
+        return parseChar(digit);
+    }
+
+    private char parseLetter() throws CodeScannerException {//todo ATS-11
+        char letter = this.getCurrentLetter();
+        return parseChar(letter);
     }
 
     private char parseChar(char c, boolean incFlag) throws MissingCharacterException { //todo ATS-11

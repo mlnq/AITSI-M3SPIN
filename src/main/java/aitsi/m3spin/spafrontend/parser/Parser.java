@@ -48,7 +48,7 @@ public class Parser {
     }
 
     private void fillPkb(Procedure procedure) throws UnknownStatementType {
-        pkb.getProcTable().insertProc(procedure.getName());
+        pkb.getProcTable().insertProc(procedure.getProcName());
         StatementList stmtList = (StatementList) pkb.getAst().setChild(procedure, procedure.getStatementList());
         RelationshipsInfo relationshipsInfo = fillPkb(stmtList);
 

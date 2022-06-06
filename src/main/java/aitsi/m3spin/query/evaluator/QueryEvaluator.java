@@ -41,11 +41,6 @@ public class QueryEvaluator {
 
     public QueryResult evaluateQuery(Query query) throws QueryProcessorException {
         SelectedResult selectedResult = query.getSelectedResult();
-        /*
-         *Select a such that Follows(a, b) with b.attr = c. attr
-         * a jest selected
-         * b i c są powiązane, więc nie wystarczy w tym with sprawdzić true false, tylko ograniczyć zbiór b w such that
-         * */
 
         List<PqlClause> queryClauses = query.getAllClauses();
         ClauseEvaluatorFactory clauseEvaluatorFactory = new ClauseEvaluatorFactory(pkb, tNodeDao);

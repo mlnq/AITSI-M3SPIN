@@ -4,4 +4,6 @@ public interface Variable extends Factor {
     int getId();
 
     String getVarName();
+
+    void setVarName(String varName);
 }
