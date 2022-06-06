@@ -3,12 +3,9 @@ package aitsi.m3spin.query.evaluator.clause;
 import aitsi.m3spin.pkb.impl.Pkb;
 import aitsi.m3spin.query.evaluator.dao.TNodeDao;
 import aitsi.m3spin.query.model.clauses.PqlClause;
-import aitsi.m3spin.query.model.result.actual.QueryResult;
-import aitsi.m3spin.query.model.result.reference.SelectedResult;
+import aitsi.m3spin.query.model.references.Synonym;
 import aitsi.m3spin.query.model.result.actual.TNodeSetResult;
 import lombok.EqualsAndHashCode;
-
-import java.util.Collections;
 
 @EqualsAndHashCode(callSuper = false)
 public class PatternEvaluator extends ClauseEvaluator {
@@ -17,7 +14,12 @@ public class PatternEvaluator extends ClauseEvaluator {
     }
 
     @Override
-    public TNodeSetResult evaluateClause(TNodeSetResult previousResult, SelectedResult selectedResult) {
-        return new TNodeSetResult(Collections.emptySet());//todo przy pattenach
+    public TNodeSetResult[] evaluateClause() {
+        return new TNodeSetResult[0];//todo po 1 iteracji
+    }
+
+    @Override
+    public TNodeSetResult chooseResult(TNodeSetResult[] bothResults, Synonym selectedSynonym) {
+        return null;//todo po 1 iteracji
     }
 }

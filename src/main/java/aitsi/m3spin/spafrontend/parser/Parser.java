@@ -122,13 +122,13 @@ public class Parser {
     }
 
     private RelationshipsInfo fillPkb(Variable variable, Expression expression) {
-        pkb.getVarTable().insertVar(variable.getNameAttr());
+        pkb.getVarTable().insertVar(variable.getVarName());
         expression = (Expression) pkb.getAst().setSibling(variable, expression);
         return fillPkb(expression);
     }
 
     private RelationshipsInfo fillPkb(Variable variable, StatementList stmtList) throws UnknownStatementType {
-        pkb.getVarTable().insertVar(variable.getNameAttr());
+        pkb.getVarTable().insertVar(variable.getVarName());
         stmtList = (StatementList) pkb.getAst().setSibling(variable, stmtList);
         return fillPkb(stmtList);
     }
@@ -138,7 +138,7 @@ public class Parser {
             RelationshipsInfo relationshipsInfo = new RelationshipsInfo();
             if (expression.getFactor() instanceof Variable) {
                 Variable variable = (Variable) expression.getFactor();
-                pkb.getVarTable().insertVar(variable.getNameAttr());
+                pkb.getVarTable().insertVar(variable.getVarName());
                 relationshipsInfo.addUsedVar(variable);
             }
             Factor factor = (Factor) pkb.getAst().setChild(expression, expression.getFactor());
@@ -170,11 +170,11 @@ public class Parser {
         parseChar('}');
     }
 
-    private void parseChar(char c) throws MissingCharacterException {//todo do codeScannera (zadanie #11)
+    private void parseChar(char c) throws MissingCharacterException {//todo do codeScannera (zadanie ATS-11)
         parseChar(c, true);
     }
 
-    private void parseChar(char c, boolean incFlag) throws MissingCharacterException {//todo do codeScannera (zadanie #11)
+    private void parseChar(char c, boolean incFlag) throws MissingCharacterException {//todo do codeScannera (zadanie ATS-11)
         this.codeScanner.skipWhitespaces();
         if (this.codeScanner.hasCurrentChar(c)) {
             if (incFlag) {
@@ -185,7 +185,7 @@ public class Parser {
         }
     }
 
-    private String parseName() throws CodeScannerException {//todo do codeScannera (zadanie #11)
+    private String parseName() throws CodeScannerException {//todo do codeScannera (zadanie ATS-11)
         StringBuilder name = new StringBuilder(String.valueOf(parseLetter()));
         while (codeScanner.hasCurrentChar()) {
             char currentChar = codeScanner.getCurrentChar();
@@ -200,13 +200,13 @@ public class Parser {
         return String.valueOf(name);
     }
 
-    private char parseDigit() throws CodeScannerException {//todo do codeScannera (zadanie #11)
+    private char parseDigit() throws CodeScannerException {//todo do codeScannera (zadanie ATS-11)
         char digit = this.codeScanner.getCurrentDigit();
         this.codeScanner.incrementPosition();
         return digit;
     }
 
-    private char parseLetter() throws CodeScannerException {//todo do codeScannera (zadanie #11)
+    private char parseLetter() throws CodeScannerException {//todo do codeScannera (zadanie ATS-11)
         char letter = this.codeScanner.getCurrentLetter();
         this.codeScanner.incrementPosition();
         return letter;

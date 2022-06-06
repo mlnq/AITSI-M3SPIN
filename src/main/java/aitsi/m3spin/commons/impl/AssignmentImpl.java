@@ -18,10 +18,6 @@ public class AssignmentImpl extends StatementImpl implements Assignment {
     private Variable variable;
     private Expression expression;
 
-    public AssignmentImpl(Variable firstWord) {
-        this.variable = firstWord;
-    }
-
     public EntityType getType() {
         return EntityType.ASSIGNMENT;
     }

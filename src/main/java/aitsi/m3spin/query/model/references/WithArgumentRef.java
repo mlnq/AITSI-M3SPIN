@@ -1,15 +1,15 @@
 package aitsi.m3spin.query.model.references;
 
-import aitsi.m3spin.query.evaluator.exception.IncompatibleTypesComparisonException;
+import aitsi.m3spin.query.model.enums.AttributeTypeEnum;
+import aitsi.m3spin.query.model.enums.WithArgRefType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
 public abstract class WithArgumentRef {
-    private final ReferenceType referenceType;
+    private final AttributeTypeEnum withValueType;
+    private final WithArgRefType withArgRefType;
 
-    public abstract boolean equalsToSynonym(Synonym synonym) throws IncompatibleTypesComparisonException;
-
-    public abstract boolean isConstantValue();
+    public abstract boolean equalsToSynonym(Synonym synonym);
 }

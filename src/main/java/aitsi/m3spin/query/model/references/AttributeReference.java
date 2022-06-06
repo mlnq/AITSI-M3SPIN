@@ -1,6 +1,7 @@
 package aitsi.m3spin.query.model.references;
 
 import aitsi.m3spin.query.model.enums.AttributeEnum;
+import aitsi.m3spin.query.model.enums.WithArgRefType;
 import aitsi.m3spin.query.model.result.reference.SelectedResult;
 import lombok.Getter;
 
@@ -10,7 +11,7 @@ public class AttributeReference extends ComplexTypeReference implements Selected
     private final AttributeEnum attribute;
 
     public AttributeReference(Synonym synonym, AttributeEnum attribute) {
-        super(ReferenceType.fromAttrType(attribute.getAttrType()));
+        super(attribute.getAttrType(), WithArgRefType.ATTR_REF);
         this.synonym = synonym;
         this.attribute = attribute;
     }
@@ -20,8 +21,4 @@ public class AttributeReference extends ComplexTypeReference implements Selected
         return this.synonym.equals(synonym);
     }
 
-    @Override
-    public boolean isConstantValue() {
-        return false;
-    }
 }

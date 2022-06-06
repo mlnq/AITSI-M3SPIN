@@ -5,10 +5,12 @@ import aitsi.m3spin.commons.interfaces.NodeAttribute;
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.impl.Pkb;
 import aitsi.m3spin.pkb.model.AttributableNode;
+import aitsi.m3spin.pkb.model.IntegerAttribute;
 import aitsi.m3spin.query.model.references.IntegerReference;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class TNodeDao {
@@ -44,5 +46,21 @@ public class TNodeDao {
 
     public Set<TNode> findAll() {
         return NodeFinderAll.find(pkb.getAst().getRoot(), pkb);
+    }
+
+    public Set<TNode> findAllStmts() {
+        Set<TNode> allStmts = findAllByType(EntityType.ASSIGNMENT);
+        allStmts.addAll(findAllByType(EntityType.WHILE));
+        allStmts.addAll(findAllByType(EntityType.IF));
+        allStmts.addAll(findAllByType(EntityType.CALL));
+        return allStmts;
+    }
+
+    public Set<TNode> findAllByProgLine(IntegerAttribute progLine) {
+        Set<TNode> allStmts = findAllStmts();
+        return allStmts.stream()
+                .map(AttributableNode.class::cast)
+                .filter(node -> node.getAttribute().equals(progLine))
+                .collect(Collectors.toSet());
     }
 }

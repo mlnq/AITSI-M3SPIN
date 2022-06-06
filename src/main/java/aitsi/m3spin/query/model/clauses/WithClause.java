@@ -1,7 +1,7 @@
 package aitsi.m3spin.query.model.clauses;
 
 import aitsi.m3spin.query.evaluator.clause.WithClauseEvaluator;
-import aitsi.m3spin.query.evaluator.exception.IncompatibleTypesComparisonException;
+import aitsi.m3spin.query.model.enums.WithArgRefType;
 import aitsi.m3spin.query.model.references.Synonym;
 import aitsi.m3spin.query.model.references.WithArgumentRef;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@ public class WithClause implements PqlClause {
     }
 
     @Override
-    public boolean usesSynonym(Synonym synonym) throws IncompatibleTypesComparisonException {
+    public boolean usesSynonym(Synonym synonym) {
         return usesSynonym(leftHandReference, synonym) || usesSynonym(rightHandReference, synonym);
     }
 
@@ -27,7 +27,18 @@ public class WithClause implements PqlClause {
         return WithClauseEvaluator.class;
     }
 
-    public boolean usesSynonym(WithArgumentRef reference, Synonym synonym) throws IncompatibleTypesComparisonException {
+    @Override
+    public Synonym getOtherUsedSynonym(Synonym excludedSynonym) {
+        if (leftHandReference.equals(excludedSynonym) && rightHandReference.getWithArgRefType().equals(WithArgRefType.PROG_LINE))
+            return (Synonym) rightHandReference;
+        else if (rightHandReference.equals(excludedSynonym) && leftHandReference.getWithArgRefType().equals(WithArgRefType.PROG_LINE))
+            return (Synonym) leftHandReference;
+        else return null;
+    }
+
+    public boolean usesSynonym(WithArgumentRef reference, Synonym synonym) {
         return reference.equalsToSynonym(synonym);
     }
+
+
 }

@@ -7,7 +7,6 @@ import aitsi.m3spin.query.model.enums.AttributeEnum;
 import aitsi.m3spin.query.model.references.AttributeReference;
 import aitsi.m3spin.query.model.references.StringReference;
 import aitsi.m3spin.query.model.references.WithArgumentRef;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,8 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class QueryEvaluatorTest extends QueryTestingData {
     private QueryEvaluator queryEvaluator;
-    private Query singleSuchThatQuery;
-    private Query singleWithQuery;
 
 
     @BeforeEach
@@ -29,13 +26,9 @@ class QueryEvaluatorTest extends QueryTestingData {
         queryEvaluator = new QueryEvaluator(pkb);
     }
 
-    @AfterEach
-    void tearDown() {
-    }
-
     @Test
     void evaluateQueries() {
-        //todo
+        //todo test metody ATS-16
     }
 
     @Test
@@ -44,8 +37,8 @@ class QueryEvaluatorTest extends QueryTestingData {
         WithArgumentRef rightRef = new StringReference(PROCEDURE_NAME);
         WithClause withClause = new WithClause(leftRef, rightRef);
 
-        singleWithQuery = new Query(
-                selectedResult,
+        Query singleWithQuery = new Query(
+                selectedProcSynonym,
                 Collections.emptyList(),
                 Collections.singletonList(withClause),
                 Collections.emptyList()
@@ -57,12 +50,12 @@ class QueryEvaluatorTest extends QueryTestingData {
     @Test
     void evaluateQuery_SingleSuchThat_Evaluated() throws QueryProcessorException {
 
-        singleSuchThatQuery = new Query(
-                selectedResult,
-                Collections.singletonList(suchThat),
+        Query singleSuchThatQuery = new Query(
+                selectedProcSynonym,
+                Collections.singletonList(followsSuchThat),
                 Collections.emptyList(),
                 Collections.emptyList()
         );
-        assertEquals(assignResult, queryEvaluator.evaluateQuery(singleSuchThatQuery));//todo wywala się
+        assertEquals(procedureResult, queryEvaluator.evaluateQuery(singleSuchThatQuery));
     }
 }

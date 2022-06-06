@@ -4,12 +4,15 @@ import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.exception.CodeScannerException;
 import aitsi.m3spin.commons.exception.IllegalCharacterException;
 import aitsi.m3spin.commons.exception.MissingCharacterException;
+import aitsi.m3spin.query.QueryProcessorException;
+import aitsi.m3spin.query.evaluator.exception.IncompatibleTypesComparisonException;
 import aitsi.m3spin.query.model.PqlEntityEnum;
 import aitsi.m3spin.query.model.Query;
 import aitsi.m3spin.query.model.clauses.Pattern;
 import aitsi.m3spin.query.model.clauses.SuchThat;
 import aitsi.m3spin.query.model.clauses.WithClause;
 import aitsi.m3spin.query.model.enums.AttributeEnum;
+import aitsi.m3spin.query.model.enums.AttributeTypeEnum;
 import aitsi.m3spin.query.model.enums.RelationshipPreprocEnum;
 import aitsi.m3spin.query.model.references.*;
 import aitsi.m3spin.query.model.relationships.RelationshipArgumentRef;
@@ -30,19 +33,19 @@ public class QueryPreprocessor {
         this.codeScanner = new CodeScanner(code);
     }
 
-    public void parsePql() throws CodeScannerException, QueryPreprocessorException {
+    public void parsePql() throws CodeScannerException, QueryProcessorException {
         parseDeclarations();
         parseQueries();
     }
 
-    private void parseQueries() throws QueryPreprocessorException, CodeScannerException {
+    private void parseQueries() throws QueryProcessorException, CodeScannerException {
         String selectName = PqlEntityEnum.SELECT.getName();
         while (codeScanner.hasCurrentString(selectName)) {
             this.queryList.add(parseQuery());
         }
     }
 
-    private Query parseQuery() throws QueryPreprocessorException, CodeScannerException {
+    private Query parseQuery() throws QueryProcessorException, CodeScannerException {
         codeScanner.skipWhitespaces();
         return new Query(parseSelectedSynonym(), parseSuchThatList(), parseWithList(), parsePatternList());
     }
@@ -51,16 +54,20 @@ public class QueryPreprocessor {
         return Collections.emptyList();//todo w przyszych iteracjach
     }
 
-    private List<WithClause> parseWithList() throws QueryPreprocessorException, CodeScannerException {
+    private List<WithClause> parseWithList() throws QueryPreprocessorException, CodeScannerException, IncompatibleTypesComparisonException {
         codeScanner.skipWhitespaces();
         String withName = PqlEntityEnum.WITH.getName();
-        if (codeScanner.hasCurrentString(withName.length())
-                && withName.equals(codeScanner.getCurrentString(withName.length(), false))) {
-            codeScanner.incrementPosition(4);
+        if (codeScanner.hasCurrentString(withName)) {
             WithArgumentRef leftHandRef = parseWithArgument();
             codeScanner.skipWhitespaces();
             codeScanner.parseChar('=');
             WithArgumentRef rightHandRef = parseWithArgument();
+
+            AttributeTypeEnum leftHandType = leftHandRef.getWithValueType();
+            AttributeTypeEnum rightHandType = rightHandRef.getWithValueType();
+            if (!leftHandType.equals(rightHandType))
+                throw new IncompatibleTypesComparisonException(leftHandType, rightHandType);
+
             return Collections.singletonList(new WithClause(leftHandRef, rightHandRef));
         } else {
             return Collections.emptyList();
@@ -188,7 +195,7 @@ public class QueryPreprocessor {
         return stringReference;
     }
 
-    private int parseConst() throws CodeScannerException {//todo do codeScannera
+    private int parseConst() throws CodeScannerException {//todo ATS-11
         StringBuilder name = new StringBuilder(String.valueOf(parseDigit()));
         while (codeScanner.hasCurrentChar()) {
             char currentChar = codeScanner.getCurrentChar();
@@ -201,7 +208,7 @@ public class QueryPreprocessor {
         return Integer.parseInt(String.valueOf(name));
     }
 
-    private String parseRelationName() throws CodeScannerException {
+    private String parseRelationName() throws CodeScannerException { //todo ATS-11
         StringBuilder name = new StringBuilder(String.valueOf(parseLetter()));
 
         while (codeScanner.hasCurrentChar()) {
@@ -237,7 +244,7 @@ public class QueryPreprocessor {
         }
     }
 
-    private String parseName() throws CodeScannerException {//todo wyciągnąc zduplikowany kod do CodeScannera
+    private String parseName() throws CodeScannerException {//todo ATS-11
         StringBuilder name = new StringBuilder(String.valueOf(parseLetter()));
 
         while (codeScanner.hasCurrentChar()) {
@@ -254,12 +261,12 @@ public class QueryPreprocessor {
         return String.valueOf(name);
     }
 
-    private char parseDigit() throws CodeScannerException {//todo do CodeScannera stąd i z parsera
+    private char parseDigit() throws CodeScannerException {//todo ATS-11
         char digit = this.codeScanner.getCurrentDigit();
         return codeScanner.parseChar(digit);
     }
 
-    private char parseLetter() throws CodeScannerException {//todo do CodeScannera stąd i z parsera
+    private char parseLetter() throws CodeScannerException {//todo ATS-11
         char letter = this.codeScanner.getCurrentLetter();
         return codeScanner.parseChar(letter);
     }

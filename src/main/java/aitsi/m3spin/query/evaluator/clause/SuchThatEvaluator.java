@@ -6,7 +6,6 @@ import aitsi.m3spin.query.QueryProcessorException;
 import aitsi.m3spin.query.evaluator.clause.relationship.RelationEvaluator;
 import aitsi.m3spin.query.evaluator.clause.relationship.RelationshipEvaluationStrategy;
 import aitsi.m3spin.query.evaluator.dao.TNodeDao;
-import aitsi.m3spin.query.evaluator.exception.NoSynonymInSelectedResultException;
 import aitsi.m3spin.query.evaluator.exception.UnknownReferenceType;
 import aitsi.m3spin.query.model.clauses.PqlClause;
 import aitsi.m3spin.query.model.clauses.SuchThat;
@@ -15,9 +14,7 @@ import aitsi.m3spin.query.model.references.PrimitiveTypeReference;
 import aitsi.m3spin.query.model.references.ReferenceType;
 import aitsi.m3spin.query.model.references.Synonym;
 import aitsi.m3spin.query.model.relationships.RelationshipArgumentRef;
-import aitsi.m3spin.query.model.result.actual.QueryResult;
 import aitsi.m3spin.query.model.result.actual.TNodeSetResult;
-import aitsi.m3spin.query.model.result.reference.SelectedResult;
 import lombok.EqualsAndHashCode;
 
 import java.util.HashSet;
@@ -26,45 +23,26 @@ import java.util.stream.Collectors;
 
 @EqualsAndHashCode(callSuper = false)
 public class SuchThatEvaluator extends ClauseEvaluator {
+    private final SuchThat suchThat;
+
     public SuchThatEvaluator(Pkb pkb, TNodeDao tNodeDao, PqlClause pqlClause) {
         super(pkb, tNodeDao, pqlClause);
+        suchThat = (SuchThat) pqlClause;
     }
 
 
     @Override
-    public QueryResult evaluateClause(TNodeSetResult previousResult, SelectedResult selectedResult) throws QueryProcessorException {
-        SuchThat suchThat = (SuchThat) pqlClause;
+    public TNodeSetResult[] evaluateClause() throws QueryProcessorException {
 
         Set<? extends TNode> firstArgumentNodes = getNodesFor(suchThat.getFirstArgument());
         Set<? extends TNode> secondArgumentNodes = getNodesFor(suchThat.getSecondArgument());
         RelationshipEvaluatorEnum relation = suchThat.getEvaluatorRelationship();
 
-        QueryResult[] bothResults = evaluateRelationship(relation, firstArgumentNodes, secondArgumentNodes);
-
-        return chooseResult(bothResults, selectedResult, suchThat);
-    }
-
-    private QueryResult chooseResult(QueryResult[] bothResults, SelectedResult selectedResult, SuchThat suchThat) throws NoSynonymInSelectedResultException {
-        RelationshipArgumentRef firstArg = suchThat.getFirstArgument();
-        RelationshipArgumentRef secondArg = suchThat.getSecondArgument();
-        Synonym firstSynonym;
-        Synonym secondSynonym;
-
-        if (firstArg.getReferenceType().equals(ReferenceType.SYNONYM)) {
-            firstSynonym = (Synonym) firstArg;
-            if (selectedResult.getSynonym().equalsToSynonym(firstSynonym)) return bothResults[0];
-        }
-        if (secondArg.getReferenceType().equals(ReferenceType.SYNONYM)) {
-            secondSynonym = (Synonym) secondArg;
-            if (selectedResult.getSynonym().equalsToSynonym(secondSynonym)) return bothResults[1];
-        }
-
-        boolean booleanRes = bothResults[0].isTrue() || bothResults[1].isTrue();
-        return QueryResult.ofBoolean(booleanRes);
+        return evaluateRelationship(relation, firstArgumentNodes, secondArgumentNodes);
     }
 
     private Set<? extends TNode> getNodesFor(RelationshipArgumentRef relationshipArgumentRef) throws UnknownReferenceType {
-        switch (relationshipArgumentRef.getReferenceType()) {
+        switch (relationshipArgumentRef.getArgRefType()) {
             case STRING:
             case INTEGER:
                 PrimitiveTypeReference primitiveReference = ((PrimitiveTypeReference) relationshipArgumentRef);
@@ -75,19 +53,20 @@ public class SuchThatEvaluator extends ClauseEvaluator {
             case WILDCARD:
                 return tNodeDao.findAll();
             default:
-                throw new UnknownReferenceType(pqlClause, relationshipArgumentRef.getReferenceType());
+                throw new UnknownReferenceType(pqlClause, relationshipArgumentRef.getArgRefType());
         }
     }
 
-    private QueryResult[] evaluateRelationship(RelationshipEvaluatorEnum relationship, Set<? extends TNode> firstArgNodes,
-                                               Set<? extends TNode> secondArgNodes) {
+    private TNodeSetResult[] evaluateRelationship(RelationshipEvaluatorEnum relationship, Set<? extends TNode> firstArgNodes,
+                                                  Set<? extends TNode> secondArgNodes) {
 
         Set<TNode> secondResult = new HashSet<>();
 
         Set<TNode> firstResult = firstArgNodes.stream()
-                .filter(node -> secondResult.addAll(filterMatchingNodesFromSet(relationship, node, secondArgNodes))).collect(Collectors.toSet());
+                .filter(node -> secondResult.addAll(filterMatchingNodesFromSet(relationship, node, secondArgNodes)))
+                .collect(Collectors.toSet());
 
-        return new QueryResult[]{QueryResult.ofTNodeSet(firstResult), QueryResult.ofTNodeSet(secondResult)};
+        return new TNodeSetResult[]{new TNodeSetResult(firstResult), new TNodeSetResult(secondResult)};
     }
 
     private Set<? extends TNode> filterMatchingNodesFromSet(RelationshipEvaluatorEnum relationship,
@@ -106,5 +85,22 @@ public class SuchThatEvaluator extends ClauseEvaluator {
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    @Override
+    public TNodeSetResult chooseResult(TNodeSetResult[] bothResults, Synonym selectedSynonym) {
+        RelationshipArgumentRef firstArg = suchThat.getFirstArgument();
+        RelationshipArgumentRef secondArg = suchThat.getSecondArgument();
+
+        if (firstArg.getArgRefType().equals(ReferenceType.SYNONYM)) {
+            Synonym firstSynonym = (Synonym) firstArg;
+            if (selectedSynonym.equalsToSynonym(firstSynonym)) return bothResults[0];
+        }
+        if (secondArg.getArgRefType().equals(ReferenceType.SYNONYM)) {
+            Synonym secondSynonym = (Synonym) secondArg;
+            if (selectedSynonym.equalsToSynonym(secondSynonym)) return bothResults[1];
+        }
+
+        return TNodeSetResult.empty();
     }
 }

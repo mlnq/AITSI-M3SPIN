@@ -4,7 +4,7 @@ import aitsi.m3spin.query.model.clauses.PqlClause;
 
 public class ClauseEvaluationException extends QueryEvaluatorException {
     public ClauseEvaluationException(PqlClause pqlClause) {
-        super("Error while evaluating PQL clause: " + pqlClause);
+        super(String.format("Error while evaluating PQL clause: %s", pqlClause));
     }
 
     public ClauseEvaluationException(PqlClause pqlClause, String msg) {

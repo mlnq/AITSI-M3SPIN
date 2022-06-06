@@ -10,9 +10,8 @@ public abstract class AbstractNodeFinder {
 
     protected Set<TNode> findAllBy(TNode startingNode, Pkb pkb) {
         Set<TNode> nodeSet = new HashSet<>();
-        if (checkSearchCriteria(startingNode)) {
+        if (checkSearchCriteria(startingNode))
             nodeSet.add(startingNode);
-        }
         if (pkb.getAst().hasChild(startingNode))
             nodeSet.addAll(findAllBy(startingNode.getChild(), pkb));
         if (pkb.getAst().hasRightSibling(startingNode))

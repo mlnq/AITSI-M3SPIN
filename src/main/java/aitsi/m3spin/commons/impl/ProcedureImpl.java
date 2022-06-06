@@ -1,8 +1,10 @@
 package aitsi.m3spin.commons.impl;
 
 import aitsi.m3spin.commons.enums.EntityType;
+import aitsi.m3spin.commons.interfaces.NodeAttribute;
 import aitsi.m3spin.commons.interfaces.Procedure;
 import aitsi.m3spin.commons.interfaces.StatementList;
+import aitsi.m3spin.pkb.model.AttributableNode;
 import aitsi.m3spin.pkb.model.StringAttribute;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -13,8 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Getter
-public class ProcedureImpl extends TNodeImpl implements Procedure {
-
+public class ProcedureImpl extends TNodeImpl implements Procedure, AttributableNode {
     private StatementList statementList;
     private int id;
     private StringAttribute procName;
@@ -39,5 +40,15 @@ public class ProcedureImpl extends TNodeImpl implements Procedure {
     @Override
     public EntityType getType() {
         return EntityType.PROCEDURE;
+    }
+
+    @Override
+    public NodeAttribute getAttribute() {
+        return procName;
+    }
+
+    @Override
+    public void setAttribute(NodeAttribute attribute) {
+        this.procName = (StringAttribute) attribute;
     }
 }

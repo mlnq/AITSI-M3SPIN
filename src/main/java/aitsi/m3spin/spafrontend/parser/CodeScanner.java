@@ -15,7 +15,7 @@ public class CodeScanner {
         this.currentPosition = new CodePosition();
     }
 
-    private char parseChar(char c, boolean incFlag) throws MissingCharacterException { //todo do CodeScannera stąd i z parsera
+    private char parseChar(char c, boolean incFlag) throws MissingCharacterException { //todo ATS-11
         this.skipWhitespaces();
 
         if (this.hasCurrentChar(c)) {
@@ -24,7 +24,7 @@ public class CodeScanner {
         } else throw new MissingCharacterException(c, this.getCurrentPosition());
     }
 
-    public char parseChar(char c) throws MissingCharacterException {//todo do CodeScannera stąd i z parsera
+    public char parseChar(char c) throws MissingCharacterException {//todo ATS-11
         return parseChar(c, true);
     }
 
@@ -36,12 +36,10 @@ public class CodeScanner {
             currentPosition.moveLine();
             return hasCurrentChar();
         } else return false;
-//        return currentPosition.getLine() < codeLines.size() //poprzednia wersja
-//                && currentPosition.getColumn() < getCurrentLine().length();
     }
 
 
-    public boolean hasNextChar(int positionIncrement) {
+    public boolean hasNextChar(int positionIncrement) {//todo czy potrzebne
         CodePosition oldPos = new CodePosition(currentPosition);
         incrementPosition(positionIncrement);
 
@@ -151,11 +149,6 @@ public class CodeScanner {
             incrementPosition();
             skipWhitespaces();
         }
-    }
-
-    public void skipLine() {
-        currentPosition.setLine(currentPosition.getLine() + 1);
-        currentPosition.setColumn(0);
     }
 
     public char getCurrentDigit() throws CodeScannerException {

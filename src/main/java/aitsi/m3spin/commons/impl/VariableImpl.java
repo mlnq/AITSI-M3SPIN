@@ -11,36 +11,35 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Getter
 public class VariableImpl extends TNodeImpl implements Variable, AttributableNode {
-
+    @Getter
     private int id;
-    private StringAttribute nameAttr;
+    private StringAttribute varName;
 
     public VariableImpl(int id) {
         this.id = id;
     }
 
     public VariableImpl(String name) {
-        this.nameAttr = new StringAttribute(name);
+        this.varName = new StringAttribute(name);
     }
 
-    public String getNameAttr() {
-        return nameAttr.getValue();
+    public String getVarName() {
+        return varName.getValue();
     }
 
-    public void setName(String nameAttr) {
-        new StringAttribute(nameAttr);
+    public void setVarName(String nameAttr) {
+        this.varName = new StringAttribute(nameAttr);
     }
 
     @Override
     public NodeAttribute getAttribute() {
-        return nameAttr;
+        return varName;
     }
 
     @Override
     public void setAttribute(NodeAttribute attribute) {
-        nameAttr = (StringAttribute) attribute;
+        varName = (StringAttribute) attribute;
     }
 
     @Override

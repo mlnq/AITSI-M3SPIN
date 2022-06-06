@@ -5,7 +5,6 @@ import aitsi.m3spin.pkb.impl.Pkb;
 import aitsi.m3spin.query.evaluator.dao.TNodeDao;
 import aitsi.m3spin.query.evaluator.exception.ClauseEvaluationException;
 import aitsi.m3spin.query.model.clauses.SuchThat;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,10 +20,6 @@ class ClauseEvaluatorFactoryTest {
     void setUp() {
         tNodeDao = new TNodeDao(pkb);
         suchThatEvaluator = new SuchThatEvaluator(pkb, tNodeDao, suchThat);
-    }
-
-    @AfterEach
-    void tearDown() {
     }
 
     @Test

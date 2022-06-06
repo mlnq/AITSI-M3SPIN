@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+    static boolean isRunManual = false;
 
     public static void main(String[] args) {
         try {
@@ -31,6 +32,8 @@ public class Main {
             PqlDisplayer pqlDisplayer = new PqlDisplayer();
 
             if (args != null && (args.length == 1 || args.length == 2)) {
+                isRunManual = args.length == 2;
+
                 simpleReader.readFile(args[0]);
 
                 Pkb pkb = processSimpleCodeAndPreparePkb(simpleReader.getCodeLines());
@@ -39,7 +42,6 @@ public class Main {
 
                 Scanner scanner = new Scanner(System.in);
 
-                boolean isRunManual = args.length == 2;
                 while (true) {
                     List<String> pqlLines = pqlReader.readStdin(2, scanner, isRunManual);
 
@@ -82,6 +84,8 @@ public class Main {
     }
 
     private static String formatException(Exception e) {
-        return "#" + e.toString() + "\n" + Arrays.toString(e.getStackTrace()).replace("),", "),\n");
+        if (isRunManual)
+            return String.format("#[MESSAGE]:%s%n[TRACE]:%s", e.toString(), Arrays.toString(e.getStackTrace()).replace("),", "),\n"));
+        else return String.format("#[MESSAGE]:%s|[TRACE]:%s", e.toString(), Arrays.toString(e.getStackTrace()));
     }
 }

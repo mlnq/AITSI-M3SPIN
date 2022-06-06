@@ -39,44 +39,60 @@ public class QueryEvaluator {
         return results;
     }
 
-    public QueryResult evaluateQuery(Query query) throws QueryProcessorException {//todo ATS-5 rozbuć na mniejsze
+    public QueryResult evaluateQuery(Query query) throws QueryProcessorException {
         SelectedResult selectedResult = query.getSelectedResult();
+        /*
+         *Select a such that Follows(a, b) with b.attr = c. attr
+         * a jest selected
+         * b i c są powiązane, więc nie wystarczy w tym with sprawdzić true false, tylko ograniczyć zbiór b w such that
+         * */
 
         List<PqlClause> queryClauses = query.getAllClauses();
         ClauseEvaluatorFactory clauseEvaluatorFactory = new ClauseEvaluatorFactory(pkb, tNodeDao);
 
         if (selectedResult instanceof BooleanResult) { //Select BOOLEAN
-            for (PqlClause clause : queryClauses) {
-                ClauseEvaluator clauseEvaluator = clauseEvaluatorFactory.forClause(clause);
-                if (!clauseEvaluator.evaluateBooleanClause(selectedResult).get()) {
-                    return QueryResult.ofBoolean(false);
-                }
-            }
-            return QueryResult.ofBoolean(true);
+            return evaluateBooleanQuery(queryClauses, clauseEvaluatorFactory);
 
         } else { // Select synonym | Select synonym.attr
             Synonym selectedSynonym = selectedResult.getSynonym();
-            Set<TNode> result = tNodeDao.findAllByType(selectedSynonym.getSynonymType());
-
-            for (PqlClause clause : queryClauses) {
-                ClauseEvaluator clauseEvaluator = clauseEvaluatorFactory.forClause(clause);
-                if (clause.usesSynonym(selectedSynonym))
-                    result = (TNodeSetResult) clauseEvaluator.evaluateClause(result, selectedResult);
-                else {
-                    if (!clauseEvaluator.evaluateBooleanClause(selectedResult).get()) {
-                        return QueryResult.ofTNodeSet(Collections.emptySet());
-                    }
-                }
-            }
-
-            if (selectedResult instanceof Synonym) return QueryResult.ofTNodeSet(result);
-            else return QueryResult.ofAttrList(
-                    result.stream()
-                            .map(AttributableNode.class::cast)
-                            .map(attributableNode -> (PrimitiveTypeReference) attributableNode.getAttribute())
-                            .collect(Collectors.toList()));
+            Set<Synonym> selectedAndRelatedSynonyms = query.getRelatedSynonyms(selectedSynonym, Collections.singleton(selectedSynonym));
+            return evaluateSynonymQuery(selectedResult, queryClauses, clauseEvaluatorFactory, selectedAndRelatedSynonyms);
         }
     }
 
+    private QueryResult evaluateSynonymQuery(SelectedResult selectedResult, List<PqlClause> clauses, ClauseEvaluatorFactory clauseEvaluatorFactory,
+                                             Set<Synonym> selectedAndRelatedSynonyms) throws QueryProcessorException {
+        Synonym selectedSynonym = selectedResult.getSynonym();
+        Set<? extends TNode> result = tNodeDao.findAllByType(selectedSynonym.getSynonymType());
 
+        for (PqlClause clause : clauses) {
+            ClauseEvaluator clauseEvaluator = clauseEvaluatorFactory.forClause(clause);
+            if (clause.usesAnySynonym(selectedAndRelatedSynonyms)) { //tu tylko sprawsdza, czy to co w Select jest używane w klauzuli
+                TNodeSetResult[] bothRes = clauseEvaluator.evaluateClause();
+                TNodeSetResult chosenResult = clauseEvaluator.chooseResult(bothRes, selectedSynonym);
+                result.retainAll(chosenResult.getResult());//todo do przetestowania ATS-16
+            } else {
+                if (!clauseEvaluator.evaluateBooleanClause().get()) {
+                    return QueryResult.ofTNodeSet(Collections.emptySet());
+                }
+            }
+        }
+
+        if (selectedResult instanceof Synonym) return QueryResult.ofTNodeSet(result);
+        else return QueryResult.ofAttrList(
+                result.stream()
+                        .map(AttributableNode.class::cast)
+                        .map(attributableNode -> (PrimitiveTypeReference) attributableNode.getAttribute())
+                        .collect(Collectors.toList()));
+    }
+
+    private QueryResult evaluateBooleanQuery(List<PqlClause> queryClauses, ClauseEvaluatorFactory clauseEvaluatorFactory) throws QueryProcessorException {
+        for (PqlClause clause : queryClauses) {
+            ClauseEvaluator clauseEvaluator = clauseEvaluatorFactory.forClause(clause);
+            if (!clauseEvaluator.evaluateBooleanClause().get()) {
+                return QueryResult.ofBoolean(false);
+            }
+        }
+        return QueryResult.ofBoolean(true);
+    }
 }

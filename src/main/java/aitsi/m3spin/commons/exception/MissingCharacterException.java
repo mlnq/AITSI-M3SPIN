@@ -12,8 +12,6 @@ public class MissingCharacterException extends MissingCodeEntityException {
     }
 
     public MissingCharacterException(char c, CodePosition cp) {
-        super("'" + c + "' character", cp);
+        super(String.format("'%s' character", c), cp);
     }
-
-
 }

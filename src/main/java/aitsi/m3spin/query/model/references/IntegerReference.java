@@ -2,6 +2,7 @@ package aitsi.m3spin.query.model.references;
 
 import aitsi.m3spin.commons.interfaces.NodeAttribute;
 import aitsi.m3spin.pkb.model.IntegerAttribute;
+import aitsi.m3spin.query.model.enums.AttributeTypeEnum;
 import aitsi.m3spin.query.model.relationships.EntityReference;
 import aitsi.m3spin.query.model.relationships.LineReference;
 import aitsi.m3spin.query.model.relationships.StatementReference;
@@ -13,7 +14,7 @@ public class IntegerReference extends PrimitiveTypeReference
     private final int value;
 
     public IntegerReference(int value) {
-        super(ReferenceType.INTEGER);
+        super(AttributeTypeEnum.INTEGER, ReferenceType.INTEGER);
         this.value = value;
     }
 
@@ -27,8 +28,4 @@ public class IntegerReference extends PrimitiveTypeReference
         return new IntegerAttribute(this.value);
     }
 
-    @Override
-    public boolean isConstantValue() {
-        return true;
-    }
 }

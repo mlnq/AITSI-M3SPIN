@@ -2,6 +2,7 @@ package aitsi.m3spin.query.model.references;
 
 import aitsi.m3spin.commons.interfaces.NodeAttribute;
 import aitsi.m3spin.pkb.model.StringAttribute;
+import aitsi.m3spin.query.model.enums.AttributeTypeEnum;
 import aitsi.m3spin.query.model.relationships.EntityReference;
 import aitsi.m3spin.query.model.relationships.VariableReference;
 import lombok.Getter;
@@ -11,7 +12,7 @@ public class StringReference extends PrimitiveTypeReference implements VariableR
     private final String value;
 
     public StringReference(String value) {
-        super(ReferenceType.STRING);
+        super(AttributeTypeEnum.STRING, ReferenceType.STRING);
         this.value = value;
     }
 
@@ -25,8 +26,4 @@ public class StringReference extends PrimitiveTypeReference implements VariableR
         return new StringAttribute(this.value);
     }
 
-    @Override
-    public boolean isConstantValue() {
-        return true;
-    }
 }

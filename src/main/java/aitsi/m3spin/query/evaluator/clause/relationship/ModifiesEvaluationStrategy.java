@@ -4,11 +4,11 @@ import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.interfaces.Procedure;
 import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.commons.interfaces.TNode;
-import aitsi.m3spin.commons.interfaces.Variable;
 import aitsi.m3spin.pkb.impl.Pkb;
 import aitsi.m3spin.query.model.enums.RelationshipEvaluatorEnum;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ModifiesEvaluationStrategy extends VarAsSecondArgEvaluationStrategy {
     protected ModifiesEvaluationStrategy() {
@@ -19,10 +19,12 @@ public class ModifiesEvaluationStrategy extends VarAsSecondArgEvaluationStrategy
     public boolean evaluate(TNode firstNode, TNode secondNode, Pkb pkb) {
         if (!super.evaluate(firstNode, secondNode, pkb)) return false;
         if (EntityType.PROCEDURE.equals(firstNode.getType())) {
-            Set<Variable> varsModifiedByProc = pkb.getModifiesInterface().getModified((Procedure) firstNode);
+            Set<TNode> varsModifiedByProc = pkb.getModifiesInterface().getModified((Procedure) firstNode)
+                    .stream().map(TNode.class::cast).collect(Collectors.toSet());
             return varsModifiedByProc.contains(secondNode);
         } else {
-            Set<Variable> varsUsedByStmt = pkb.getUsesInterface().getVarsUsedByStmt((Statement) firstNode);
+            Set<TNode> varsUsedByStmt = pkb.getUsesInterface().getVarsUsedByStmt((Statement) firstNode)
+                    .stream().map(TNode.class::cast).collect(Collectors.toSet());
             return varsUsedByStmt.contains(secondNode);
         }
     }

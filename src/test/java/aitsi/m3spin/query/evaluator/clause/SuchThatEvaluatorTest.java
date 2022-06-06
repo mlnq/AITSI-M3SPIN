@@ -4,13 +4,10 @@ import aitsi.m3spin.query.QueryProcessorException;
 import aitsi.m3spin.query.evaluator.QueryTestingData;
 import aitsi.m3spin.query.evaluator.dao.TNodeDao;
 import aitsi.m3spin.query.model.result.actual.TNodeSetResult;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 class SuchThatEvaluatorTest extends QueryTestingData {
     private SuchThatEvaluator suchThatEvaluator;
@@ -23,33 +20,19 @@ class SuchThatEvaluatorTest extends QueryTestingData {
         tNodeDao = new TNodeDao(pkb);
     }
 
-    @AfterEach
-    void tearDown() {
-    }
-
-//    @Test
-//    void testForClause() {
-//    }
-//
-//    @Test
-//    void testEvaluateBooleanClause() {
-//    }
-//
-//    @Test
-//    void testEvaluateBooleanClause1() {
-//    }
-
     @Test
-    void EvaluateClause_WithPreviousResults_ReturnedAllProcedures() throws QueryProcessorException {//todo powinno zwracać wszystkie procedury
-        suchThatEvaluator = new SuchThatEvaluator(pkb, tNodeDao, suchThat);
+    void EvaluateClause_WithPreviousResults_ReturnedBothResults() throws QueryProcessorException {
+        suchThatEvaluator = new SuchThatEvaluator(pkb, tNodeDao, followsSuchThat);
 
-        assertEquals(procedureResult, suchThatEvaluator.evaluateClause(new TNodeSetResult(Collections.emptySet()), procSynonym));//todo wywala się
+        TNodeSetResult[] bothResults = new TNodeSetResult[]{whileResult, assignResult};
+        assertArrayEquals(bothResults, suchThatEvaluator.evaluateClause());
     }
 
     @Test
-    void EvaluateClause_WithPreviousResults_Evaluated() throws QueryProcessorException {
-        suchThatEvaluator = new SuchThatEvaluator(pkb, tNodeDao, suchThat);
+    void EvaluateClause_Follows_ReturnedBothResults() throws QueryProcessorException {
+        suchThatEvaluator = new SuchThatEvaluator(pkb, tNodeDao, followsSuchThat);
 
-        assertEquals(assignResult, suchThatEvaluator.evaluateClause(new TNodeSetResult(Collections.emptySet()), assignSynonym));//todo
+        TNodeSetResult[] bothResults = new TNodeSetResult[]{whileResult, assignResult};
+        assertArrayEquals(bothResults, suchThatEvaluator.evaluateClause());
     }
 }

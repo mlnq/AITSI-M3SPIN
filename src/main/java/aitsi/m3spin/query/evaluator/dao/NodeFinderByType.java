@@ -11,11 +11,6 @@ import java.util.Set;
 public class NodeFinderByType extends AbstractNodeFinder {
     private final EntityType type;
 
-//    public NodeFinderByType(EntityType type){
-//        super();
-//        this.type = type;
-//    }
-
     public static Set<TNode> find(TNode startingNode, Pkb pkb, EntityType type){
         return new NodeFinderByType(type).findAllBy(startingNode, pkb);
     }

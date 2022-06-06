@@ -2,14 +2,14 @@ package aitsi.m3spin.query.model.references;
 
 
 import aitsi.m3spin.commons.enums.EntityType;
+import aitsi.m3spin.query.model.enums.AttributeTypeEnum;
+import aitsi.m3spin.query.model.enums.WithArgRefType;
 import aitsi.m3spin.query.model.relationships.RelationshipArgumentRef;
 import aitsi.m3spin.query.model.result.reference.SelectedResult;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
-//@Getter
-//@RequiredArgsConstructor
-//@NoArgsConstructor
-//@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 @Getter
 public class Synonym extends ComplexTypeReference
         implements SelectedResult, RelationshipArgumentRef {
@@ -17,7 +17,7 @@ public class Synonym extends ComplexTypeReference
     private final EntityType synonymType;
 
     public Synonym(String name, EntityType type) {
-        super(ReferenceType.SYNONYM);
+        super(AttributeTypeEnum.INTEGER, WithArgRefType.PROG_LINE);
         this.name = name;
         this.synonymType = type;
     }
@@ -28,12 +28,12 @@ public class Synonym extends ComplexTypeReference
     }
 
     @Override
-    public boolean isConstantValue() {
-        return false;
+    public Synonym getSynonym() {
+        return this;
     }
 
     @Override
-    public Synonym getSynonym() {
-        return this;
+    public ReferenceType getArgRefType() {
+        return ReferenceType.SYNONYM;
     }
 }
