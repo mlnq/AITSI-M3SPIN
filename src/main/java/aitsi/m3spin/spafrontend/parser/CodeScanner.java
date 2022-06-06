@@ -88,7 +88,12 @@ public class CodeScanner {
         return hasNextChar;
     }
 
-    public char getCurrentChar() throws MissingCharacterException {
+    boolean isEndOfFile() {
+        return currentPosition.getLine() < codeLines.size()
+                && currentPosition.getColumn() < getCurrentLine().length() - 1;
+    }
+
+    char getCurrentChar() throws MissingCharacterException {
         if (hasCurrentChar()) return getCurrentLine().charAt(currentPosition.getColumn());
         else throw new MissingCharacterException(currentPosition);
     }

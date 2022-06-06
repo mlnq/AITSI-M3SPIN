@@ -6,7 +6,7 @@
 
     <groupId>aitsi.m3spin</groupId>
     <artifactId>AITSI-M3SPIN</artifactId>
-    <version>0.3.1-QUERY-PROC-FIXES</version>
+    <version>0.4.0-QUERY-PROC-CONFLICTS</version>
     <!--iteracja.wersja(to czego tyczy się nazwa).build-->
 
     <properties>

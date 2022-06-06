@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class IfImpl extends StatementImpl implements If {
-
     @Override
     public EntityType getType() {
         return EntityType.IF;

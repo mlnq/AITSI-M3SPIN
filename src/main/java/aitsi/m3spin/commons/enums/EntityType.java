@@ -7,6 +7,8 @@ public enum EntityType {
     CALL("call"),
     WHILE("while"),
     IF("if"),
+    THEN("then"),
+    ELSE("else"),
     PLUS("+"),
     MINUS("-"),
     TIMES("*"),

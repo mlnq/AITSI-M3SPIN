@@ -2,6 +2,8 @@ package aitsi.m3spin;
 
 import aitsi.m3spin.commons.exception.CodeScannerException;
 import aitsi.m3spin.commons.interfaces.Procedure;
+import aitsi.m3spin.commons.interfaces.Procedure;
+import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.impl.Pkb;
 import aitsi.m3spin.query.QueryResultProjector;
 import aitsi.m3spin.query.evaluator.QueryEvaluator;
@@ -74,12 +76,11 @@ public class Main {
 
     private static Pkb processSimpleCodeAndPreparePkb(List<String> codeLines) throws SimpleParserException, CodeScannerException {
         Pkb pkb = new Pkb();
-        Parser parser = new Parser(codeLines, pkb);
+        Parser parser = new Parser(codeLines);
         List<Procedure> parsedProcedures = parser.parse();
-        parser.fillPkb(parsedProcedures);
 
         DesignExtractor designExtractor = new DesignExtractor(pkb);
-        designExtractor.extractDesigns();
+        designExtractor.fillPkb(parsedProcedures);
         return pkb;
     }
 
