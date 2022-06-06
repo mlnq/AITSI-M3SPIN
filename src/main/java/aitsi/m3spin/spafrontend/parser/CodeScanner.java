@@ -22,6 +22,11 @@ public class CodeScanner {
                 && currentPosition.getColumn() < getCurrentLine().length();
     }
 
+    boolean isEndOfFile() {
+        return currentPosition.getLine() < codeLines.size()
+                && currentPosition.getColumn() < getCurrentLine().length() - 1;
+    }
+
     char getCurrentChar() throws MissingCharacterException {
         if (hasCurrentChar()) return getCurrentLine().charAt(currentPosition.getColumn());
         else throw new MissingCharacterException(currentPosition);
@@ -40,8 +45,10 @@ public class CodeScanner {
     private void incrementPosition(int n) {
         if (currentPosition.getColumn() + n < getCurrentLine().length()) currentPosition.moveColumnBy(n);
         else {
-            currentPosition.moveLine();
-            incrementPosition(Math.max(currentPosition.getColumn() + n - getCurrentLine().length() - 1, 0));
+            if(currentPosition.getLine() < codeLines.size() - 1){
+                currentPosition.moveLine();
+                incrementPosition(Math.max(currentPosition.getColumn() + n - getCurrentLine().length() - 1, 0));
+            }
         }
     }
 
