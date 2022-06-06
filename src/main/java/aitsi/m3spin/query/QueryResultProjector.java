@@ -31,16 +31,13 @@ public class QueryResultProjector {
         StringBuilder stringBuilder = new StringBuilder();
 
         int index = 0;
-        for(QueryResult queryResult : rawResult)
-        {
-            if(queryResult.getClass() == BooleanResult.class) {
+        for (QueryResult queryResult : rawResult) {
+            if (queryResult.getClass() == BooleanResult.class) {
                 stringBuilder.append(((BooleanResult) queryResult).get());
-            }
-            else if (queryResult.getClass() == TNodeSetResult.class) {
-                int counter=0;
-                for(TNode currentNode : ((TNodeSetResult) queryResult).getResult())
-                {
-                    if(counter!=0)
+            } else if (queryResult.getClass() == TNodeSetResult.class) {
+                int counter = 0;
+                for (TNode currentNode : ((TNodeSetResult) queryResult).getResult()) {
+                    if (counter != 0)
                         stringBuilder.append(" ");
                     /*
                     The query result is to be shown as follows:
@@ -52,8 +49,7 @@ public class QueryResultProjector {
                          in case of prog_line: a program line number (integer)
                      */
 
-                    switch (currentNode.getType())
-                    {
+                    switch (currentNode.getType()) {
                         case PROCEDURE:
                             stringBuilder.append(((ProcedureImpl) currentNode).getProcName().getValue());
                             break;
@@ -70,17 +66,16 @@ public class QueryResultProjector {
                             stringBuilder.append(((Statement) currentNode).getStmtLine());
                             break;
                         default:
-                            stringBuilder.append("[unknown]");
+                            stringBuilder.append(currentNode);
                             break;
                     }
                     counter++;
                 }
-            }
-            else {
-                stringBuilder.append("[unknown]");
+            } else {
+                stringBuilder.append(queryResult);
             }
 
-            if(index < rawResult.size()-1) {
+            if (index < rawResult.size() - 1) {
                 stringBuilder.append(", ");
             }
             index++;
