@@ -1,8 +1,11 @@
 package aitsi.m3spin.query;
 
+import aitsi.m3spin.commons.impl.ConstantImpl;
+import aitsi.m3spin.commons.impl.ProcedureImpl;
+import aitsi.m3spin.commons.impl.StatementListImpl;
+import aitsi.m3spin.commons.impl.VariableImpl;
 import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.commons.interfaces.TNode;
-import aitsi.m3spin.query.model.result.actual.AttrListResult;
 import aitsi.m3spin.query.model.result.actual.BooleanResult;
 import aitsi.m3spin.query.model.result.actual.QueryResult;
 import aitsi.m3spin.query.model.result.actual.TNodeSetResult;
@@ -39,16 +42,42 @@ public class QueryResultProjector {
                 {
                     if(counter!=0)
                         stringBuilder.append(" ");
+                    /*
+                    The query result is to be shown as follows:
+                         in case of procedures: a procName,
+                         in case of statements: an integer stmt#,
+                         in case of stmtLst: a stmt# of the first statement in the list,
+                         in case of variable: a varName,
+                         in case of constant: a value (integer), and
+                         in case of prog_line: a program line number (integer)
+                     */
 
-                    stringBuilder.append(((Statement) currentNode).getStmtLine());
+                    switch (currentNode.getType())
+                    {
+                        case PROCEDURE:
+                            stringBuilder.append(((ProcedureImpl) currentNode).getProcName().getValue());
+                            break;
+                        case STMT_LIST:
+                            stringBuilder.append(((StatementListImpl) currentNode).getStatements().get(0).getStmtLine());
+                            break;
+                        case VARIABLE:
+                            stringBuilder.append(((VariableImpl) currentNode).getNameAttr());
+                            break;
+                        case CONSTANT:
+                            stringBuilder.append(((ConstantImpl) currentNode).getValue().getValue());
+                            break;
+                        case STATEMENT:
+                            stringBuilder.append(((Statement) currentNode).getStmtLine());
+                            break;
+                        default:
+                            stringBuilder.append("[unknown]");
+                            break;
+                    }
                     counter++;
                 }
             }
-            else if (queryResult.getClass() == AttrListResult.class){
-
-            }
             else {
-
+                stringBuilder.append("[unknown]");
             }
 
             if(index < rawResult.size()-1) {
