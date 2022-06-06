@@ -18,36 +18,36 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DesignExtractorTest {
-    List<Procedure> procedures;
+    Pkb pkb;
 
     @BeforeEach
-    void prepareProcedures() {
-        procedures = new ArrayList<>();
+    void prepareProcedures() throws UnknownStatementType {
+        List<Procedure> procedures = new ArrayList<>();
         List<Statement> firstProcStatementsList = new ArrayList<>();
-        Assignment firstAssgiment = new AssignmentImpl(new VariableImpl("x"), new ExpressionImpl(new VariableImpl("y"), new ExpressionImpl(new VariableImpl("z"), new ExpressionImpl(new VariableImpl("i")))));
-        firstProcStatementsList.add(firstAssgiment);
+        Assignment firstAssignment = new AssignmentImpl(new VariableImpl("x"), new ExpressionImpl(new VariableImpl("y"), new ExpressionImpl(new VariableImpl("z"), new ExpressionImpl(new VariableImpl("i")))));
+        firstProcStatementsList.add(firstAssignment);
 
         Assignment whileAssigment = new AssignmentImpl(new VariableImpl("y"), new ExpressionImpl(new VariableImpl("z"), new ExpressionImpl(new VariableImpl("x"))));
         WhileImpl whileImp = new WhileImpl(new VariableImpl("i"), new StatementListImpl(Collections.singletonList(whileAssigment)));
         firstProcStatementsList.add(whileImp);
 
-        Procedure firstrProcedure = new ProcedureImpl("Main", new StatementListImpl(firstProcStatementsList));
-        procedures.add(firstrProcedure);
+        Procedure firstProcedure = new ProcedureImpl("Main", new StatementListImpl(firstProcStatementsList));
+        procedures.add(firstProcedure);
 
         List<Statement> secondProcStatementsList = new ArrayList<>();
-        Assignment secondProcAssig = new AssignmentImpl(new VariableImpl("x"), new ExpressionImpl(new ConstantImpl(2)));
-        secondProcStatementsList.add(secondProcAssig);
+        Assignment secondProcAssign = new AssignmentImpl(new VariableImpl("x"), new ExpressionImpl(new ConstantImpl(2)));
+        secondProcStatementsList.add(secondProcAssign);
         Procedure secondProcedure = new ProcedureImpl("First", new StatementListImpl(secondProcStatementsList));
 
         procedures.add(secondProcedure);
+
+        pkb = new Pkb();
+        DesignExtractor designExtractor = new DesignExtractor(pkb);
+        designExtractor.fillPkb(procedures);
     }
 
     @Test
-    void fillPkbProcedure_SimpleProcedure_Parsed() throws UnknownStatementType {
-        Pkb pkb = new Pkb();
-        DesignExtractor designExtractor = new DesignExtractor(pkb);
-        designExtractor.fillPkb(procedures);
-
+    void fillPkbProcedure_SimpleProcedure_Parsed() {
         TNode root = pkb.getAst().getRoot();
 
         assertEquals("Main", root.getAttribute());
@@ -57,11 +57,7 @@ public class DesignExtractorTest {
     }
 
     @Test
-    void fillPkbWhile_SimpleWhile_Parsed() throws UnknownStatementType {
-        Pkb pkb = new Pkb();
-        DesignExtractor designExtractor = new DesignExtractor(pkb);
-        designExtractor.fillPkb(procedures);
-
+    void fillPkbWhile_SimpleWhile_Parsed() {
         TNode root = pkb.getAst().getRoot();
 
         TNode pkbAssigment = root.getChild().getChild();
@@ -76,11 +72,7 @@ public class DesignExtractorTest {
 
 
     @Test
-    void fillPkb_SimpleConst_Parsed() throws UnknownStatementType {
-        Pkb pkb = new Pkb();
-        DesignExtractor designExtractor = new DesignExtractor(pkb);
-        designExtractor.fillPkb(procedures);
-
+    void fillPkb_SimpleConst_Parsed() {
         TNode secondProcedure = pkb.getAst().getRoot().getRightSibling();
 
         TNode pkbAssigment = secondProcedure.getChild().getChild();
@@ -100,11 +92,7 @@ public class DesignExtractorTest {
     }
 
     @Test
-    void fillPkb_MuliParamAsigment_Filled() throws UnknownStatementType {
-        Pkb pkb = new Pkb();
-        DesignExtractor designExtractor = new DesignExtractor(pkb);
-        designExtractor.fillPkb(procedures);
-
+    void fillPkb_MultiParamAssignment_Filled() {
         TNode root = pkb.getAst().getRoot();
 
         TNode pkbAssigment = root.getChild().getChild();
@@ -137,11 +125,7 @@ public class DesignExtractorTest {
 
 
     @Test
-    void fillPkb_ModifiesByStmFill_InfoAdded() throws UnknownStatementType {
-        Pkb pkb = new Pkb();
-        DesignExtractor designExtractor = new DesignExtractor(pkb);
-        designExtractor.fillPkb(procedures);
-
+    void fillPkb_ModifiesByStmFill_InfoAdded() {
         TNode root = pkb.getAst().getRoot();
 
         TNode pkbFirstAssigment = root.getChild().getChild();
@@ -162,11 +146,7 @@ public class DesignExtractorTest {
     }
 
     @Test
-    void fillPkb_ModifiesByProcFill_InfoAdded() throws UnknownStatementType {
-        Pkb pkb = new Pkb();
-        DesignExtractor designExtractor = new DesignExtractor(pkb);
-        designExtractor.fillPkb(procedures);
-
+    void fillPkb_ModifiesByProcFill_InfoAdded() {
         TNode root = pkb.getAst().getRoot();
 
         Modifies modifies = pkb.getModifiesInterface();

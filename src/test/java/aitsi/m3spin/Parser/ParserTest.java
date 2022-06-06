@@ -5,6 +5,7 @@ import aitsi.m3spin.commons.interfaces.*;
 import aitsi.m3spin.spafrontend.parser.Parser;
 import aitsi.m3spin.spafrontend.parser.exception.SimpleParserException;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,6 +14,7 @@ import java.util.List;
 
 public class ParserTest{
     static List<String> codeLines;
+    List<Procedure> procedures;
 
     @BeforeAll
     static void prepareCodeLines(){
@@ -28,12 +30,14 @@ public class ParserTest{
         codeLines.add("}");
     }
 
-    @Test
-    void parseProcedure_SimpleProcedure_Parsed() throws SimpleParserException {
+    @BeforeEach
+    void beforeEach() throws SimpleParserException {
         Parser parser = new Parser(codeLines);
-        List<Procedure> procedures;
         procedures = parser.parse();
+    }
 
+    @Test
+    void parseProcedure_SimpleProcedure_Parsed() {
         Procedure parseProcedure = procedures.get(0);
         assertEquals("Main", parseProcedure.getName());
         assertEquals(EntityType.PROCEDURE, parseProcedure.getType());
@@ -41,11 +45,7 @@ public class ParserTest{
     }
 
     @Test
-    void parseStmtList_TwoStmt_Parsed() throws SimpleParserException {
-        Parser parser = new Parser(codeLines);
-        List<Procedure> procedures;
-        procedures = parser.parse();
-
+    void parseStmtList_TwoStmt_Parsed() {
         Procedure firstProcedure = procedures.get(0);
         assertEquals(3, firstProcedure.getStatementList().getStatements().size());
 
@@ -54,11 +54,7 @@ public class ParserTest{
     }
 
     @Test
-    void parseStmt_MuliParamAsigment_Parsed() throws SimpleParserException {
-        Parser parser = new Parser(codeLines);
-        List<Procedure> procedures;
-        procedures = parser.parse();
-
+    void parseStmt_MultiParamAssignment_Parsed() {
         Statement parseAssigment = procedures.get(0).getStatementList().getStatements().get(0);
         assertEquals(EntityType.ASSIGNMENT, parseAssigment.getType());
 
@@ -76,14 +72,9 @@ public class ParserTest{
     }
 
     @Test
-    void parseWhile_SimpleWhile_Parsed() throws SimpleParserException {
-        Parser parser = new Parser(codeLines);
-        List<Procedure> procedures;
-        procedures = parser.parse();
-
+    void parseWhile_SimpleWhile_Parsed() {
         Statement parseWhile = procedures.get(0).getStatementList().getStatements().get(2);
         assertEquals(EntityType.WHILE, parseWhile.getType());
-
 
         WhileImpl whileImpl = (WhileImpl) parseWhile;
         assertEquals("i", whileImpl.getConditionVar().getName());
@@ -91,11 +82,7 @@ public class ParserTest{
 
 
     @Test
-    void parseConst_SimpleConst_Parsed() throws SimpleParserException {
-        Parser parser = new Parser(codeLines);
-        List<Procedure> procedures;
-        procedures = parser.parse();
-
+    void parseConst_SimpleConst_Parsed() {
         Statement parseAssigment = procedures.get(1).getStatementList().getStatements().get(0);
         assertEquals(EntityType.ASSIGNMENT, parseAssigment.getType());
 
