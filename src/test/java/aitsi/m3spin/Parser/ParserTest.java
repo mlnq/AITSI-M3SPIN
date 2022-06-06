@@ -2,10 +2,9 @@ package aitsi.m3spin.Parser;
 import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.impl.*;
 import aitsi.m3spin.commons.interfaces.*;
-import aitsi.m3spin.pkb.impl.Pkb;
-import aitsi.m3spin.pkb.interfaces.Modifies;
 import aitsi.m3spin.spafrontend.parser.Parser;
 import aitsi.m3spin.spafrontend.parser.exception.SimpleParserException;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,291 +12,100 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ParserTest{
+    static List<String> codeLines;
 
-    @Test
-    void parseProcedure_SimpleProcedure_Parsed() {
-        List<String> codeLines = new ArrayList<>();
-        codeLines.add("procedure Main {");
-        codeLines.add("z = x +y;");
-        codeLines.add("}");
-
-        Pkb pkb = new Pkb();
-        Parser parser = new Parser(codeLines, pkb);
-        List<Procedure> procedures = new ArrayList<>();
-        try {
-            procedures = parser.parse();
-        } catch (SimpleParserException e) {
-            e.printStackTrace();
-        }
-        Procedure parseProcedure = procedures.get(0);
-
-        assertEquals(parseProcedure.getName(), "Main");
-        assertEquals(parseProcedure.getType(), EntityType.PROCEDURE);
-    }
-
-    @Test
-    void parseStmtList_TwoStmt_Parsed() {
-        List<String> codeLines = new ArrayList<>();
-        codeLines.add("procedure Main {");
-        codeLines.add("z = x +y;");
-        codeLines.add("a = b + c;");
-        codeLines.add("}");
-
-        Pkb pkb = new Pkb();
-        Parser parser = new Parser(codeLines, pkb);
-        List<Procedure> procedures = new ArrayList<>();
-        try {
-            procedures = parser.parse();
-        } catch (SimpleParserException e) {
-            e.printStackTrace();
-        }
-        Procedure parseProcedure = procedures.get(0);
-        assertEquals(parseProcedure.getStatementList().getStatements().size(),2);
-    }
-
-    @Test
-    void parseStmt_MuliParamAsigment_Parsed() {
-        List<String> codeLines = new ArrayList<>();
+    @BeforeAll
+    static void prepareCodeLines(){
+        codeLines = new ArrayList<>();
         codeLines.add("procedure Main {");
         codeLines.add("z = x + y + k;");
         codeLines.add("a = b + c;");
-        codeLines.add("}");
-
-        Pkb pkb = new Pkb();
-        Parser parser = new Parser(codeLines, pkb);
-        List<Procedure> procedures = new ArrayList<>();
-        try {
-            procedures = parser.parse();
-        } catch (SimpleParserException e) {
-            e.printStackTrace();
-        }
-
-        AssignmentImpl assignment = (AssignmentImpl) procedures.get(0).getStatementList().getStatements().get(0);
-
-        assertEquals(assignment.getVariable().getName(),"z");
-        assertEquals(assignment.getExpression().getFactor().getAttribute(), "x");
-        assertEquals(assignment.getExpression().getExpression().getFactor().getAttribute(), "y");
-        assertEquals(assignment.getExpression().getExpression().getExpression().getFactor().getAttribute(), "k");
-    }
-
-    @Test
-    void parseWhile_SimpleWhile_Parsed() {
-        List<String> codeLines = new ArrayList<>();
-        codeLines.add("procedure Main {");
         codeLines.add("while i {");
         codeLines.add("a = b + c;}");
         codeLines.add("}");
-
-        Pkb pkb = new Pkb();
-        Parser parser = new Parser(codeLines, pkb);
-        List<Procedure> procedures = new ArrayList<>();
-        try {
-            procedures = parser.parse();
-        } catch (SimpleParserException e) {
-            e.printStackTrace();
-        }
-
-        WhileImpl parseWhile = (WhileImpl) procedures.get(0).getStatementList().getStatements().get(0);
-        assertEquals(parseWhile.getType(), EntityType.WHILE);
-        assertEquals(parseWhile.getConditionVar().getName(), "i");
-    }
-
-
-    @Test
-    void parseConst_SimpleConst_Parsed() {
-        List<String> codeLines = new ArrayList<>();
-        codeLines.add("procedure Main {");
-        codeLines.add("a = 2;");
+        codeLines.add(("procedure Second{"));
+        codeLines.add("x = 2;");
         codeLines.add("}");
-
-        Pkb pkb = new Pkb();
-        Parser parser = new Parser(codeLines, pkb);
-        List<Procedure> procedures = new ArrayList<>();
-        try {
-            procedures = parser.parse();
-        } catch (SimpleParserException e) {
-            e.printStackTrace();
-        }
-        AssignmentImpl parseAssignment = (AssignmentImpl) procedures.get(0).getStatementList().getStatements().get(0);
-        assertEquals(parseAssignment.getVariable().getName(),"a");
-        ConstantImpl parseConstant = (ConstantImpl) parseAssignment.getExpression().getFactor();
-        assertEquals(parseConstant.getValue(), 2);
     }
 
     @Test
-    void fillPkbProcedure_SimpleProcedure_Parsed() {
-        List<String> codeLines = new ArrayList<>();
-        codeLines.add("procedure Main {");
-        codeLines.add("z = x +y;");
-        codeLines.add("}");
-
-        Pkb pkb = new Pkb();
-        Parser parser = new Parser(codeLines, pkb);
+    void parseProcedure_SimpleProcedure_Parsed() throws SimpleParserException {
+        Parser parser = new Parser(codeLines);
         List<Procedure> procedures;
-        try {
-            procedures = parser.parse();
-            parser.fillPkb(procedures);
-        } catch (SimpleParserException e) {
-            e.printStackTrace();
-        }
+        procedures = parser.parse();
 
-        assertEquals(pkb.getAst().getRoot().getAttribute(), "Main");
-        assertEquals(pkb.getAst().getRoot().getType(), EntityType.PROCEDURE);
+        Procedure parseProcedure = procedures.get(0);
+        assertEquals("Main", parseProcedure.getName());
+        assertEquals(EntityType.PROCEDURE, parseProcedure.getType());
+        assertEquals(2, procedures.size());
     }
 
     @Test
-    void fillPkbWhile_SimpleWhile_Parsed() {
-        List<String> codeLines = new ArrayList<>();
-        codeLines.add("procedure Main {");
-        codeLines.add("while i {");
-        codeLines.add("a = b + c;}");
-        codeLines.add("x = z + k;");
-        codeLines.add("}");
-
-        Pkb pkb = new Pkb();
-        Parser parser = new Parser(codeLines, pkb);
+    void parseStmtList_TwoStmt_Parsed() throws SimpleParserException {
+        Parser parser = new Parser(codeLines);
         List<Procedure> procedures;
-        try {
-            procedures = parser.parse();
-            parser.fillPkb(procedures);
-        } catch (SimpleParserException e) {
-            e.printStackTrace();
-        }
-        TNode root = pkb.getAst().getRoot();
-        WhileImpl pkbWhile = (WhileImpl) root.getChild().getChild();
-        assertEquals(pkbWhile.getType(), EntityType.WHILE);
-        assertEquals(pkbWhile.getConditionVar().getName(), "i");
-    }
+        procedures = parser.parse();
 
+        Procedure firstProcedure = procedures.get(0);
+        assertEquals(3, firstProcedure.getStatementList().getStatements().size());
 
-    @Test
-    void fillPkb_SimpleConst_Parsed() {
-        List<String> codeLines = new ArrayList<>();
-        codeLines.add("procedure Main {");
-        codeLines.add("a = 2;");
-        codeLines.add("}");
-
-        Pkb pkb = new Pkb();
-        Parser parser = new Parser(codeLines, pkb);
-        List<Procedure> procedures;
-        try {
-            procedures = parser.parse();
-            parser.fillPkb(procedures);
-        } catch (SimpleParserException e) {
-            e.printStackTrace();
-        }
-        TNode root = pkb.getAst().getRoot();
-        AssignmentImpl pkbAssigment = (AssignmentImpl) root.getChild().getChild();
-        ExpressionImpl parseExpression = (ExpressionImpl) pkbAssigment.getChild().getRightSibling();
-        assertEquals(pkbAssigment.getType(), EntityType.ASSIGNMENT);
-        assertEquals(pkbAssigment.getChild().getAttribute(), "a");
-        ConstantImpl pkbConstant = (ConstantImpl) parseExpression.getFactor();
-        assertEquals(pkbConstant.getType(), EntityType.CONSTANT);
-        assertEquals(pkbConstant.getValue(), 2);
+        Procedure secondProcedure = procedures.get(1);
+        assertEquals(1, secondProcedure.getStatementList().getStatements().size());
     }
 
     @Test
-    void fillPkb_MuliParamAsigment_Filled() {
-        List<String> codeLines = new ArrayList<>();
-        codeLines.add("procedure Main {");
-        codeLines.add("z = x + y + k;");
-        codeLines.add("}");
-
-        Pkb pkb = new Pkb();
-        Parser parser = new Parser(codeLines, pkb);
+    void parseStmt_MuliParamAsigment_Parsed() throws SimpleParserException {
+        Parser parser = new Parser(codeLines);
         List<Procedure> procedures;
-        try {
-            procedures = parser.parse();
-            parser.fillPkb(procedures);
-        } catch (SimpleParserException e) {
-            e.printStackTrace();
-        }
-        TNode root = pkb.getAst().getRoot();
+        procedures = parser.parse();
 
-        VariableImpl firstVariable = (VariableImpl) root.getChild().getChild().getChild();
-        assertEquals(firstVariable.getAttribute(), "z");
-        assertEquals(firstVariable.getType(), EntityType.VARIABLE);
+        Statement parseAssigment = procedures.get(0).getStatementList().getStatements().get(0);
+        assertEquals(EntityType.ASSIGNMENT, parseAssigment.getType());
 
-        VariableImpl secondVariable = (VariableImpl) firstVariable.getRightSibling().getChild();
-        assertEquals(secondVariable.getAttribute(), "x");
-        assertEquals(secondVariable.getType(), EntityType.VARIABLE);
+        AssignmentImpl assignment = (AssignmentImpl) parseAssigment;
+        assertEquals("z", assignment.getVariable().getName());
 
-        VariableImpl thirdVariable = (VariableImpl) secondVariable.getRightSibling().getChild();
-        assertEquals(thirdVariable.getAttribute(), "y");
-        assertEquals(thirdVariable.getType(), EntityType.VARIABLE);
+        Factor secondFactor = assignment.getExpression().getFactor();
+        assertEquals("x", secondFactor.getAttribute());
 
-        Expression fourthExpression = (Expression) thirdVariable.getRightSibling();
-        assertEquals(fourthExpression.getFactor().getAttribute(), "k");
-        assertEquals(fourthExpression.getFactor().getType(), EntityType.VARIABLE);
+        Factor thirdFactor = assignment.getExpression().getExpression().getFactor();
+        assertEquals("y", thirdFactor.getAttribute());
+
+        Factor fourFactor = assignment.getExpression().getExpression().getExpression().getFactor();
+        assertEquals("k", fourFactor.getAttribute());
+    }
+
+    @Test
+    void parseWhile_SimpleWhile_Parsed() throws SimpleParserException {
+        Parser parser = new Parser(codeLines);
+        List<Procedure> procedures;
+        procedures = parser.parse();
+
+        Statement parseWhile = procedures.get(0).getStatementList().getStatements().get(2);
+        assertEquals(EntityType.WHILE, parseWhile.getType());
+
+
+        WhileImpl whileImpl = (WhileImpl) parseWhile;
+        assertEquals("i", whileImpl.getConditionVar().getName());
     }
 
 
     @Test
-    void fillPkb_ModifiesByStmFill_InfoAdded() {
-        List<String> codeLines = new ArrayList<>();
-        codeLines.add("procedure Main {");
-        codeLines.add("a = b + c;");
-        codeLines.add("c = 2;");
-        codeLines.add("d = c;");
-        codeLines.add("}");
-
-        Pkb pkb = new Pkb();
-        Parser parser = new Parser(codeLines, pkb);
+    void parseConst_SimpleConst_Parsed() throws SimpleParserException {
+        Parser parser = new Parser(codeLines);
         List<Procedure> procedures;
-        try {
-            procedures = parser.parse();
-            parser.fillPkb(procedures);
-        } catch (SimpleParserException e) {
-            e.printStackTrace();
-        }
+        procedures = parser.parse();
 
-        TNode root = pkb.getAst().getRoot();
-        Assignment firstAssigment = (Assignment)  root.getChild().getChild();
-        Modifies modifies = pkb.getModifiesInterface();
-        boolean firstIsModified = modifies.isModified((Variable) firstAssigment.getChild(), firstAssigment);
-        assertTrue(firstIsModified);
+        Statement parseAssigment = procedures.get(1).getStatementList().getStatements().get(0);
+        assertEquals(EntityType.ASSIGNMENT, parseAssigment.getType());
 
-        Assignment secondAssigment = (Assignment) firstAssigment.getRightSibling();
-        boolean secondIsModified = modifies.isModified((Variable) secondAssigment.getChild(), secondAssigment);
-        assertTrue(secondIsModified);
+        AssignmentImpl assignment = (AssignmentImpl) parseAssigment;
+        assertEquals("x", assignment.getVariable().getName());
 
-        Assignment thirdAssigment = (Assignment) secondAssigment.getRightSibling();
-        boolean thirdIsModified = modifies.isModified((Variable) thirdAssigment.getChild(), thirdAssigment);
-        assertTrue(thirdIsModified);
-    }
+        Factor parsedConstant = ((AssignmentImpl) parseAssigment).getExpression().getFactor();
+        assertEquals(EntityType.CONSTANT, parsedConstant.getType());
 
-    @Test
-    void fillPkb_ModifiesByProcFill_InfoAdded() {
-        List<String> codeLines = new ArrayList<>();
-        codeLines.add("procedure Main {");
-        codeLines.add("a = b + c;");
-        codeLines.add("c = 2;");
-        codeLines.add("d = c;");
-        codeLines.add("}");
-
-        Pkb pkb = new Pkb();
-        Parser parser = new Parser(codeLines, pkb);
-        List<Procedure> procedures;
-        try {
-            procedures = parser.parse();
-            parser.fillPkb(procedures);
-        } catch (SimpleParserException e) {
-            e.printStackTrace();
-        }
-
-        TNode root = pkb.getAst().getRoot();
-
-        Modifies modifies = pkb.getModifiesInterface();
-        Variable firstVariable = (Variable) root.getChild().getChild().getChild();
-        boolean firstIsModified = modifies.isModified(firstVariable, (Procedure) root);
-        assertTrue(firstIsModified);
-
-        Variable secondVariable = (Variable) firstVariable.getParent().getRightSibling().getChild();
-        boolean secondIsModified = modifies.isModified(secondVariable, (Procedure) root);
-        assertTrue(secondIsModified);
-
-        Variable thirdVariable = (Variable) secondVariable.getParent().getRightSibling().getChild();
-        boolean thirdIsModified = modifies.isModified(thirdVariable, (Procedure) root);
-        assertTrue(thirdIsModified);
+        ConstantImpl firstConstant = (ConstantImpl) parsedConstant;
+        assertEquals(2, firstConstant.getValue());
     }
 }
