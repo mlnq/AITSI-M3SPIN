@@ -3,12 +3,11 @@ package aitsi.m3spin.commons.impl;
 import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.interfaces.Call;
 import aitsi.m3spin.commons.interfaces.NodeAttribute;
-import aitsi.m3spin.pkb.model.AttributableNode;
 import aitsi.m3spin.pkb.model.StringAttribute;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
-public class CallImpl extends StatementImpl implements Call, AttributableNode {
+public class CallImpl extends StatementImpl implements Call {
     private StringAttribute procName;
 
     public CallImpl(String procName) {

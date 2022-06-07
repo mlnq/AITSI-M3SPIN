@@ -2,7 +2,10 @@ package aitsi.m3spin.pkb;
 
 import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.enums.LinkType;
-import aitsi.m3spin.commons.impl.*;
+import aitsi.m3spin.commons.impl.AssignmentImpl;
+import aitsi.m3spin.commons.impl.IfImpl;
+import aitsi.m3spin.commons.impl.VariableImpl;
+import aitsi.m3spin.commons.impl.WhileImpl;
 import aitsi.m3spin.commons.interfaces.Assignment;
 import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.commons.interfaces.Variable;
@@ -11,6 +14,7 @@ import aitsi.m3spin.pkb.exception.IllegalLinkTypeException;
 import aitsi.m3spin.pkb.exception.IllegalNodeTypeException;
 import aitsi.m3spin.pkb.impl.AstImpl;
 import aitsi.m3spin.pkb.interfaces.Ast;
+import aitsi.m3spin.pkb.model.StringAttribute;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -55,9 +59,9 @@ class AstImplTest {
     @Test
     void setVariableName_SetNameAsX_NameIsSetAsX() {
         Variable variable = new VariableImpl(0);
-        ast.setAttribute(variable, "x");
+        ast.setAttribute(variable, new StringAttribute("x"));
 
-        assertEquals("x", variable.getAttribute());
+        assertEquals("x", variable.getVarName());
     }
 
     @Test
@@ -171,8 +175,8 @@ class AstImplTest {
     @Test
     void getAttribute_VariableWithAttributeY_ReturnsY() {
         Variable variable = new VariableImpl(0);
-        variable.setAttribute("y");
-        assertEquals("y", ast.getAttribute(variable));
+        variable.setVarName("y");
+        assertEquals(new StringAttribute("y"), ast.getAttribute(variable));
     }
 
     @Test

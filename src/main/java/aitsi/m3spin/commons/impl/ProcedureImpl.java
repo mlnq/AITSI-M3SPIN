@@ -4,7 +4,6 @@ import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.interfaces.NodeAttribute;
 import aitsi.m3spin.commons.interfaces.Procedure;
 import aitsi.m3spin.commons.interfaces.StatementList;
-import aitsi.m3spin.pkb.model.AttributableNode;
 import aitsi.m3spin.pkb.model.StringAttribute;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -14,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class ProcedureImpl extends TNodeImpl implements Procedure, AttributableNode {
+public class ProcedureImpl extends TNodeImpl implements Procedure {
     @Getter
     private StatementList statementList;
     @Getter

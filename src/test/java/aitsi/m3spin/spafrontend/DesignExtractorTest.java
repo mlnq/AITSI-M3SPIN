@@ -1,9 +1,10 @@
-package aitsi.m3spin.Parser;
+package aitsi.m3spin.spafrontend;
 
 import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.impl.*;
 import aitsi.m3spin.commons.interfaces.*;
 import aitsi.m3spin.pkb.impl.Pkb;
+import aitsi.m3spin.pkb.interfaces.Ast;
 import aitsi.m3spin.pkb.interfaces.Modifies;
 import aitsi.m3spin.spafrontend.extractor.DesignExtractor;
 import aitsi.m3spin.spafrontend.parser.exception.UnknownStatementType;
@@ -17,14 +18,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class DesignExtractorTest {
+class DesignExtractorTest extends SpaFrontendTestingData {
+
     Pkb pkb;
-    final String MAIN = "Main";
-    final String FIRST = "FIRST";
-    final String X = "x";
-    final String Y = "y";
-    final String Z = "z";
-    final String I = "i";
+    Ast ast;
 
     @BeforeEach
     void prepareProcedures() throws UnknownStatementType {
@@ -60,16 +57,19 @@ public class DesignExtractorTest {
         pkb = new Pkb();
         DesignExtractor designExtractor = new DesignExtractor(pkb);
         designExtractor.fillPkb(procedures);
+        ast = pkb.getAst();
     }
 
     @Test
     void fillPkbProcedure_SimpleProcedure_Parsed() {
         TNode root = pkb.getAst().getRoot();
 
-        assertEquals(MAIN, root.getAttribute());
         assertEquals(EntityType.PROCEDURE, root.getType());
-        assertEquals(FIRST, root.getRightSibling().getAttribute());
-        assertEquals(EntityType.PROCEDURE, root.getRightSibling().getType());
+        Procedure rootProc = (Procedure) root;
+        assertEquals(MAIN, rootProc.getProcName());
+
+        assertEquals(EntityType.PROCEDURE, rootProc.getRightSibling().getType());
+        assertEquals(FIRST, ((Procedure) root.getRightSibling()).getProcName());
     }
 
     @Test
@@ -83,21 +83,22 @@ public class DesignExtractorTest {
         assertEquals(EntityType.WHILE, pkbWhile.getType());
 
         WhileImpl filledWhile = (WhileImpl) pkbWhile;
-        assertEquals(I, filledWhile.getConditionVar().getName());
+        assertEquals(I, filledWhile.getConditionVar().getVarName());
     }
 
 
     @Test
     void fillPkb_SimpleConst_Parsed() {
-        TNode secondProcedure = pkb.getAst().getRoot().getRightSibling();
+        TNode secondProcedure = ast.getRoot().getRightSibling();
 
         TNode pkbAssigment = secondProcedure.getChild().getChild();
         assertEquals(EntityType.ASSIGNMENT, pkbAssigment.getType());
 
         AssignmentImpl filledAssigment = (AssignmentImpl) pkbAssigment;
-        assertEquals(X, filledAssigment.getChild().getAttribute());
+        Variable variable = (Variable) ast.getChild(filledAssigment);
+        assertEquals(X, ast.getAttribute(variable).getValue());
 
-        TNode pkbExpression = pkbAssigment.getChild().getRightSibling();
+        TNode pkbExpression = filledAssigment.getChild().getRightSibling();
         assertEquals(EntityType.EXPRESSION, pkbExpression.getType());
         Expression filledExpression = (Expression) pkbExpression;
 
@@ -117,17 +118,17 @@ public class DesignExtractorTest {
         TNode pkbFirstVariable = pkbAssigment.getChild();
         assertEquals(EntityType.VARIABLE, pkbFirstVariable.getType());
         VariableImpl filledFirstVariable = (VariableImpl) pkbFirstVariable;
-        assertEquals(X, filledFirstVariable.getName());
+        assertEquals(X, filledFirstVariable.getVarName());
 
         TNode pkbSecondVariable = pkbAssigment.getChild().getRightSibling().getChild();
         assertEquals(EntityType.VARIABLE, pkbSecondVariable.getType());
         VariableImpl filledSecondVariable = (VariableImpl) pkbSecondVariable;
-        assertEquals(Y, filledSecondVariable.getName());
+        assertEquals(Y, filledSecondVariable.getVarName());
 
         TNode pkbThirdVariable = filledSecondVariable.getRightSibling().getChild();
         assertEquals(EntityType.VARIABLE, pkbThirdVariable.getType());
         VariableImpl filledThirdVariable = (VariableImpl) pkbThirdVariable;
-        assertEquals(Z, filledThirdVariable.getName());
+        assertEquals(Z, filledThirdVariable.getVarName());
 
         TNode pkbExpression = pkbThirdVariable.getRightSibling();
         assertEquals(EntityType.EXPRESSION, pkbExpression.getType());
@@ -136,7 +137,7 @@ public class DesignExtractorTest {
         TNode pkbFourthVariable = filledExpression.getFactor();
         assertEquals(EntityType.VARIABLE, pkbThirdVariable.getType());
         VariableImpl filledFourthVariable = (VariableImpl) pkbFourthVariable;
-        assertEquals(I, filledFourthVariable.getName());
+        assertEquals(I, filledFourthVariable.getVarName());
     }
 
 

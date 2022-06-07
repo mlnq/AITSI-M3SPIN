@@ -3,14 +3,13 @@ package aitsi.m3spin.commons.impl;
 import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.interfaces.Constant;
 import aitsi.m3spin.commons.interfaces.NodeAttribute;
-import aitsi.m3spin.pkb.model.AttributableNode;
 import aitsi.m3spin.pkb.model.IntegerAttribute;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class ConstantImpl extends TNodeImpl implements Constant, AttributableNode {
+public class ConstantImpl extends TNodeImpl implements Constant {
     private IntegerAttribute value;
 
     public ConstantImpl(int value) {

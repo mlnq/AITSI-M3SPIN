@@ -1,6 +1,8 @@
 package aitsi.m3spin.commons.interfaces;
 
-public interface Procedure extends TNode {
+import aitsi.m3spin.pkb.model.AttributableNode;
+
+public interface Procedure extends TNode, AttributableNode {
     String getProcName();
 
     void setProcName(String name);

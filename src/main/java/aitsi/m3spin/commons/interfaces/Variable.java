@@ -1,6 +1,8 @@
 package aitsi.m3spin.commons.interfaces;
 
-public interface Variable extends Factor {
+import aitsi.m3spin.pkb.model.AttributableNode;
+
+public interface Variable extends Factor, AttributableNode {
     int getId();
 
     String getVarName();

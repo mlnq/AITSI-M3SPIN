@@ -1,6 +1,8 @@
 package aitsi.m3spin.commons.interfaces;
 
-public interface Statement extends TNode {
+import aitsi.m3spin.pkb.model.AttributableNode;
+
+public interface Statement extends TNode, AttributableNode {
     int getProgLine();
 
     void setProgLine(int progLine);
