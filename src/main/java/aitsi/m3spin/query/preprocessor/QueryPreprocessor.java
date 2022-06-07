@@ -156,7 +156,7 @@ public class QueryPreprocessor {
     }
 
     private List<Pattern> parsePatternList() {
-        return Collections.emptyList();//todo w przyszych iteracjach
+        return Collections.emptyList();//todo w 3 iteracji
     }
 
     private Synonym findDeclaredSynonym(String synonymName) throws SynonymNotDeclared {
@@ -193,6 +193,7 @@ public class QueryPreprocessor {
             throw BadRelationshipArgumentTypeException.ofNotAllowedRefType(relationEnum, ReferenceType.INTEGER, isFirstArgument);
         } else if (codeScanner.hasCurrentChar('_')) {
             if (allowedRefTypes.contains(ReferenceType.SYNONYM)) {
+                codeScanner.parseChar('_');
                 return new WildcardReference();
             }
             throw BadRelationshipArgumentTypeException.ofNotAllowedRefType(relationEnum, ReferenceType.WILDCARD, isFirstArgument);
