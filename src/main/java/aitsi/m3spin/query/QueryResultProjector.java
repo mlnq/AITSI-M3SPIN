@@ -28,17 +28,17 @@ public class QueryResultProjector {
     * */
     public String formatResult(List<QueryResult> rawResult) {
 
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder formattedOutput = new StringBuilder();
 
-        int index = 0;
-        for (QueryResult queryResult : rawResult) {
+        for (int i = 0; i < rawResult.size(); i++) {
+            QueryResult queryResult = rawResult.get(i);
             if (queryResult.getClass() == BooleanResult.class) {
-                stringBuilder.append(((BooleanResult) queryResult).get());
+                formattedOutput.append(((BooleanResult) queryResult).get());
             } else if (queryResult.getClass() == TNodeSetResult.class) {
-                int counter = 0;
+                int index = 0;
                 for (TNode currentNode : ((TNodeSetResult) queryResult).getResult()) {
-                    if (counter != 0)
-                        stringBuilder.append(" ");
+                    if (index != 0)
+                        formattedOutput.append(" ");
                     /*
                     The query result is to be shown as follows:
                          in case of procedures: a procName,
@@ -51,35 +51,34 @@ public class QueryResultProjector {
 
                     switch (currentNode.getType()) {
                         case PROCEDURE:
-                            stringBuilder.append(((ProcedureImpl) currentNode).getProcName().getValue());
+                            formattedOutput.append(((ProcedureImpl) currentNode).getProcName().getValue());
                             break;
                         case STMT_LIST:
-                            stringBuilder.append(((StatementListImpl) currentNode).getStatements().get(0).getStmtLine());
+                            formattedOutput.append(((StatementListImpl) currentNode).getStatements().get(0).getStmtLine());
                             break;
                         case VARIABLE:
-                            stringBuilder.append(((VariableImpl) currentNode).getNameAttr());
+                            formattedOutput.append(((VariableImpl) currentNode).getNameAttr());
                             break;
                         case CONSTANT:
-                            stringBuilder.append(((ConstantImpl) currentNode).getValue().getValue());
+                            formattedOutput.append(((ConstantImpl) currentNode).getValue().getValue());
                             break;
                         case STATEMENT:
-                            stringBuilder.append(((Statement) currentNode).getStmtLine());
+                            formattedOutput.append(((Statement) currentNode).getStmtLine());
                             break;
                         default:
-                            stringBuilder.append(currentNode);
+                            formattedOutput.append(currentNode);
                             break;
                     }
-                    counter++;
+                    index++;
                 }
             } else {
-                stringBuilder.append(queryResult);
+                formattedOutput.append(queryResult);
             }
 
-            if (index < rawResult.size() - 1) {
-                stringBuilder.append(", ");
+            if (i < rawResult.size() - 1) {
+                formattedOutput.append(", ");
             }
-            index++;
         }
-        return stringBuilder.toString();
+        return formattedOutput.toString();
     }
 }
