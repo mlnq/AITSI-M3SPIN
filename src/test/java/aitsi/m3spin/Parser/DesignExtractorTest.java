@@ -34,19 +34,24 @@ public class DesignExtractorTest {
         Variable yVar = new VariableImpl(Y);
         Variable zVar = new VariableImpl(Z);
         Variable iVar = new VariableImpl(I);
+        Variable iVar2 = new VariableImpl(I);
+        Variable xVar2 = new VariableImpl(X);
+        Variable yVar2 = new VariableImpl(Y);
+        Variable zVar2 = new VariableImpl(Z);
+        Variable xVar3 = new VariableImpl(X);
         Assignment firstAssignment = new AssignmentImpl(xVar,
                 new ExpressionImpl(yVar, new ExpressionImpl(zVar, new ExpressionImpl(iVar))));
         firstProcStatementsList.add(firstAssignment);
 
-        Assignment whileAssigment = new AssignmentImpl(yVar, new ExpressionImpl(zVar, new ExpressionImpl(xVar)));
-        WhileImpl whileImp = new WhileImpl(iVar, new StatementListImpl(Collections.singletonList(whileAssigment)));
+        Assignment whileAssigment = new AssignmentImpl(yVar2, new ExpressionImpl(zVar2, new ExpressionImpl(xVar2)));
+        WhileImpl whileImp = new WhileImpl(iVar2, new StatementListImpl(Collections.singletonList(whileAssigment)));
         firstProcStatementsList.add(whileImp);
 
         Procedure firstProcedure = new ProcedureImpl(MAIN, new StatementListImpl(firstProcStatementsList));
         procedures.add(firstProcedure);
 
         List<Statement> secondProcStatementsList = new ArrayList<>();
-        Assignment secondProcAssign = new AssignmentImpl(xVar, new ExpressionImpl(new ConstantImpl(2)));
+        Assignment secondProcAssign = new AssignmentImpl(xVar3, new ExpressionImpl(new ConstantImpl(2)));
         secondProcStatementsList.add(secondProcAssign);
         Procedure secondProcedure = new ProcedureImpl(FIRST, new StatementListImpl(secondProcStatementsList));
 
