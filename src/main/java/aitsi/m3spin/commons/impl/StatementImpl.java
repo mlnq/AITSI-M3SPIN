@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 public abstract class StatementImpl extends TNodeImpl implements Statement, AttributableNode {
-    protected IntegerAttribute progLine = new IntegerAttribute(-1);//todo ATS-19 - Szymon, jest na developie
+    protected IntegerAttribute progLine = new IntegerAttribute(0);
 
     @Override
     public int getProgLine() {

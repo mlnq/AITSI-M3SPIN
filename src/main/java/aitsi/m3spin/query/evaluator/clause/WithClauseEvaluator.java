@@ -136,11 +136,6 @@ public class WithClauseEvaluator extends ClauseEvaluator {
         return new TNodeSetResult[]{new TNodeSetResult(leftResult), new TNodeSetResult(rightResult)};
     }
 
-//    private boolean checkTypes(WithArgRefType type1, WithArgRefType type2, WithArgumentRef[] bothReferences) {
-//        return (type1.equals(bothReferences[0].getWithArgRefType()) && type2.equals(bothReferences[1].getWithArgRefType())) ||
-//                type1.equals(bothReferences[1].getWithArgRefType()) && type2.equals(bothReferences[0].getWithArgRefType());
-//    }
-
     private TNodeSetResult[] compareAttrRefWithPrimitive(AttributeReference attributeReference, PrimitiveTypeReference primitiveTypeReference) {
         Set<TNode> tNodes = tNodeDao.findAllByType(attributeReference.getSynonym().getSynonymType());
         tNodes = tNodes.stream()
