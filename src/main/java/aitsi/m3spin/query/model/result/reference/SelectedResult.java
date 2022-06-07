@@ -5,4 +5,6 @@ import aitsi.m3spin.query.model.references.Synonym;
 
 public interface SelectedResult {
     Synonym getSynonym() throws NoSynonymInSelectedResultException;
+
+    boolean isBooleanSelect();
 }

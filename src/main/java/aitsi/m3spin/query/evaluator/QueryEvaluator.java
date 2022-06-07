@@ -11,7 +11,6 @@ import aitsi.m3spin.query.model.Query;
 import aitsi.m3spin.query.model.clauses.PqlClause;
 import aitsi.m3spin.query.model.references.PrimitiveTypeReference;
 import aitsi.m3spin.query.model.references.Synonym;
-import aitsi.m3spin.query.model.result.actual.BooleanResult;
 import aitsi.m3spin.query.model.result.actual.QueryResult;
 import aitsi.m3spin.query.model.result.actual.TNodeSetResult;
 import aitsi.m3spin.query.model.result.reference.SelectedResult;
@@ -45,7 +44,7 @@ public class QueryEvaluator {
         List<PqlClause> queryClauses = query.getAllClauses();
         ClauseEvaluatorFactory clauseEvaluatorFactory = new ClauseEvaluatorFactory(pkb, tNodeDao);
 
-        if (selectedResult instanceof BooleanResult) { //Select BOOLEAN
+        if (selectedResult.isBooleanSelect()) { //Select BOOLEAN
             return evaluateBooleanQuery(queryClauses, clauseEvaluatorFactory);
 
         } else { // Select synonym | Select synonym.attr

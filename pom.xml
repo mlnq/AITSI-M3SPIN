@@ -6,7 +6,7 @@
 
     <groupId>aitsi.m3spin</groupId>
     <artifactId>AITSI-M3SPIN</artifactId>
-    <version>0.6.1.0-PARSING-WILDCARDS</version>
+    <version>0.7.0.1-SELECT-BOOL</version>
     <!--iteracja.wersja(zwiększana przy scaleniu).problem(nazwany).build-->
 
     <properties>
