@@ -8,4 +8,9 @@ public class SelectedBoolean implements SelectedResult {
     public Synonym getSynonym() throws NoSynonymInSelectedResultException {
         throw new NoSynonymInSelectedResultException(this);
     }
+
+    @Override
+    public boolean isBooleanSelect() {
+        return true;
+    }
 }

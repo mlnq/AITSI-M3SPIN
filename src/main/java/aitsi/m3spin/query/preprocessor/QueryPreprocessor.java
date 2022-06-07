@@ -16,6 +16,8 @@ import aitsi.m3spin.query.model.enums.AttributeTypeEnum;
 import aitsi.m3spin.query.model.enums.RelationshipPreprocEnum;
 import aitsi.m3spin.query.model.references.*;
 import aitsi.m3spin.query.model.relationships.RelationshipArgumentRef;
+import aitsi.m3spin.query.model.result.reference.SelectedBoolean;
+import aitsi.m3spin.query.model.result.reference.SelectedResult;
 import aitsi.m3spin.query.preprocessor.exceptions.*;
 import aitsi.m3spin.spafrontend.parser.CodeScanner;
 import lombok.Getter;
@@ -85,13 +87,18 @@ public class QueryPreprocessor {
 
     private Query parseQuery() throws QueryProcessorException, CodeScannerException {
         codeScanner.skipWhitespaces();
-        return new Query(parseSelectedSynonym(), parseSuchThatList(), parseWithList(), parsePatternList());
+        return new Query(parseSelectedResult(), parseSuchThatList(), parseWithList(), parsePatternList());
     }
 
-    private Synonym parseSelectedSynonym() throws SynonymNotDeclared, CodeScannerException {
+    private SelectedResult parseSelectedResult() throws SynonymNotDeclared, CodeScannerException {
         codeScanner.parseKeyword(PqlEntityEnum.SELECT.getName());
-        String parsedName = codeScanner.parseName();
-        return findDeclaredSynonym(parsedName);
+        if (codeScanner.hasCurrentString(PqlEntityEnum.BOOLEAN.getName())) {
+            codeScanner.parseKeyword(PqlEntityEnum.BOOLEAN.getName());
+            return new SelectedBoolean();
+        } else {
+            String parsedName = codeScanner.parseName();
+            return findDeclaredSynonym(parsedName);
+        }
     }
 
     private List<SuchThat> parseSuchThatList() throws QueryPreprocessorException, CodeScannerException {

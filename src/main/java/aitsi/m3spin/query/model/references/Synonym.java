@@ -33,6 +33,11 @@ public class Synonym extends ComplexTypeReference
     }
 
     @Override
+    public boolean isBooleanSelect() {
+        return false;
+    }
+
+    @Override
     public ReferenceType getArgRefType() {
         return ReferenceType.SYNONYM;
     }
