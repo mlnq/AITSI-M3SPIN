@@ -6,8 +6,8 @@
 
     <groupId>aitsi.m3spin</groupId>
     <artifactId>AITSI-M3SPIN</artifactId>
-    <version>0.3.0-PROFESSOR-CODE-PARSING</version>
-    <!--iteracja.wersja(nazwana).build-->
+    <version>0.4.0.0-PARSER-TESTS</version>
+    <!--iteracja.wersja(przy scalaniu PR-u).wersja(nazwana).build-->
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
