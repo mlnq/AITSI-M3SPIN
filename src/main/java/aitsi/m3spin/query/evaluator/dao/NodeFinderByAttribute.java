@@ -22,6 +22,6 @@ public class NodeFinderByAttribute extends AbstractNodeFinder {
 
     @Override
     protected boolean checkSearchCriteria(final TNode startingNode) {
-        return ((AttributableNode) startingNode).getAttribute().equals(attribute);
+        return startingNode.hasAttribute() && ((AttributableNode) startingNode).getAttribute().equals(attribute);
     }
 }

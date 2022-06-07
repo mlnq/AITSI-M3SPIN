@@ -93,7 +93,7 @@ public class CodeScanner {
                 && currentPosition.getColumn() < getCurrentLine().length() - 1;
     }
 
-    char getCurrentChar() throws MissingCharacterException {
+    public char getCurrentChar() throws MissingCharacterException {
         if (hasCurrentChar()) return getCurrentLine().charAt(currentPosition.getColumn());
         else throw new MissingCharacterException(currentPosition);
     }

@@ -5,10 +5,8 @@ import aitsi.m3spin.commons.exception.CodeScannerException;
 import aitsi.m3spin.commons.exception.MissingCharacterException;
 import aitsi.m3spin.commons.impl.*;
 import aitsi.m3spin.commons.interfaces.*;
-import aitsi.m3spin.pkb.impl.Pkb;
 import aitsi.m3spin.spafrontend.parser.exception.SimpleParserException;
 import aitsi.m3spin.spafrontend.parser.exception.UnknownStatementType;
-import aitsi.m3spin.spafrontend.parser.exception.*;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -130,27 +128,27 @@ public class Parser {
         } else if (EntityType.CALL.getETName().equals(firstWord)) {
             return parseCall();
         } else throw new UnknownStatementType(codeScanner.getCurrentPosition());
-        st.setStmtLine(++counter);
+        st.setProgLine(++counter);
         return st;
     }
 
-    private Call parseCall() throws SimpleParserException {
-        parseName();
+    private Call parseCall() throws CodeScannerException {
+        String procName = parseName();
         parseChar(';');
-        return new CallImpl(); //todo po 1 iteracji
+        return new CallImpl(procName); //todo ATS-26
     }
 
-    private If parseIf() throws SimpleParserException {
+    private If parseIf() throws SimpleParserException, CodeScannerException {
         parseName();
-        parseKeyword(EntityType.THEN);
+        codeScanner.parseKeyword(EntityType.THEN.getETName());
         parseChar('{');
         parseStmtList();
         parseChar('}');
-        parseKeyword(EntityType.ELSE);
+        codeScanner.parseKeyword(EntityType.ELSE.getETName());
         parseChar('{');
         parseStmtList();
         parseChar('}');
-        return new IfImpl();//todo po 1 iteracji
+        return new IfImpl();//todo ATS-26
     }
 
     private While parseWhile() throws SimpleParserException, CodeScannerException {

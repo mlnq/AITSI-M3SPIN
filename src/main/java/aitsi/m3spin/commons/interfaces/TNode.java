@@ -1,6 +1,9 @@
 package aitsi.m3spin.commons.interfaces;
 
 import aitsi.m3spin.commons.enums.EntityType;
+import aitsi.m3spin.query.model.enums.AttributeEnum;
+
+import java.util.Arrays;
 
 public interface TNode {
     TNode getLeftSibling();
@@ -20,4 +23,9 @@ public interface TNode {
     void setChild(TNode child);
 
     EntityType getType();
+
+    default boolean hasAttribute() {
+        return Arrays.stream(AttributeEnum.values())
+                .anyMatch(attributeEnum -> attributeEnum.getEntityType().equals(getType()));
+    }
 }

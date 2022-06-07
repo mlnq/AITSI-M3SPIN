@@ -6,8 +6,8 @@
 
     <groupId>aitsi.m3spin</groupId>
     <artifactId>AITSI-M3SPIN</artifactId>
-    <version>0.4.0-QUERY-PROC-CONFLICTS</version>
-    <!--iteracja.wersja(to czego tyczy się nazwa).build-->
+    <version>0.4.2.0-EXCEPTIONS-CAUSING-CRASHES-FIXED</version>
+    <!--iteracja.wersja(zwiększana przy scaleniu).problem(nazwany).build-->
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

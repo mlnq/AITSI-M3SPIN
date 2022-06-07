@@ -5,13 +5,15 @@ import aitsi.m3spin.commons.interfaces.Call;
 import aitsi.m3spin.commons.interfaces.NodeAttribute;
 import aitsi.m3spin.pkb.model.AttributableNode;
 import aitsi.m3spin.pkb.model.StringAttribute;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class CallImpl extends StatementImpl implements Call, AttributableNode {
     private StringAttribute procName;
+
+    public CallImpl(String procName) {
+        this.procName = new StringAttribute(procName);
+    }
 
     @Override
     public EntityType getType() {
