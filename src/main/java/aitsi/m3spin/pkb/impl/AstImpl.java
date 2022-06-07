@@ -3,12 +3,10 @@ package aitsi.m3spin.pkb.impl;
 import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.enums.LinkType;
 import aitsi.m3spin.commons.impl.*;
-import aitsi.m3spin.commons.interfaces.NodeAttribute;
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.exception.IllegalLinkTypeException;
 import aitsi.m3spin.pkb.exception.IllegalNodeTypeException;
 import aitsi.m3spin.pkb.interfaces.Ast;
-import aitsi.m3spin.pkb.model.AttributableNode;
 
 public class AstImpl implements Ast {
     private int procId = 0;
@@ -46,8 +44,8 @@ public class AstImpl implements Ast {
     }
 
     @Override
-    public void setAttribute(AttributableNode node, NodeAttribute attr) {
-        node.setAttribute(attr);
+    public void setAttribute(TNode n, String attr) {
+        n.setAttribute(attr);
     }
 
     @Override
@@ -95,18 +93,13 @@ public class AstImpl implements Ast {
     }
 
     @Override
-    public NodeAttribute getAttribute(AttributableNode node) {
+    public String getAttribute(TNode node) {
         return node.getAttribute();
     }
 
     @Override
-    public TNode getChild(TNode parent) {
-        return parent.getChild();
-    }
-
-    @Override
-    public TNode getRightSibling(TNode node) {
-        return node.getRightSibling();
+    public TNode getChild(TNode p) {
+        return p.getChild();
     }
 
     @Override
@@ -143,15 +136,5 @@ public class AstImpl implements Ast {
             return false;
         }
         return linkedNode.equals(node2);
-    }
-
-    @Override
-    public boolean hasChild(TNode parent) {
-        return parent.getChild() != null;
-    }
-
-    @Override
-    public boolean hasRightSibling(TNode node) {
-        return node.getRightSibling() != null;
     }
 }

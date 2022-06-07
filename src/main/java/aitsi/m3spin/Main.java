@@ -1,11 +1,11 @@
 package aitsi.m3spin;
 
 import aitsi.m3spin.commons.interfaces.Procedure;
+import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.impl.Pkb;
+import aitsi.m3spin.query.QueryEvaluator;
 import aitsi.m3spin.query.QueryPreprocessor;
 import aitsi.m3spin.query.QueryResultProjector;
-import aitsi.m3spin.query.evaluator.QueryEvaluator;
-import aitsi.m3spin.query.model.result.actual.QueryResult;
 import aitsi.m3spin.spafrontend.extractor.DesignExtractor;
 import aitsi.m3spin.spafrontend.parser.Parser;
 import aitsi.m3spin.spafrontend.parser.exception.SimpleParserException;
@@ -31,7 +31,7 @@ public class Main {
             if (args != null && args.length == 1) {
                 simpleReader.readFile(args[0]);
 
-                Pkb pkb = processSimpleCodeAndPreparePkb(simpleReader.getCodeLines());
+                processSimpleCodeAndPreparePkb(simpleReader.getCodeLines());
 
                 System.out.println("Ready");
 
@@ -41,8 +41,8 @@ public class Main {
                     QueryPreprocessor qp = new QueryPreprocessor(pqlLines);
                     qp.parsePql();
 
-                    QueryEvaluator queryEvaluator = new QueryEvaluator(pkb);
-                    List<QueryResult> rawResult = queryEvaluator.evaluateQueries(qp.getQueryList());
+                    QueryEvaluator queryEvaluator = new QueryEvaluator(qp.getDeclarationList(), qp.getQueryList());
+                    List<TNode> rawResult = queryEvaluator.evaluateQueries();
 
                     QueryResultProjector queryResultProjector = new QueryResultProjector();
                     String formattedResult = queryResultProjector.formatResult(rawResult);
@@ -65,18 +65,16 @@ public class Main {
         charset.set(null, null);
     }
 
-    private static Pkb processSimpleCodeAndPreparePkb(List<String> codeLines) throws SimpleParserException {
+    private static void processSimpleCodeAndPreparePkb(List<String> codeLines) throws SimpleParserException {
         Pkb pkb = new Pkb();
-        Parser parser = new Parser(codeLines, pkb);
+        Parser parser = new Parser(codeLines);
         List<Procedure> parsedProcedures = parser.parse();
-        parser.fillPkb(parsedProcedures);
 
         DesignExtractor designExtractor = new DesignExtractor(pkb);
-        designExtractor.extractDesigns();
-        return pkb;
+        designExtractor.fillPkb(parsedProcedures);
     }
 
     private static String formatException(Exception e) {
-        return "#" + Arrays.toString(e.getStackTrace());
+        return String.format("#[Message]: %s [Trace]: %s", e.getMessage(), Arrays.toString(e.getStackTrace()));
     }
 }

@@ -62,7 +62,7 @@ public class QueryResultProjector {
                         case CONSTANT:
                             formattedOutput.append(((ConstantImpl) currentNode).getValue().getValue());
                             break;
-                        case STATEMENT:
+                        case STMT:
                             formattedOutput.append(((Statement) currentNode).getStmtLine());
                             break;
                         default:
