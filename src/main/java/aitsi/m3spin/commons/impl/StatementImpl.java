@@ -1,5 +1,6 @@
 package aitsi.m3spin.commons.impl;
 
+import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.interfaces.NodeAttribute;
 import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.pkb.model.AttributableNode;
@@ -28,5 +29,10 @@ public abstract class StatementImpl extends TNodeImpl implements Statement, Attr
     @Override
     public void setAttribute(NodeAttribute attribute) {
         this.progLine = (IntegerAttribute) attribute;
+    }
+
+    @Override
+    public EntityType getType() {
+        return EntityType.STMT;
     }
 }

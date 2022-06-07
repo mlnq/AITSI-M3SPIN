@@ -76,7 +76,7 @@ public interface Ast {
      * * - CHILD: node1 is child and node2 is parent
      * * - SIBLING: node1 is left sibling and node2 is right sibling
      *
-     * @param link  type of relation
+     * @param link type of relation
      * @param node1 first checked node
      * @param node2 second checked node
      * @return true if nodes are connected by link or false if not
