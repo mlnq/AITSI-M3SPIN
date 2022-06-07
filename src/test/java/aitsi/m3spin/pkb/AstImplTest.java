@@ -11,13 +11,19 @@ import aitsi.m3spin.pkb.exception.IllegalLinkTypeException;
 import aitsi.m3spin.pkb.exception.IllegalNodeTypeException;
 import aitsi.m3spin.pkb.impl.AstImpl;
 import aitsi.m3spin.pkb.interfaces.Ast;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class AstImplTest {
 
-    private final Ast ast = new AstImpl();
+    private Ast ast;
+
+    @BeforeEach
+    void setup() {
+        ast = new AstImpl();
+    }
 
     @Test
     void createTNode_EntityTypeAssignment_NodeIsCreatedAndTypeIsSetAsAssignment() throws IllegalNodeTypeException {
