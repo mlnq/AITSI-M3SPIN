@@ -2,38 +2,41 @@ package aitsi.m3spin.pkb.impl;
 
 import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.pkb.interfaces.Parent;
+import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
+@Getter
 public class ParentImpl implements Parent {
-
+    HashMap<Statement, HashSet<Statement>> parents = new HashMap<>();
     @Override
     public Statement setParent(Statement parent, Statement child) {
-        child.setParent(parent);
-        parent.setChild(child);
+        if (parents.containsKey(parent)) {
+            parents.get(parent).add(child);
+        } else {
+            parents.computeIfAbsent(parent, k -> new HashSet<>(Collections.singletonList(child)));
+        }
         return parent;
     }
 
     @Override
     public List<Statement> getParentedBy(Statement parent) {
-
-        Statement currentStmt = (Statement) parent.getChild();
-        List<Statement> childList = new ArrayList<>();
-
-        while (currentStmt != null) {
-            childList.add(currentStmt);
-            currentStmt = (Statement) currentStmt.getRightSibling();
+        HashSet<Statement> children = parents.get(parent);
+        if (children == null) {
+            return null;
+        } else {
+            return new ArrayList<>(children);
         }
-        return childList;
     }
 
     @Override
     public Statement getParent(Statement child) {
-        while (child.getParent() == null) {
-            child = (Statement) child.getLeftSibling();
+        for(Statement parent: parents.keySet()) {
+            if (parents.get(parent).contains(child)) {
+                return parent;
+            }
         }
-        return (Statement) child.getParent();
+        return null;
     }
 
     @Override
