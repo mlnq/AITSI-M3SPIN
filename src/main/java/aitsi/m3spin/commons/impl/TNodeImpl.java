@@ -19,5 +19,4 @@ public abstract class TNodeImpl implements TNode {
     protected TNode parent;
     @EqualsAndHashCode.Exclude
     protected TNode child;
-    protected String attribute;
 }

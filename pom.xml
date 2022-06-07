@@ -6,8 +6,8 @@
 
     <groupId>aitsi.m3spin</groupId>
     <artifactId>AITSI-M3SPIN</artifactId>
-    <version>0.4.0.0-PARSER-TESTS</version>
-    <!--iteracja.wersja(przy scalaniu PR-u).wersja(nazwana).build-->
+    <version>0.5.0.0-QUERY-PROC-CONFL-2</version>
+    <!--iteracja.wersja(zwiększana przy scaleniu).problem(nazwany).build-->
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -26,7 +26,7 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>RELEASE</version>
-            <scope>compile</scope>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
