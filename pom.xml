@@ -6,7 +6,7 @@
 
     <groupId>aitsi.m3spin</groupId>
     <artifactId>AITSI-M3SPIN</artifactId>
-    <version>0.7.0.1-SELECT-BOOL</version>
+    <version>0.8.0.0-UNSUPPORTED-OP-EX</version>
     <!--iteracja.wersja(zwiększana przy scaleniu).problem(nazwany).build-->
 
     <properties>
