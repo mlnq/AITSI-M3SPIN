@@ -137,7 +137,7 @@ public class Parser {
         } else if (EntityType.CALL.getETName().equals(firstWord)) {
             st = parseCall();
         } else throw new UnknownStatementType(codeScanner.getCurrentPosition());
-        st.setStmtLine(counter);
+        st.setProgLine(counter);
         return st;
     }
 

@@ -7,7 +7,6 @@ import lombok.*;
 
 @Getter
 @Setter
-//@NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class ExpressionImpl extends TNodeImpl implements Expression {
@@ -20,15 +19,20 @@ public class ExpressionImpl extends TNodeImpl implements Expression {
 
     public ExpressionImpl(Factor factor, int hierarchy) {
         this.factor = factor;
-        this.expression = null;
-        this.symbol = null;
         this.hierarchy = hierarchy;
-
     }
+
+    public ExpressionImpl(Factor factor) {
+        this.factor = factor;
+    }
+
+    public ExpressionImpl(Factor factor, Expression expression) {
+        this.factor = factor;
+        this.expression = expression;
+    }
+
+
     public ExpressionImpl(){
-        this.symbol = null;
-        this.expression = null;
-        this.factor = null;
         this.hierarchy = 0;
     }
 
