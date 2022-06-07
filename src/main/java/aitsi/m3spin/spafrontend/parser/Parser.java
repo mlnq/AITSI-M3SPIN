@@ -190,8 +190,8 @@ public class Parser {
         if(codeScanner.getCurrentChar() == '(') {
 
             parseStartingRoundBrace();
-            codeScanner.incrementPosition();
             factor = parseFactor();
+            codeScanner.skipWhitespaces();
 
             while (codeScanner.getCurrentChar() != ')') {
 
@@ -205,11 +205,9 @@ public class Parser {
                 return new ExpressionImpl();
             }
         }
-        else {
-
-             factor = parseFactor();
+        else{
+            factor = parseFactor();
             codeScanner.skipWhitespaces();
-            //       CodePosition codepos = codeScanner.getCurrentPosition();
         }
 
 
