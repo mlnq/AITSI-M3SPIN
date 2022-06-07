@@ -20,5 +20,6 @@ public class SimpleReader {
         while (scanner.hasNextLine()) {
             codeLines.add(scanner.nextLine());
         }
+        scanner.close();
     }
 }

@@ -13,4 +13,5 @@ public class MinusImpl extends TNodeImpl implements Minus {
     public EntityType getType() {
         return EntityType.MINUS;
     }
+
 }

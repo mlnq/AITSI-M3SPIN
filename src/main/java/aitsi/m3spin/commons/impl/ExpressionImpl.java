@@ -36,4 +36,5 @@ public class ExpressionImpl extends TNodeImpl implements Expression {
     public EntityType getType() {
         return EntityType.EXPRESSION;
     }
+
 }

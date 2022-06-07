@@ -18,7 +18,6 @@ public class AssignmentImpl extends StatementImpl implements Assignment {
     private Variable variable;
     private Expression expression;
 
-    @Override
     public EntityType getType() {
         return EntityType.ASSIGNMENT;
     }

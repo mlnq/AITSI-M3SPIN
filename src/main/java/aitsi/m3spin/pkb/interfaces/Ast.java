@@ -2,16 +2,17 @@ package aitsi.m3spin.pkb.interfaces;
 
 import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.enums.LinkType;
+import aitsi.m3spin.commons.interfaces.NodeAttribute;
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.exception.IllegalLinkTypeException;
 import aitsi.m3spin.pkb.exception.IllegalNodeTypeException;
+import aitsi.m3spin.pkb.model.AttributableNode;
 
 public interface Ast {
 
     //: Creates a new node of type ‘et’ and returns a reference to it
     TNode createTNode(EntityType et) throws IllegalNodeTypeException;
 
-    void setName(TNode node, String name);
 
     TNode setChild(TNode parent, TNode child);
 
@@ -45,9 +46,17 @@ public interface Ast {
 
     EntityType getType(TNode node);
 
-    String getName(TNode node);
+    NodeAttribute getAttribute(AttributableNode node);
 
-    TNode getChild(TNode p);
+    void setAttribute(AttributableNode node, NodeAttribute attribute);
+
+    TNode getChild(TNode parent);
+
+    TNode getRightSibling(TNode node);
+
+    boolean hasChild(TNode parent);
+
+    boolean hasRightSibling(TNode node);
 
     /**
      * Gets node connected by relation of given type with given node (argument)
@@ -61,6 +70,11 @@ public interface Ast {
 
     /**
      * Gets information if node2 is connected with node1 by connection of link type
+     * <p>
+     * * Relation types:
+     * * - PARENT: node1 is parent and node2 is child
+     * * - CHILD: node1 is child and node2 is parent
+     * * - SIBLING: node1 is left sibling and node2 is right sibling
      *
      * @param link type of relation
      * @param node1 first checked node

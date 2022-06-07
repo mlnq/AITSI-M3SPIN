@@ -1,11 +1,12 @@
 package aitsi.m3spin;
 
+import aitsi.m3spin.commons.exception.CodeScannerException;
 import aitsi.m3spin.commons.interfaces.Procedure;
-import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.impl.Pkb;
-import aitsi.m3spin.query.QueryEvaluator;
-import aitsi.m3spin.query.QueryPreprocessor;
 import aitsi.m3spin.query.QueryResultProjector;
+import aitsi.m3spin.query.evaluator.QueryEvaluator;
+import aitsi.m3spin.query.model.result.actual.QueryResult;
+import aitsi.m3spin.query.preprocessor.QueryPreprocessor;
 import aitsi.m3spin.spafrontend.extractor.DesignExtractor;
 import aitsi.m3spin.spafrontend.parser.Parser;
 import aitsi.m3spin.spafrontend.parser.exception.SimpleParserException;
@@ -17,8 +18,10 @@ import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
+    static boolean isRunManual = false;
 
     public static void main(String[] args) {
         try {
@@ -28,31 +31,43 @@ public class Main {
             PqlReader pqlReader = new PqlReader();
             PqlDisplayer pqlDisplayer = new PqlDisplayer();
 
-            if (args != null && args.length == 1) {
+            if (args != null && (args.length == 1 || args.length == 2)) {
+                isRunManual = args.length == 2;
+
                 simpleReader.readFile(args[0]);
 
-                processSimpleCodeAndPreparePkb(simpleReader.getCodeLines());
+                Pkb pkb = processSimpleCodeAndPreparePkb(simpleReader.getCodeLines());
 
                 System.out.println("Ready");
 
+                Scanner scanner = new Scanner(System.in);
+
                 while (true) {
-                    List<String> pqlLines = pqlReader.readStdin(2);
-
-                    QueryPreprocessor qp = new QueryPreprocessor(pqlLines);
-                    qp.parsePql();
-
-                    QueryEvaluator queryEvaluator = new QueryEvaluator(qp.getDeclarationList(), qp.getQueryList());
-                    List<TNode> rawResult = queryEvaluator.evaluateQueries();
-
-                    QueryResultProjector queryResultProjector = new QueryResultProjector();
-                    String formattedResult = queryResultProjector.formatResult(rawResult);
-
-                    pqlDisplayer.writeStdout(formattedResult);
+                    processQueries(pqlReader, pqlDisplayer, pkb, scanner);
                 }
             } else {
                 throw new IllegalArgumentException("SPA received illegal number of arguments: " + args.length +
                         ". Only exactly one argument allowed.");
             }
+        } catch (Exception e) {
+            System.out.println(formatException(e));
+        }
+    }
+
+    private static void processQueries(PqlReader pqlReader, PqlDisplayer pqlDisplayer, Pkb pkb, Scanner scanner) {
+        try {
+            List<String> pqlLines = pqlReader.readStdin(2, scanner, isRunManual);
+
+            QueryPreprocessor qp = new QueryPreprocessor(pqlLines);
+            qp.parsePql();
+
+            QueryEvaluator queryEvaluator = new QueryEvaluator(pkb);
+            List<QueryResult> rawResult = queryEvaluator.evaluateQueries(qp.getQueryList());
+
+            QueryResultProjector queryResultProjector = new QueryResultProjector();
+            String formattedResult = queryResultProjector.formatResult(rawResult);
+
+            pqlDisplayer.writeStdout(formattedResult);
         } catch (Exception e) {
             System.out.println(formatException(e));
         }
@@ -65,16 +80,19 @@ public class Main {
         charset.set(null, null);
     }
 
-    private static void processSimpleCodeAndPreparePkb(List<String> codeLines) throws SimpleParserException {
+    private static Pkb processSimpleCodeAndPreparePkb(List<String> codeLines) throws SimpleParserException, CodeScannerException {
         Pkb pkb = new Pkb();
         Parser parser = new Parser(codeLines);
         List<Procedure> parsedProcedures = parser.parse();
 
         DesignExtractor designExtractor = new DesignExtractor(pkb);
         designExtractor.fillPkb(parsedProcedures);
+        return pkb;
     }
 
     private static String formatException(Exception e) {
-        return String.format("#[Message]: %s [Trace]: %s", e.getMessage(), Arrays.toString(e.getStackTrace()));
+        if (isRunManual)
+            return String.format("#[MESSAGE]:%s%n[TRACE]:%s", e.toString(), Arrays.toString(e.getStackTrace()).replace("),", "),\n"));
+        else return String.format("#[MESSAGE]:%s|[TRACE]:%s", e.toString(), Arrays.toString(e.getStackTrace()));
     }
 }
