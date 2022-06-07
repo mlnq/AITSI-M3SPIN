@@ -19,25 +19,36 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DesignExtractorTest {
     Pkb pkb;
+    final String MAIN = "Main";
+    final String FIRST = "FIRST";
+    final String X = "x";
+    final String Y = "y";
+    final String Z = "z";
+    final String I = "i";
 
     @BeforeEach
     void prepareProcedures() throws UnknownStatementType {
         List<Procedure> procedures = new ArrayList<>();
         List<Statement> firstProcStatementsList = new ArrayList<>();
-        Assignment firstAssignment = new AssignmentImpl(new VariableImpl("x"), new ExpressionImpl(new VariableImpl("y"), new ExpressionImpl(new VariableImpl("z"), new ExpressionImpl(new VariableImpl("i")))));
+        Variable xVar = new VariableImpl(X);
+        Variable yVar = new VariableImpl(Y);
+        Variable zVar = new VariableImpl(Z);
+        Variable iVar = new VariableImpl(I);
+        Assignment firstAssignment = new AssignmentImpl(xVar,
+                new ExpressionImpl(yVar, new ExpressionImpl(zVar, new ExpressionImpl(iVar))));
         firstProcStatementsList.add(firstAssignment);
 
-        Assignment whileAssigment = new AssignmentImpl(new VariableImpl("y"), new ExpressionImpl(new VariableImpl("z"), new ExpressionImpl(new VariableImpl("x"))));
-        WhileImpl whileImp = new WhileImpl(new VariableImpl("i"), new StatementListImpl(Collections.singletonList(whileAssigment)));
+        Assignment whileAssigment = new AssignmentImpl(yVar, new ExpressionImpl(zVar, new ExpressionImpl(xVar)));
+        WhileImpl whileImp = new WhileImpl(iVar, new StatementListImpl(Collections.singletonList(whileAssigment)));
         firstProcStatementsList.add(whileImp);
 
-        Procedure firstProcedure = new ProcedureImpl("Main", new StatementListImpl(firstProcStatementsList));
+        Procedure firstProcedure = new ProcedureImpl(MAIN, new StatementListImpl(firstProcStatementsList));
         procedures.add(firstProcedure);
 
         List<Statement> secondProcStatementsList = new ArrayList<>();
-        Assignment secondProcAssign = new AssignmentImpl(new VariableImpl("x"), new ExpressionImpl(new ConstantImpl(2)));
+        Assignment secondProcAssign = new AssignmentImpl(xVar, new ExpressionImpl(new ConstantImpl(2)));
         secondProcStatementsList.add(secondProcAssign);
-        Procedure secondProcedure = new ProcedureImpl("First", new StatementListImpl(secondProcStatementsList));
+        Procedure secondProcedure = new ProcedureImpl(FIRST, new StatementListImpl(secondProcStatementsList));
 
         procedures.add(secondProcedure);
 
@@ -50,9 +61,9 @@ public class DesignExtractorTest {
     void fillPkbProcedure_SimpleProcedure_Parsed() {
         TNode root = pkb.getAst().getRoot();
 
-        assertEquals("Main", root.getAttribute());
+        assertEquals(MAIN, root.getAttribute());
         assertEquals(EntityType.PROCEDURE, root.getType());
-        assertEquals("First", root.getRightSibling().getAttribute());
+        assertEquals(FIRST, root.getRightSibling().getAttribute());
         assertEquals(EntityType.PROCEDURE, root.getRightSibling().getType());
     }
 
@@ -67,7 +78,7 @@ public class DesignExtractorTest {
         assertEquals(EntityType.WHILE, pkbWhile.getType());
 
         WhileImpl filledWhile = (WhileImpl) pkbWhile;
-        assertEquals("i", filledWhile.getConditionVar().getName());
+        assertEquals(I, filledWhile.getConditionVar().getName());
     }
 
 
@@ -79,7 +90,7 @@ public class DesignExtractorTest {
         assertEquals(EntityType.ASSIGNMENT, pkbAssigment.getType());
 
         AssignmentImpl filledAssigment = (AssignmentImpl) pkbAssigment;
-        assertEquals("x", filledAssigment.getChild().getAttribute());
+        assertEquals(X, filledAssigment.getChild().getAttribute());
 
         TNode pkbExpression = pkbAssigment.getChild().getRightSibling();
         assertEquals(EntityType.EXPRESSION, pkbExpression.getType());
@@ -101,17 +112,17 @@ public class DesignExtractorTest {
         TNode pkbFirstVariable = pkbAssigment.getChild();
         assertEquals(EntityType.VARIABLE, pkbFirstVariable.getType());
         VariableImpl filledFirstVariable = (VariableImpl) pkbFirstVariable;
-        assertEquals("x", filledFirstVariable.getName());
+        assertEquals(X, filledFirstVariable.getName());
 
         TNode pkbSecondVariable = pkbAssigment.getChild().getRightSibling().getChild();
         assertEquals(EntityType.VARIABLE, pkbSecondVariable.getType());
         VariableImpl filledSecondVariable = (VariableImpl) pkbSecondVariable;
-        assertEquals("y", filledSecondVariable.getName());
+        assertEquals(Y, filledSecondVariable.getName());
 
         TNode pkbThirdVariable = filledSecondVariable.getRightSibling().getChild();
         assertEquals(EntityType.VARIABLE, pkbThirdVariable.getType());
         VariableImpl filledThirdVariable = (VariableImpl) pkbThirdVariable;
-        assertEquals("z", filledThirdVariable.getName());
+        assertEquals(Z, filledThirdVariable.getName());
 
         TNode pkbExpression = pkbThirdVariable.getRightSibling();
         assertEquals(EntityType.EXPRESSION, pkbExpression.getType());
@@ -120,7 +131,7 @@ public class DesignExtractorTest {
         TNode pkbFourthVariable = filledExpression.getFactor();
         assertEquals(EntityType.VARIABLE, pkbThirdVariable.getType());
         VariableImpl filledFourthVariable = (VariableImpl) pkbFourthVariable;
-        assertEquals("i", filledFourthVariable.getName());
+        assertEquals(I, filledFourthVariable.getName());
     }
 
 
