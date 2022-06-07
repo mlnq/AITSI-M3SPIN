@@ -21,7 +21,7 @@ public class ParentImpl implements Parent {
         Statement currentStmt = (Statement) parent.getChild();
         List<Statement> childList = new ArrayList<>();
 
-        while (currentStmt.getRightSibling() != null) {
+        while (currentStmt != null) {
             childList.add(currentStmt);
             currentStmt = (Statement) currentStmt.getRightSibling();
         }

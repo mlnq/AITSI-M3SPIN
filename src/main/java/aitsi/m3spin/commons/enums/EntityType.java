@@ -4,7 +4,7 @@ public enum EntityType {
     //    PROGRAM("PROGRAM"),
     PROCEDURE("procedure"),
     STMT_LIST("statementList"),
-    //    STMT("STMT"),
+    STMT("STMT"),
     EQUALS("="),
     CALL("call"),
     WHILE("while"),
