@@ -21,4 +21,8 @@ public class AttributeReference extends ComplexTypeReference implements Selected
         return this.synonym.equals(synonym);
     }
 
+    @Override
+    public boolean isBooleanSelect() {
+        return false;
+    }
 }
