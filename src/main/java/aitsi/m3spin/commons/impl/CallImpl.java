@@ -6,6 +6,7 @@ import aitsi.m3spin.commons.interfaces.NodeAttribute;
 import aitsi.m3spin.pkb.model.StringAttribute;
 import lombok.EqualsAndHashCode;
 
+
 @EqualsAndHashCode(callSuper = true)
 public class CallImpl extends StatementImpl implements Call {
     private StringAttribute procName;

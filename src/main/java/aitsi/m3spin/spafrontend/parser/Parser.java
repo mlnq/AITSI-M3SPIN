@@ -57,6 +57,14 @@ public class Parser {
         parseChar('}');
     }
 
+    private void parseStartingRoundBrace() throws MissingCharacterException {
+        parseChar('(');
+    }
+
+    private void parseEndingRoundBrace() throws MissingCharacterException {
+        parseChar(')');
+    }
+
     private void parseChar(char c) throws MissingCharacterException {//todo do codeScannera (zadanie ATS-11)
         parseChar(c, true);
     }
@@ -166,7 +174,7 @@ public class Parser {
     private Assignment parseAssignmentAfterEquals(String leftSideVar) throws CodeScannerException {
         codeScanner.skipWhitespaces();
         Expression expr = parseExpression();
-
+//todo zjesc cos dobrego  i przestrukturyzowac stos
         parseChar(';');
         return new AssignmentImpl(new VariableImpl(leftSideVar), expr);
     }
@@ -174,15 +182,54 @@ public class Parser {
     private Expression parseExpression() throws CodeScannerException {
 
         codeScanner.skipWhitespaces();
-        Factor factor = parseFactor();
-        codeScanner.skipWhitespaces();
+        Factor factor = null;
+        if(codeScanner.getCurrentChar() == '(') {
 
-        if (codeScanner.getCurrentChar() == EntityType.PLUS.getETName().charAt(0)) {
+            parseStartingRoundBrace();
+            factor = parseFactor();
+            codeScanner.skipWhitespaces();
+
+            while (codeScanner.getCurrentChar() != ')') {
+
+                codeScanner.incrementPosition(); //todo zaimplementowac operacje w nawiasach
+
+            }
+            parseEndingRoundBrace();
+
+
+            if (codeScanner.getCurrentChar() == ';') {
+                return new ExpressionImpl();
+            }
+        }
+        else{
+            factor = parseFactor();
+            codeScanner.skipWhitespaces();
+        }
+
+
+        if(codeScanner.getCurrentChar() == '(')
+        {
+            //consume ((( --> hierarchia wieksza niz (( > (
+            parseEndingRoundBrace();
+            return new ExpressionImpl(); //ustalenie hierarchi na np 3 bo są 3 nawiasy
+        }
+
+        if(codeScanner.getCurrentChar() == EntityType.TIMES.getETName().charAt(0)){
             codeScanner.incrementPosition();
             codeScanner.skipWhitespaces();
-            return new ExpressionImpl(factor, parseExpression());
+            return new ExpressionImpl(factor, EntityType.TIMES, parseExpression(),1);
+        }
+        else if (codeScanner.getCurrentChar() == EntityType.MINUS.getETName().charAt(0)) {
+            codeScanner.incrementPosition();
+            codeScanner.skipWhitespaces();
+            return new ExpressionImpl(factor,EntityType.MINUS, parseExpression(),0);
+        }
+        else if (codeScanner.getCurrentChar() == EntityType.PLUS.getETName().charAt(0)) {
+            codeScanner.incrementPosition();
+            codeScanner.skipWhitespaces();
+            return new ExpressionImpl(factor, EntityType.PLUS,  parseExpression(),0);
         } else {
-            return new ExpressionImpl(factor);
+            return new ExpressionImpl(factor,0);
         }
     }
 
