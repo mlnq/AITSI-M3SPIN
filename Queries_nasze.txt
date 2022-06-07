@@ -1,0 +1,18 @@
+stmt s;
+Select s such that Follows (15, s)
+none
+stmt s;
+Select s such that Follows (s, 69)
+none
+stmt s;
+Select s such that Follows* (23, s)
+none
+stmt s;
+Select s such that Follows* (s, 116)
+none
+procedure p;
+Select p
+Main
+prog_line n; assign a1, a2;
+Select a1 such that Follows(n, a2) with n = 30
+none

@@ -6,8 +6,8 @@
 
     <groupId>aitsi.m3spin</groupId>
     <artifactId>AITSI-M3SPIN</artifactId>
-    <version>0.3.0-PROFESSOR-CODE-PARSING</version>
-    <!--iteracja.wersja(nazwana).build-->
+    <version>0.7.0.1-SELECT-BOOL</version>
+    <!--iteracja.wersja(zwiększana przy scaleniu).problem(nazwany).build-->
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -21,6 +21,12 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.22</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>RELEASE</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>

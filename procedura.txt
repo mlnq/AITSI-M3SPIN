@@ -1,5 +1,0 @@
-procedure Main {
-while i {
-y = łżęć+iaiao +2;}
-żółć =x     +y+  z;
-}

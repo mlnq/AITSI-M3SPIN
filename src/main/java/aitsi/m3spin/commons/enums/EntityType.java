@@ -1,10 +1,8 @@
 package aitsi.m3spin.commons.enums;
 
 public enum EntityType {
-    //    PROGRAM("PROGRAM"),
     PROCEDURE("procedure"),
-    STMT_LIST("statementList"),
-    //    STMT("STMT"),
+    STMT_LIST("stmtLst"),
     EQUALS("="),
     CALL("call"),
     WHILE("while"),
@@ -14,16 +12,36 @@ public enum EntityType {
     PLUS("+"),
     MINUS("-"),
     TIMES("*"),
-    ASSIGNMENT("assignment"),
+    ASSIGNMENT("assign"),
+    STATEMENT("stmt"),
     CONSTANT("constant"),
     VARIABLE("variable"),
     EXPRESSION("expression"),
-    FACTOR("factor");
+    FACTOR("factor"),
+    PROG_LINE("prog_line");
 
     private final String entityTypeName;
 
     EntityType(String entityTypeName) {
         this.entityTypeName = entityTypeName;
+    }
+
+    public static boolean contains(String name) {
+        for (EntityType et : EntityType.values()) {
+            if (et.getETName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static EntityType fromString(String etName) {
+        for (EntityType et : EntityType.values()) {
+            if (et.entityTypeName.equalsIgnoreCase(etName)) {
+                return et;
+            }
+        }
+        return null;
     }
 
     public String getETName() {
