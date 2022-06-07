@@ -12,4 +12,5 @@ public class IfImpl extends StatementImpl implements If {
     public EntityType getType() {
         return EntityType.IF;
     }
+
 }

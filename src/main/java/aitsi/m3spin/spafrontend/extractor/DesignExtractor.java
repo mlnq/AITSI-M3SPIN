@@ -43,7 +43,7 @@ public class DesignExtractor {
     }
 
     private void fillPkb(Procedure procedure) throws UnknownStatementType {
-        pkb.getProcTable().insertProc(procedure.getName());
+        pkb.getProcTable().insertProc(procedure.getProcName());
         StatementList stmtList = (StatementList) pkb.getAst().setChild(procedure, procedure.getStatementList());
         RelationshipsInfo relationshipsInfo = fillPkb(stmtList);
 
@@ -103,7 +103,7 @@ public class DesignExtractor {
     }
 
     private RelationshipsInfo fillPkb(Variable variable, StatementList stmtList) throws UnknownStatementType {
-        pkb.getVarTable().insertVar(variable.getName());
+        pkb.getVarTable().insertVar(variable.getVarName());
         stmtList = (StatementList) pkb.getAst().setSibling(variable, stmtList);
         return fillPkb(stmtList);
     }
@@ -113,7 +113,7 @@ public class DesignExtractor {
             RelationshipsInfo relationshipsInfo = new RelationshipsInfo();
             if (expression.getFactor() instanceof Variable) {
                 Variable variable = (Variable) expression.getFactor();
-                pkb.getVarTable().insertVar(variable.getName());
+                pkb.getVarTable().insertVar(variable.getVarName());
                 relationshipsInfo.addUsedVar(variable);
             }
             Factor factor = (Factor) pkb.getAst().setChild(expression, expression.getFactor());
@@ -138,7 +138,7 @@ public class DesignExtractor {
     }
 
     private RelationshipsInfo fillPkb(Variable variable, Expression expression) {
-        pkb.getVarTable().insertVar(variable.getName());
+        pkb.getVarTable().insertVar(variable.getVarName());
         expression = (Expression) pkb.getAst().setSibling(variable, expression);
         return fillPkb(expression);
     }
