@@ -15,6 +15,7 @@ import aitsi.m3spin.ui.SimpleReader;
 
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.List;
 
 public class Main {
@@ -67,13 +68,13 @@ public class Main {
     private static void processSimpleCodeAndPreparePkb(List<String> codeLines) throws SimpleParserException {
         Pkb pkb = new Pkb();
         Parser parser = new Parser(codeLines);
-        List<Procedure> procedures = parser.parse();
+        List<Procedure> parsedProcedures = parser.parse();
 
         DesignExtractor designExtractor = new DesignExtractor(pkb);
-        designExtractor.fillPkb(procedures);
+        designExtractor.fillPkb(parsedProcedures);
     }
 
     private static String formatException(Exception e) {
-        return "#" + e.getMessage();
+        return String.format("#[Message]: %s [Trace]: %s", e.getMessage(), Arrays.toString(e.getStackTrace()));
     }
 }

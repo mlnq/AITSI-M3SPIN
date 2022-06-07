@@ -1,5 +1,6 @@
 package aitsi.m3spin.spafrontend.extractor;
 
+import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.impl.VariableImpl;
 import aitsi.m3spin.commons.interfaces.*;
 import aitsi.m3spin.pkb.impl.Pkb;
@@ -12,10 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 public class DesignExtractor {
     private Pkb pkb;
-
-    public void extractDesigns() {
-        //todo po 1 iteracji
-    }
 
     /*
      * Wzór metody fillPkb(tnode):
@@ -32,13 +29,14 @@ public class DesignExtractor {
         rootProc = (Procedure) pkb.getAst().setRoot(rootProc);
         fillPkb(rootProc);
 
-        Procedure current, last = rootProc;
+        Procedure currentProc;
+        Procedure lastProc = rootProc;
 
-        for (int i = 1; i < procedures.size(); i++){
-            current = procedures.get(i);
-            pkb.getAst().setSibling(last, current);
-            fillPkb(current);
-            last = current;
+        for (int i = 1; i < procedures.size(); i++) {
+            currentProc = procedures.get(i);
+            pkb.getAst().setSibling(lastProc, currentProc);
+            fillPkb(currentProc);
+            lastProc = currentProc;
         }
 
         System.out.println("Filling PKB with data completed.");
@@ -72,14 +70,14 @@ public class DesignExtractor {
     }
 
     private RelationshipsInfo fillPkb(Statement stmt) throws UnknownStatementType {
-        if (stmt instanceof Assignment) {
+        if (EntityType.ASSIGNMENT.equals(stmt.getType())) {
             return fillPkb((Assignment) stmt);
-        } else if (stmt instanceof While) {
+        } else if (EntityType.WHILE.equals(stmt.getType())) {
             return fillPkb((While) stmt);
-        } else if (stmt instanceof If) {
+        } else if (EntityType.IF.equals(stmt.getType())) {
             return RelationshipsInfo.emptyInfo();
             //todo w przyszłych iteracjach
-        } else if (stmt instanceof Call) {
+        } else if (EntityType.CALL.equals(stmt.getType())) {
             return RelationshipsInfo.emptyInfo();
             //todo w przyszłych iteracjach
         } else {
@@ -104,26 +102,6 @@ public class DesignExtractor {
         return relationshipsInfo;
     }
 
-    private RelationshipsInfo fillPkb(Assignment assignment) {
-        VariableImpl variable = (VariableImpl) pkb.getAst().setChild(assignment, assignment.getVariable());
-
-        RelationshipsInfo relationshipsInfo = new RelationshipsInfo();
-
-        relationshipsInfo.addModifiedVar(variable);
-        pkb.getModifiesInterface().setModifies(assignment, variable);
-
-        RelationshipsInfo.merge(relationshipsInfo, fillPkb(variable, assignment.getExpression()));
-        relationshipsInfo.getUsedVariables()
-                .forEach(usedVar -> pkb.getUsesInterface().setUses(assignment, usedVar));
-        return relationshipsInfo;
-    }
-
-    private RelationshipsInfo fillPkb(Variable variable, Expression expression) {
-        pkb.getVarTable().insertVar(variable.getName());
-        expression = (Expression) pkb.getAst().setSibling(variable, expression);
-        return fillPkb(expression);
-    }
-
     private RelationshipsInfo fillPkb(Variable variable, StatementList stmtList) throws UnknownStatementType {
         pkb.getVarTable().insertVar(variable.getName());
         stmtList = (StatementList) pkb.getAst().setSibling(variable, stmtList);
@@ -143,5 +121,25 @@ public class DesignExtractor {
             Expression nestedExpression = (Expression) pkb.getAst().setSibling(factor, expression.getExpression());
             return RelationshipsInfo.merge(relationshipsInfo, fillPkb(nestedExpression));
         } else return RelationshipsInfo.emptyInfo();
+    }
+
+    private RelationshipsInfo fillPkb(Assignment assignment) {
+        VariableImpl variable = (VariableImpl) pkb.getAst().setChild(assignment, assignment.getVariable());
+
+        RelationshipsInfo relationshipsInfo = new RelationshipsInfo();
+
+        relationshipsInfo.addModifiedVar(variable);
+        pkb.getModifiesInterface().setModifies(assignment, variable);
+
+        RelationshipsInfo.merge(relationshipsInfo, fillPkb(variable, assignment.getExpression()));
+        relationshipsInfo.getUsedVariables()
+                .forEach(usedVar -> pkb.getUsesInterface().setUses(assignment, usedVar));
+        return relationshipsInfo;
+    }
+
+    private RelationshipsInfo fillPkb(Variable variable, Expression expression) {
+        pkb.getVarTable().insertVar(variable.getName());
+        expression = (Expression) pkb.getAst().setSibling(variable, expression);
+        return fillPkb(expression);
     }
 }
