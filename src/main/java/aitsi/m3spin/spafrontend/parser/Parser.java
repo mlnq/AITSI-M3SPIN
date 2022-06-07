@@ -123,6 +123,7 @@ public class Parser {
 
         codeScanner.skipWhitespaces();
         Statement st;
+        int counter = ++this.counter; // do poprawnego ustawiania numeru linii dla kontenerów
         if (this.codeScanner.hasCurrentChar(EntityType.EQUALS.getETName().charAt(0))) {
             this.codeScanner.incrementPosition();
             st = parseAssignmentAfterEquals(firstWord);
@@ -131,9 +132,9 @@ public class Parser {
         } else if (EntityType.IF.getETName().equals(firstWord)) {
             st = parseIf();
         } else if (EntityType.CALL.getETName().equals(firstWord)) {
-            return parseCall();
+            st = parseCall();
         } else throw new UnknownStatementType(codeScanner.getCurrentPosition());
-        st.setStmtLine(++counter);
+        st.setStmtLine(counter);
         return st;
     }
 
