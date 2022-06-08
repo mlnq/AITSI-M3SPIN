@@ -25,7 +25,11 @@ public class TNodeDao {
     }
 
     public Set<TNode> findAllByType(EntityType type) {
-        return findAllByType(pkb.getAst().getRoot(), type);
+        if(type == EntityType.STATEMENT){
+            return findAllStmts();
+        }else{
+            return findAllByType(pkb.getAst().getRoot(), type);
+        }
     }
 
     public Set<TNode> findAllByTypeAndAttr(TNode startingNode, EntityType type, NodeAttribute attribute) {
