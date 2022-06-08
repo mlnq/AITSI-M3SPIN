@@ -76,18 +76,6 @@ public class CodeScanner {
         } else return false;
     }
 
-
-    public boolean hasNextChar(int positionIncrement) {//todo czy potrzebne
-        CodePosition oldPos = new CodePosition(currentPosition);
-        incrementPosition(positionIncrement);
-
-        boolean hasNextChar = currentPosition.getLine() + positionIncrement < codeLines.size()
-                && currentPosition.getColumn() < getCurrentLine().length();
-
-        currentPosition = oldPos;
-        return hasNextChar;
-    }
-
     boolean isEndOfFile() {
         return currentPosition.getLine() < codeLines.size()
                 && currentPosition.getColumn() < getCurrentLine().length() - 1;
@@ -201,4 +189,13 @@ public class CodeScanner {
     }
 
 
+    public void skipWhitespacesAndRoundBraces() throws MissingCharacterException {
+        skipWhitespaces();
+        char currentChar = getCurrentChar();
+        while (currentChar == '(' || currentChar == ')') {
+            parseChar(currentChar);
+            skipWhitespaces();
+            currentChar = getCurrentChar();
+        }
+    }
 }
