@@ -38,7 +38,7 @@ public class QueryEvaluator {
     public QueryResult evaluateQuery(Query query) throws QueryProcessorException {
         SelectedResult selectedResult = query.getSelectedResult();
 
-        List<PqlClause> queryClauses = query.getAllClauses();
+        List<PqlClause> queryClauses = query.getClauses();
         ClauseEvaluatorFactory clauseEvaluatorFactory = new ClauseEvaluatorFactory(pkb, tNodeDao);
 
         if (selectedResult.isBooleanSelect()) { //Select BOOLEAN

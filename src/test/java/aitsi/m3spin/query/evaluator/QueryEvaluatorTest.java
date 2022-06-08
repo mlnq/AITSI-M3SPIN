@@ -39,9 +39,7 @@ class QueryEvaluatorTest extends QueryTestingData {
 
         Query singleWithQuery = new Query(
                 selectedProcSynonym,
-                Collections.emptyList(),
-                Collections.singletonList(withClause),
-                Collections.emptyList()
+                Collections.singletonList(withClause)
         );
 
         assertEquals(procedureResult, queryEvaluator.evaluateQuery(singleWithQuery));
@@ -52,9 +50,7 @@ class QueryEvaluatorTest extends QueryTestingData {
 
         Query singleSuchThatQuery = new Query(
                 selectedProcSynonym,
-                Collections.singletonList(followsSuchThat),
-                Collections.emptyList(),
-                Collections.emptyList()
+                Collections.singletonList(followsSuchThat)
         );
         assertEquals(procedureResult, queryEvaluator.evaluateQuery(singleSuchThatQuery));
     }

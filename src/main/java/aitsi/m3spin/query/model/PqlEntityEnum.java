@@ -11,7 +11,8 @@ public enum PqlEntityEnum {
     SUCH_THAT("such that"),
     WITH("with"),
     DECLARATION_DELIMITER(";"),
-    SYNONYM_DELIMITER(",");
+    SYNONYM_DELIMITER(","),
+    AND("and");
 
     private final String name;
 }
