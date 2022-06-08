@@ -7,7 +7,6 @@ import aitsi.m3spin.pkb.impl.Pkb;
 import aitsi.m3spin.query.evaluator.dao.TNodeDao;
 import aitsi.m3spin.spafrontend.parser.RelationshipsInfo;
 import aitsi.m3spin.spafrontend.parser.exception.UnknownStatementType;
-import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.Set;
@@ -42,7 +41,6 @@ public class DesignExtractor {
             currentProc = procedures.get(i);
             pkb.getAst().setSibling(lastProc, currentProc);
             fillPkb(currentProc);
-            this.currentProcedure = currentProc;
             lastProc = currentProc;
         }
 
@@ -149,8 +147,8 @@ public class DesignExtractor {
     }
 
     private RelationshipsInfo fillPkb(Call call) {
-        Set<TNode> called = (new TNodeDao(pkb).findAllByTypeAndAttr(EntityType.PROCEDURE, call.getAttribute()));
-        called.forEach(node -> pkb.getCallsInterface().setCalls(currentProcedure, (Procedure) node));
+        String calledProc = (String) call.getAttribute().getValue();
+        pkb.getCallsInterface().setCalls(currentProcedure, calledProc);
         return RelationshipsInfo.emptyInfo();
     }
 
