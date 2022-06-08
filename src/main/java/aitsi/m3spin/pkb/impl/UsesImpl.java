@@ -36,12 +36,12 @@ public class UsesImpl implements Uses {
 
     @Override
     public Set<Variable> getVarsUsedByStmt(Statement stmt) {
-        return varsUsedByStmt.get(stmt);
+        return varsUsedByStmt.containsKey(stmt) ? varsUsedByStmt.get(stmt) : Collections.emptySet();
     }
 
     @Override
     public Set<Variable> getVarsUsedByProc(Procedure proc) {
-        return varsUsedByProc.get(proc);
+        return varsUsedByProc.containsKey(proc) ? varsUsedByProc.get(proc) : Collections.emptySet();
     }
 
     @Override

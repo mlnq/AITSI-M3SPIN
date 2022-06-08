@@ -5,7 +5,7 @@ import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.impl.Pkb;
 import aitsi.m3spin.query.model.enums.RelationshipEvaluatorEnum;
 
-import java.util.List;
+import java.util.Set;
 
 public class ParentEvaluationStrategy extends TwoStmtsAsArgsEvaluationStrategy {
     protected ParentEvaluationStrategy() {
@@ -15,7 +15,7 @@ public class ParentEvaluationStrategy extends TwoStmtsAsArgsEvaluationStrategy {
     @Override
     public boolean evaluate(TNode firstNode, TNode secondNode, Pkb pkb) {
         if (!super.evaluate(firstNode, secondNode, pkb)) return false;
-        List<Statement> stmtsParentedByFirst = pkb.getParentInterface().getParentedBy((Statement) firstNode);
+        Set<Statement> stmtsParentedByFirst = pkb.getParentInterface().getParentedBy((Statement) firstNode);
         return stmtsParentedByFirst.contains(secondNode);
     }
 }

@@ -36,12 +36,12 @@ public class ModifiesImpl implements Modifies {
 
     @Override
     public Set<Variable> getModified(Statement stmt) {
-        return varsModifiedByStmt.get(stmt);
+        return varsModifiedByStmt.containsKey(stmt) ? varsModifiedByStmt.get(stmt) : Collections.emptySet();
     }
 
     @Override
     public Set<Variable> getModified(Procedure proc) {
-        return varsModifiedByProc.get(proc);
+        return varsModifiedByProc.containsKey(proc) ? varsModifiedByProc.get(proc) : Collections.emptySet();
     }
 
     @Override

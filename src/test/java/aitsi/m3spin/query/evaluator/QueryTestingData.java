@@ -40,8 +40,9 @@ public abstract class QueryTestingData {
 
         pkb = new Pkb();
         TNode returnedProc = pkb.getAst().setRoot(procedure);
-        TNode addedWhile = pkb.getAst().setChild(returnedProc, whileStmt);
-        pkb.getAst().setSibling(addedWhile, assignment);
+        pkb.getAst().setChild(returnedProc, whileStmt);
+        pkb.getAst().setSibling(whileStmt, assignment);
+        pkb.getFollowsInterface().setFollows(whileStmt, assignment);
 
         procSynonym = new Synonym("p", EntityType.PROCEDURE);
         whileSynonym = new Synonym("w", EntityType.WHILE);

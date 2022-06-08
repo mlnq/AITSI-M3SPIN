@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,14 +43,11 @@ class ParentImplTest {
 
     @Test
     void getParentedBy_ParentWithThreeChildren_ReturnsThreeChildren() {
-        ifStmt.setParent(whileStmt);
-        whileStmt.setChild(ifStmt);
+        parentMethods.setParent(whileStmt, ifStmt);
 
-        ifStmt.setRightSibling(assignmentStmt);
-        assignmentStmt.setLeftSibling(ifStmt);
+        parentMethods.setParent(whileStmt, assignmentStmt);
 
-        assignmentStmt.setRightSibling(assignmentStmt2);
-        assignmentStmt2.setLeftSibling(assignmentStmt);
+        parentMethods.setParent(whileStmt, assignmentStmt2);
 
         List<Statement> childList = new ArrayList<Statement>() {{
             add(ifStmt);
@@ -61,19 +59,19 @@ class ParentImplTest {
     }
 
     @Test
-    void getParentedBy_CheckingNullNode_ThrowsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> parentMethods.getParentedBy(null));
+    void getParentedBy_CheckingNullNode_ReturnsEmptyList() {
+        assertEquals(Collections.emptySet(), parentMethods.getParentedBy(null));
     }
 
     @Test
     void getParent_CorrectParent_ReturnsSetParent() {
-        assignmentStmt2.setParent(whileStmt);
+        parentMethods.setParent(whileStmt, assignmentStmt2);
         assertEquals(whileStmt, parentMethods.getParent(assignmentStmt2));
     }
 
     @Test
-    void getParent_NoParent_ThrowsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> parentMethods.getParent(assignmentStmt));
+    void getParent_NoParent_returnsNull() {
+        assertNull(parentMethods.getParent(assignmentStmt));
     }
 
     @Test
@@ -93,7 +91,7 @@ class ParentImplTest {
     }
 
 
-    /*
+    /*todo testy *
     @Test
     void getParentT() {
         throw new NotImplementedException();
