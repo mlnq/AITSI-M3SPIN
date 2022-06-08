@@ -19,12 +19,14 @@ public class ModifiesEvaluationStrategy extends VarAsSecondArgEvaluationStrategy
     public boolean evaluate(TNode firstNode, TNode secondNode, Pkb pkb) {
         if (!super.evaluate(firstNode, secondNode, pkb)) return false;
         if (EntityType.PROCEDURE.equals(firstNode.getType())) {
-            Set<TNode> varsModifiedByProc = pkb.getModifiesInterface().getModified((Procedure) firstNode)
-                    .stream().map(TNode.class::cast).collect(Collectors.toSet());
+            Set<TNode> varsModifiedByProc = pkb.getModifiesInterface().getModified((Procedure) firstNode).stream()
+                    .map(TNode.class::cast)
+                    .collect(Collectors.toSet());
             return varsModifiedByProc.contains(secondNode);
         } else {
-            Set<TNode> varsUsedByStmt = pkb.getUsesInterface().getVarsUsedByStmt((Statement) firstNode)
-                    .stream().map(TNode.class::cast).collect(Collectors.toSet());
+            Set<TNode> varsUsedByStmt = pkb.getUsesInterface().getVarsUsedByStmt((Statement) firstNode).stream()
+                    .map(TNode.class::cast)
+                    .collect(Collectors.toSet());
             return varsUsedByStmt.contains(secondNode);
         }
     }

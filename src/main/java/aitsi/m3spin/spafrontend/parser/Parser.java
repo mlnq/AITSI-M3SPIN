@@ -57,14 +57,6 @@ public class Parser {
         parseChar('}');
     }
 
-    private void parseStartingRoundBrace() throws MissingCharacterException {
-        parseChar('(');
-    }
-
-    private void parseEndingRoundBrace() throws MissingCharacterException {
-        parseChar(')');
-    }
-
     private void parseChar(char c) throws MissingCharacterException {//todo do codeScannera (zadanie ATS-11)
         parseChar(c, true);
     }
@@ -144,20 +136,20 @@ public class Parser {
     private Call parseCall() throws CodeScannerException {
         String procName = parseName();
         parseChar(';');
-        return new CallImpl(procName); //todo ATS-26
+        return new CallImpl(procName);
     }
 
     private If parseIf() throws SimpleParserException, CodeScannerException {
-        parseName();
+        String conditionVarName = parseName();
         codeScanner.parseKeyword(EntityType.THEN.getETName());
         parseChar('{');
-        parseStmtList();
+        StatementList thenStmts = parseStmtList();
         parseChar('}');
         codeScanner.parseKeyword(EntityType.ELSE.getETName());
         parseChar('{');
-        parseStmtList();
+        StatementList elseStmts = parseStmtList();
         parseChar('}');
-        return new IfImpl();//todo ATS-26
+        return new IfImpl(new VariableImpl(conditionVarName), thenStmts, elseStmts);
     }
 
     private While parseWhile() throws SimpleParserException, CodeScannerException {
@@ -174,62 +166,33 @@ public class Parser {
     private Assignment parseAssignmentAfterEquals(String leftSideVar) throws CodeScannerException {
         codeScanner.skipWhitespaces();
         Expression expr = parseExpression();
-//todo zjesc cos dobrego  i przestrukturyzowac stos
         parseChar(';');
         return new AssignmentImpl(new VariableImpl(leftSideVar), expr);
     }
 
     private Expression parseExpression() throws CodeScannerException {
+        codeScanner.skipWhitespacesAndRoundBraces();
+        Factor factor = parseFactor();
+        codeScanner.skipWhitespacesAndRoundBraces();
 
-        codeScanner.skipWhitespaces();
-        Factor factor = null;
-        if(codeScanner.getCurrentChar() == '(') {
+        char timesChar = EntityType.TIMES.getETName().charAt(0);
+        char plusChar = EntityType.PLUS.getETName().charAt(0);
+        char minusChar = EntityType.MINUS.getETName().charAt(0);
 
-            parseStartingRoundBrace();
-            factor = parseFactor();
-            codeScanner.skipWhitespaces();
-
-            while (codeScanner.getCurrentChar() != ')') {
-
-                codeScanner.incrementPosition(); //todo zaimplementowac operacje w nawiasach
-
-            }
-            parseEndingRoundBrace();
-
-
-            if (codeScanner.getCurrentChar() == ';') {
-                return new ExpressionImpl();
-            }
-        }
-        else{
-            factor = parseFactor();
-            codeScanner.skipWhitespaces();
-        }
-
-
-        if(codeScanner.getCurrentChar() == '(')
-        {
-            //consume ((( --> hierarchia wieksza niz (( > (
-            parseEndingRoundBrace();
-            return new ExpressionImpl(); //ustalenie hierarchi na np 3 bo są 3 nawiasy
-        }
-
-        if(codeScanner.getCurrentChar() == EntityType.TIMES.getETName().charAt(0)){
-            codeScanner.incrementPosition();
-            codeScanner.skipWhitespaces();
-            return new ExpressionImpl(factor, EntityType.TIMES, parseExpression(),1);
-        }
-        else if (codeScanner.getCurrentChar() == EntityType.MINUS.getETName().charAt(0)) {
-            codeScanner.incrementPosition();
-            codeScanner.skipWhitespaces();
-            return new ExpressionImpl(factor,EntityType.MINUS, parseExpression(),0);
-        }
-        else if (codeScanner.getCurrentChar() == EntityType.PLUS.getETName().charAt(0)) {
-            codeScanner.incrementPosition();
-            codeScanner.skipWhitespaces();
-            return new ExpressionImpl(factor, EntityType.PLUS,  parseExpression(),0);
+        if (codeScanner.hasCurrentChar(timesChar)) {
+            parseChar(timesChar);
+            codeScanner.skipWhitespacesAndRoundBraces();
+            return new ExpressionImpl(factor, EntityType.TIMES, parseExpression(), 1);
+        } else if (codeScanner.hasCurrentChar(minusChar)) {
+            parseChar(minusChar);
+            codeScanner.skipWhitespacesAndRoundBraces();
+            return new ExpressionImpl(factor, EntityType.MINUS, parseExpression(), 0);
+        } else if (codeScanner.hasCurrentChar(plusChar)) {
+            parseChar(plusChar);
+            codeScanner.skipWhitespacesAndRoundBraces();
+            return new ExpressionImpl(factor, EntityType.PLUS, parseExpression(), 0);
         } else {
-            return new ExpressionImpl(factor,0);
+            return new ExpressionImpl(factor, 0);
         }
     }
 

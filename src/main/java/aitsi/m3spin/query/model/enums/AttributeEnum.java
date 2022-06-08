@@ -11,6 +11,10 @@ public enum AttributeEnum {
     VAR_NAME(EntityType.VARIABLE, "varName", AttributeTypeEnum.STRING),
     VALUE(EntityType.CONSTANT, "value", AttributeTypeEnum.INTEGER),
     STMT_NUMBER(EntityType.STATEMENT, "stmt#", AttributeTypeEnum.INTEGER),
+    STMT_NUMBER_IF(EntityType.IF, "stmt#", AttributeTypeEnum.INTEGER),
+    STMT_NUMBER_ASSIGN(EntityType.ASSIGNMENT, "stmt#", AttributeTypeEnum.INTEGER),
+    STMT_NUMBER_WHILE(EntityType.WHILE, "stmt#", AttributeTypeEnum.INTEGER),
+    STMT_NUMBER_CALL(EntityType.CALL, "stmt#", AttributeTypeEnum.INTEGER),
     CALL_PROC_NAME(EntityType.CALL, "procName", AttributeTypeEnum.STRING);
 
     private final EntityType entityType;

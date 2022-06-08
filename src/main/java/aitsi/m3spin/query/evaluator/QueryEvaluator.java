@@ -15,10 +15,7 @@ import aitsi.m3spin.query.model.result.actual.QueryResult;
 import aitsi.m3spin.query.model.result.actual.TNodeSetResult;
 import aitsi.m3spin.query.model.result.reference.SelectedResult;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class QueryEvaluator {
@@ -41,7 +38,7 @@ public class QueryEvaluator {
     public QueryResult evaluateQuery(Query query) throws QueryProcessorException {
         SelectedResult selectedResult = query.getSelectedResult();
 
-        List<PqlClause> queryClauses = query.getAllClauses();
+        List<PqlClause> queryClauses = query.getClauses();
         ClauseEvaluatorFactory clauseEvaluatorFactory = new ClauseEvaluatorFactory(pkb, tNodeDao);
 
         if (selectedResult.isBooleanSelect()) { //Select BOOLEAN
@@ -49,7 +46,9 @@ public class QueryEvaluator {
 
         } else { // Select synonym | Select synonym.attr
             Synonym selectedSynonym = selectedResult.getSynonym();
-            Set<Synonym> selectedAndRelatedSynonyms = query.getRelatedSynonyms(selectedSynonym, Collections.singleton(selectedSynonym));
+            Set<Synonym> selectedAndRelatedSynonyms = query.getRelatedSynonyms(
+                    selectedSynonym,
+                    new HashSet<>(Collections.singleton(selectedSynonym)));
             return evaluateSynonymQuery(selectedResult, queryClauses, clauseEvaluatorFactory, selectedAndRelatedSynonyms);
         }
     }

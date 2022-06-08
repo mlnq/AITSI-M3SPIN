@@ -6,9 +6,10 @@ import aitsi.m3spin.commons.exception.IllegalCharacterException;
 import aitsi.m3spin.commons.exception.MissingCharacterException;
 import aitsi.m3spin.query.QueryProcessorException;
 import aitsi.m3spin.query.evaluator.exception.IncompatibleTypesComparisonException;
+import aitsi.m3spin.query.evaluator.exception.UnknownPqlClauseException;
 import aitsi.m3spin.query.model.PqlEntityEnum;
 import aitsi.m3spin.query.model.Query;
-import aitsi.m3spin.query.model.clauses.Pattern;
+import aitsi.m3spin.query.model.clauses.PqlClause;
 import aitsi.m3spin.query.model.clauses.SuchThat;
 import aitsi.m3spin.query.model.clauses.WithClause;
 import aitsi.m3spin.query.model.enums.AttributeEnum;
@@ -22,7 +23,10 @@ import aitsi.m3spin.query.preprocessor.exceptions.*;
 import aitsi.m3spin.spafrontend.parser.CodeScanner;
 import lombok.Getter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 public class QueryPreprocessor {
@@ -87,43 +91,66 @@ public class QueryPreprocessor {
 
     private Query parseQuery() throws QueryProcessorException, CodeScannerException {
         codeScanner.skipWhitespaces();
-        return new Query(parseSelectedResult(), parseSuchThatList(), parseWithList(), parsePatternList());
+        return new Query(parseSelectedResult(), parseClauses());
+    }
+
+    private List<PqlClause> parseClauses() throws CodeScannerException, QueryProcessorException {
+        List<PqlClause> parsedClauses = new ArrayList<>();
+        while (codeScanner.hasCurrentChar()) {
+            if (codeScanner.hasCurrentString(PqlEntityEnum.SUCH_THAT.getName())) {
+                codeScanner.parseKeyword(PqlEntityEnum.SUCH_THAT.getName());
+                parsedClauses.addAll(parseSuchThatList());
+            } else if (codeScanner.hasCurrentString(PqlEntityEnum.WITH.getName())) {
+                parsedClauses.addAll(parseWithList());
+            } else throw new UnknownPqlClauseException(codeScanner.parseName(), codeScanner.getCurrentPosition());
+        }
+        return parsedClauses;
     }
 
     private SelectedResult parseSelectedResult() throws SynonymNotDeclared, CodeScannerException {
         codeScanner.parseKeyword(PqlEntityEnum.SELECT.getName());
         if (codeScanner.hasCurrentString(PqlEntityEnum.BOOLEAN.getName())) {
             codeScanner.parseKeyword(PqlEntityEnum.BOOLEAN.getName());
+            codeScanner.skipWhitespaces();
             return new SelectedBoolean();
         } else {
             String parsedName = codeScanner.parseName();
+            codeScanner.skipWhitespaces();
             return findDeclaredSynonym(parsedName);
         }
     }
 
     private List<SuchThat> parseSuchThatList() throws QueryPreprocessorException, CodeScannerException {
         codeScanner.skipWhitespaces();
-        String suchThatName = PqlEntityEnum.SUCH_THAT.getName();
-        if (codeScanner.hasCurrentString(suchThatName)) {
-            codeScanner.parseKeyword(suchThatName);
-            codeScanner.skipWhitespaces();
+        List<SuchThat> suchThats = new ArrayList<>();
+        suchThats.add(parseSuchThat());
+        codeScanner.skipWhitespaces();
 
-            String parsedRelationName = parseRelationName();
-
-            RelationshipPreprocEnum relationEnum = validateRelationshipName(parsedRelationName);
-
-            codeScanner.skipWhitespaces();
-            codeScanner.parseChar('(');
-            RelationshipArgumentRef firstRelationArgument = parseRelationArgument(relationEnum, true);
-            codeScanner.parseChar(',');
-            codeScanner.skipWhitespaces();
-            RelationshipArgumentRef secondRelationArgument = parseRelationArgument(relationEnum, false);
-            codeScanner.parseChar(')');
-
-            return Collections.singletonList(new SuchThat(relationEnum, firstRelationArgument, secondRelationArgument));
-        } else {
-            return Collections.emptyList();
+        while (codeScanner.hasCurrentString(PqlEntityEnum.AND.getName())) {
+            codeScanner.parseKeyword(PqlEntityEnum.AND.getName());
+            suchThats.add(parseSuchThat());
         }
+        codeScanner.skipWhitespaces();
+        return suchThats;
+    }
+
+    private SuchThat parseSuchThat() throws CodeScannerException, QueryPreprocessorException {
+        codeScanner.skipWhitespaces();
+
+        String parsedRelationName = parseRelationName();
+
+        RelationshipPreprocEnum relationEnum = validateRelationshipName(parsedRelationName);
+
+        codeScanner.skipWhitespaces();
+        codeScanner.parseChar('(');
+        RelationshipArgumentRef firstRelationArgument = parseRelationArgument(relationEnum, true);
+        codeScanner.parseChar(',');
+        codeScanner.skipWhitespaces();
+        RelationshipArgumentRef secondRelationArgument = parseRelationArgument(relationEnum, false);
+        codeScanner.parseChar(')');
+        codeScanner.skipWhitespaces();
+
+        return new SuchThat(relationEnum, firstRelationArgument, secondRelationArgument);
     }
 
     private RelationshipPreprocEnum validateRelationshipName(String parsedRelationName) throws UnknownRelationTypeException {
@@ -140,31 +167,41 @@ public class QueryPreprocessor {
         return relationEnum;
     }
 
-    private List<WithClause> parseWithList() throws QueryPreprocessorException, CodeScannerException, IncompatibleTypesComparisonException {
+    private List<WithClause> parseWithList() throws QueryProcessorException, CodeScannerException {
+        codeScanner.parseKeyword(PqlEntityEnum.WITH.getName());
+
         codeScanner.skipWhitespaces();
-        String withName = PqlEntityEnum.WITH.getName();
-        if (codeScanner.hasCurrentString(withName)) {
-            codeScanner.parseKeyword(withName);
+        List<WithClause> withClauses = new ArrayList<>();
+        withClauses.add(parseWithClause());
+        codeScanner.skipWhitespaces();
 
-            WithArgumentRef leftHandRef = parseWithArgument();
-            codeScanner.skipWhitespaces();
-            codeScanner.parseChar('=');
-            WithArgumentRef rightHandRef = parseWithArgument();
-
-            AttributeTypeEnum leftHandType = leftHandRef.getWithValueType();
-            AttributeTypeEnum rightHandType = rightHandRef.getWithValueType();
-            if (!leftHandType.equals(rightHandType))
-                throw new IncompatibleTypesComparisonException(leftHandType, rightHandType);
-
-            return Collections.singletonList(new WithClause(leftHandRef, rightHandRef));
-        } else {
-            return Collections.emptyList();
+        while (codeScanner.hasCurrentString(PqlEntityEnum.AND.getName())) {
+            codeScanner.parseKeyword(PqlEntityEnum.AND.getName());
+            withClauses.add(parseWithClause());
         }
+        codeScanner.skipWhitespaces();
+        return withClauses;
     }
 
-    private List<Pattern> parsePatternList() {
-        return Collections.emptyList();//todo w 3 iteracji
+    private WithClause parseWithClause() throws QueryPreprocessorException, CodeScannerException, IncompatibleTypesComparisonException {
+        codeScanner.skipWhitespaces();
+        WithArgumentRef leftHandRef = parseWithArgument();
+        codeScanner.skipWhitespaces();
+        codeScanner.parseChar('=');
+        WithArgumentRef rightHandRef = parseWithArgument();
+
+        AttributeTypeEnum leftHandType = leftHandRef.getWithValueType();
+        AttributeTypeEnum rightHandType = rightHandRef.getWithValueType();
+        if (!leftHandType.equals(rightHandType))
+            throw new IncompatibleTypesComparisonException(leftHandType, rightHandType);
+        codeScanner.skipWhitespaces();
+
+        return new WithClause(leftHandRef, rightHandRef);
     }
+
+//    private List<Pattern> parsePatternList() {
+//        return Collections.emptyList();//todo w 3 iteracji
+//    }
 
     private Synonym findDeclaredSynonym(String synonymName) throws SynonymNotDeclared {
         Optional<Synonym> declarationOptional = declarationList.stream()

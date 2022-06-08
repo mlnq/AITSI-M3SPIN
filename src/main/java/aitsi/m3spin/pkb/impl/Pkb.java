@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class Pkb {
+    private final Calls callsInterface = new CallsImpl();
     private final Parent parentInterface = new ParentImpl();
     private final Follows followsInterface = new FollowsImpl();
     private final Modifies modifiesInterface = new ModifiesImpl();
