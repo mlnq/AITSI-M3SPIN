@@ -41,13 +41,34 @@ public class ParentImpl implements Parent {
 
     @Override
     public List<Statement> getParentT(Statement child) {
-        return null;//todo po 1 iteracji
+        List<Statement> statements = new ArrayList<>();
+        Statement stm = getParent(child);
+        if(stm == null)
+            return null;
+
+        while(stm != null){
+            statements.add(stm);
+            stm = getParent(child);
+        }
+        return statements;
     }
 
     @Override
     public List<Statement> getParentedByT(Statement parent) {
-        return null;//todo po 1 iteracji
+        List<Statement> resultStatements = new ArrayList<>();
+        List<Statement> stmList = getParentedBy(parent);
+
+        if(stmList == null)
+            return null;
+        resultStatements.addAll(stmList);
+        for(Statement stm: stmList){
+            List<Statement> tmp = getParentedByT(stm);
+            if(tmp != null)
+                resultStatements.addAll(tmp);
+        }
+        return resultStatements;
     }
+
 
     @Override
     public boolean isParent(Statement parent, Statement c) {
@@ -55,7 +76,7 @@ public class ParentImpl implements Parent {
     }
 
     @Override
-    public boolean isParentT(Statement parent, Statement c) {
-        return false;
+    public boolean isParentT(Statement parent, Statement child) {
+        return getParentT(child).contains(parent);
     }
 }
