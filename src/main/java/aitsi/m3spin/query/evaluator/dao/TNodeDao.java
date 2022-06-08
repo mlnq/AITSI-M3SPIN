@@ -28,11 +28,11 @@ public class TNodeDao {
         return findAllByType(pkb.getAst().getRoot(), type);
     }
 
-    private Set<TNode> findAllByTypeAndAttr(TNode startingNode, EntityType type, NodeAttribute attribute) {
+    public Set<TNode> findAllByTypeAndAttr(TNode startingNode, EntityType type, NodeAttribute attribute) {
         return NodeFinderByTypeAndAttribute.find(startingNode, pkb, type, attribute);
     }
 
-    Set<TNode> findAllByTypeAndAttr(EntityType type, NodeAttribute attribute) {
+    public Set<TNode> findAllByTypeAndAttr(EntityType type, NodeAttribute attribute) {
         return findAllByTypeAndAttr(pkb.getAst().getRoot(), type, attribute);
     }
 

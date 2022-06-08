@@ -41,7 +41,7 @@ public class ParentImpl implements Parent {
 
     @Override
     public List<Statement> getParentT(Statement child) {
-        return null;//todo po 1 iteracji
+        return null;
     }
 
     @Override
@@ -50,8 +50,12 @@ public class ParentImpl implements Parent {
     }
 
     @Override
-    public boolean isParent(Statement parent, Statement c) {
-        return c.getParent().equals(parent);
+    public boolean isParent(Statement parent, Statement child) {
+        HashSet<Statement> children = parents.get(parent);
+        if (children == null) {
+            return false;
+        }
+        return children.contains(child);
     }
 
     @Override
