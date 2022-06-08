@@ -144,7 +144,7 @@ public class Parser {
     private Call parseCall() throws CodeScannerException {
         String procName = parseName();
         parseChar(';');
-        return new CallImpl(procName); //todo ATS-26
+        return new CallImpl(procName);
     }
 
     private If parseIf() throws SimpleParserException, CodeScannerException {
@@ -157,7 +157,7 @@ public class Parser {
         parseChar('{');
         parseStmtList();
         parseChar('}');
-        return new IfImpl();//todo ATS-26
+        return new IfImpl(new VariableImpl(conditionVarName), thenStmts, elseStmts);
     }
 
     private While parseWhile() throws SimpleParserException, CodeScannerException {

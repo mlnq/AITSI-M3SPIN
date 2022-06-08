@@ -4,15 +4,21 @@ import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.impl.VariableImpl;
 import aitsi.m3spin.commons.interfaces.*;
 import aitsi.m3spin.pkb.impl.Pkb;
+import aitsi.m3spin.query.evaluator.dao.TNodeDao;
 import aitsi.m3spin.spafrontend.parser.RelationshipsInfo;
 import aitsi.m3spin.spafrontend.parser.exception.UnknownStatementType;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
-@AllArgsConstructor
 public class DesignExtractor {
-    private Pkb pkb;
+    private final Pkb pkb;
+    private Procedure currentProcedure;
+
+    public DesignExtractor(Pkb pkb) {
+        this.pkb = pkb;
+    }
 
     /*
      * Wzór metody fillPkb(tnode):
@@ -36,6 +42,7 @@ public class DesignExtractor {
             currentProc = procedures.get(i);
             pkb.getAst().setSibling(lastProc, currentProc);
             fillPkb(currentProc);
+            this.currentProcedure = currentProc;
             lastProc = currentProc;
         }
 
@@ -78,8 +85,7 @@ public class DesignExtractor {
             return RelationshipsInfo.emptyInfo();
             //todo w przyszłych iteracjach
         } else if (EntityType.CALL.equals(stmt.getType())) {
-            return RelationshipsInfo.emptyInfo();
-            //todo w przyszłych iteracjach
+            return fillPkb((Call) stmt);
         } else {
             throw new UnknownStatementType();
         }
@@ -141,5 +147,40 @@ public class DesignExtractor {
         pkb.getVarTable().insertVar(variable.getVarName());
         expression = (Expression) pkb.getAst().setSibling(variable, expression);
         return fillPkb(expression);
+    }
+
+    private RelationshipsInfo fillPkb(Call call) {
+        Set<TNode> called = (new TNodeDao(pkb).findAllByTypeAndAttr(EntityType.PROCEDURE, call.getAttribute()));
+        called.forEach(node -> pkb.getCallsInterface().setCalls(currentProcedure, (Procedure) node));
+        return RelationshipsInfo.emptyInfo();
+    }
+
+    private RelationshipsInfo fillPkb(If ifImpl) throws UnknownStatementType {
+        RelationshipsInfo relationshipsInfo = new RelationshipsInfo();
+        Variable conditionVar = ifImpl.getConditionVar();
+        relationshipsInfo.addUsedVar(conditionVar);
+
+        conditionVar = (Variable) pkb.getAst().setChild(ifImpl, conditionVar);
+
+        pkb.getUsesInterface().setUses(ifImpl, conditionVar);
+
+        ifImpl.getThenStmtList().getStatements()
+                .forEach(statement -> pkb.getParentInterface().setParent(ifImpl, statement));
+        ifImpl.getElseStmtList().getStatements()
+                .forEach(statement -> pkb.getParentInterface().setParent(ifImpl, statement));
+
+        RelationshipsInfo.merge(relationshipsInfo, fillPkb(ifImpl.getConditionVar(), ifImpl.getThenStmtList(), ifImpl.getElseStmtList()));
+
+
+        return relationshipsInfo;
+    }
+
+    private RelationshipsInfo fillPkb(Variable variable, StatementList thenStmtList, StatementList elseStmtList) throws UnknownStatementType {
+        pkb.getVarTable().insertVar(variable.getVarName());
+        thenStmtList = (StatementList) pkb.getAst().setSibling(variable, thenStmtList);
+        RelationshipsInfo relationshipsInfo = fillPkb(thenStmtList);
+        elseStmtList = (StatementList) pkb.getAst().setSibling(thenStmtList, elseStmtList);
+        RelationshipsInfo.merge(relationshipsInfo, fillPkb(elseStmtList));
+        return relationshipsInfo;
     }
 }
