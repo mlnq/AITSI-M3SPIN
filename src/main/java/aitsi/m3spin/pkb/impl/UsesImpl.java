@@ -4,6 +4,7 @@ import aitsi.m3spin.commons.interfaces.Procedure;
 import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.commons.interfaces.Variable;
 import aitsi.m3spin.pkb.interfaces.Uses;
+import lombok.NonNull;
 
 import java.util.*;
 
@@ -65,16 +66,14 @@ public class UsesImpl implements Uses {
     }
 
     @Override
-    public boolean isUsed(Variable variable, Statement stmt) {
-
+    public boolean isUsed(@NonNull Variable variable, @NonNull Statement stmt) {
         if (varsUsedByStmt.containsKey(stmt))
             return varsUsedByStmt.get(stmt).contains(variable);
         return false;
     }
 
     @Override
-    public boolean isUsed(Variable variable, Procedure proc) {
-
+    public boolean isUsed(@NonNull Variable variable, @NonNull Procedure proc) {
         if (varsUsedByProc.containsKey(proc))
             return varsUsedByProc.get(proc).contains(variable);
         return false;

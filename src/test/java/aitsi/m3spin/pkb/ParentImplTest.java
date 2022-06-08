@@ -76,13 +76,13 @@ class ParentImplTest {
 
     @Test
     void isParent_CorrectPairOfParentAndChild_ReturnsTrue() {
-        ifStmt.setParent(whileStmt);
+        parentMethods.setParent(whileStmt, ifStmt);
         assertTrue(parentMethods.isParent(whileStmt, ifStmt));
     }
 
     @Test
-    void isParent_PairOfIndependentNodes_ThrowsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> parentMethods.isParent(whileStmt, assignmentStmt2));
+    void isParent_PairOfIndependentNodes_ReturnsFalse() {
+        assertFalse(parentMethods.isParent(whileStmt, assignmentStmt2));
     }
 
     @Test

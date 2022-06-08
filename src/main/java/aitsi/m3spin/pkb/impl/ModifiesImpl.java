@@ -4,6 +4,7 @@ import aitsi.m3spin.commons.interfaces.Procedure;
 import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.commons.interfaces.Variable;
 import aitsi.m3spin.pkb.interfaces.Modifies;
+import lombok.NonNull;
 
 import java.util.*;
 
@@ -65,16 +66,14 @@ public class ModifiesImpl implements Modifies {
     }
 
     @Override
-    public boolean isModified(Variable variable, Statement stmt) {
-
+    public boolean isModified(@NonNull Variable variable, @NonNull Statement stmt) {
         if (varsModifiedByStmt.containsKey(stmt))
             return varsModifiedByStmt.get(stmt).contains(variable);
         return false;
     }
 
     @Override
-    public boolean isModified(Variable variable, Procedure proc) {
-
+    public boolean isModified(@NonNull Variable variable, @NonNull Procedure proc) {
         if (varsModifiedByProc.containsKey(proc))
             return varsModifiedByProc.get(proc).contains(variable);
         return false;

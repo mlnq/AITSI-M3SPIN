@@ -53,7 +53,7 @@ public class ParentImpl implements Parent {
     }
 
     @Override
-    public boolean isParent(Statement parent, Statement child) {
+    public boolean isParent(@NonNull Statement parent, @NonNull Statement child) {
         HashSet<Statement> children = parents.get(parent);
         if (children == null) {
             return false;
@@ -62,7 +62,7 @@ public class ParentImpl implements Parent {
     }
 
     @Override
-    public boolean isParentT(Statement parent, Statement c) {
+    public boolean isParentT(@NonNull Statement parent, @NonNull Statement c) {
         return false;
     }
 }

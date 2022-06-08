@@ -2,6 +2,7 @@ package aitsi.m3spin.pkb.impl;
 
 import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.pkb.interfaces.Follows;
+import lombok.NonNull;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -54,13 +55,13 @@ public class FollowsImpl implements Follows {
     }
 
     @Override
-    public boolean isFollowed(Statement previous, Statement next) {
+    public boolean isFollowed(@NonNull Statement previous, @NonNull Statement next) {
         return follows.get(previous).equals(next);
     }
 
     @Override
-    public boolean isFollowedT(Statement previous, Statement next) {
-        Statement current =  previous;
+    public boolean isFollowedT(@NonNull Statement previous, @NonNull Statement next) {
+        Statement current = previous;
         while (follows.containsKey(current)) {
             current = getFollows(current);
             if (current.equals(next))
