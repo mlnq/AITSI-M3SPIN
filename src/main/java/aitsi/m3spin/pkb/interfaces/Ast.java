@@ -11,7 +11,7 @@ import aitsi.m3spin.pkb.model.AttributableNode;
 public interface Ast {
 
     //: Creates a new node of type ‘et’ and returns a reference to it
-    TNode createTNode(EntityType et) throws IllegalNodeTypeException;
+//    TNode createTNode(EntityType et) throws IllegalNodeTypeException;
 
 
     TNode setChild(TNode parent, TNode child);

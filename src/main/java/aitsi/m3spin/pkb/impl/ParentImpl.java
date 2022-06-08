@@ -53,8 +53,12 @@ public class ParentImpl implements Parent {
     }
 
     @Override
-    public boolean isParent(Statement parent, Statement c) {
-        return c.getParent().equals(parent);
+    public boolean isParent(Statement parent, Statement child) {
+        HashSet<Statement> children = parents.get(parent);
+        if (children == null) {
+            return false;
+        }
+        return children.contains(child);
     }
 
     @Override
