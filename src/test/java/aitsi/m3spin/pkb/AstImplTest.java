@@ -29,20 +29,20 @@ class AstImplTest {
         ast = new AstImpl();
     }
 
-    @Test
-    void createTNode_EntityTypeAssignment_NodeIsCreatedAndTypeIsSetAsAssignment() throws IllegalNodeTypeException {
-        assertEquals(EntityType.ASSIGNMENT, ast.createTNode(EntityType.ASSIGNMENT).getType());
-    }
-
-    @Test
-    void createTNode_EntityTypeProcedure_NodeIsCreatedAndTypeIsSetAsProcedure() throws IllegalNodeTypeException {
-        assertEquals(EntityType.PROCEDURE, ast.createTNode(EntityType.PROCEDURE).getType());
-    }
-
-    @Test
-    void createTNode_EntityTypeExpression_ThrowsIllegalNodeTypeException() {
-        assertThrows(IllegalNodeTypeException.class, () -> ast.createTNode(EntityType.EXPRESSION));
-    }
+//    @Test
+//    void createTNode_EntityTypeAssignment_NodeIsCreatedAndTypeIsSetAsAssignment() throws IllegalNodeTypeException {
+//        assertEquals(EntityType.ASSIGNMENT, ast.createTNode(EntityType.ASSIGNMENT).getType());
+//    }
+//
+//    @Test
+//    void createTNode_EntityTypeProcedure_NodeIsCreatedAndTypeIsSetAsProcedure() throws IllegalNodeTypeException {
+//        assertEquals(EntityType.PROCEDURE, ast.createTNode(EntityType.PROCEDURE).getType());
+//    }
+//
+//    @Test
+//    void createTNode_EntityTypeExpression_ThrowsIllegalNodeTypeException() {
+//        assertThrows(IllegalNodeTypeException.class, () -> ast.createTNode(EntityType.EXPRESSION));
+//    }
 
     @Test
     void setRoot_CorrectRoot_SetsAndReturnsRoot() {

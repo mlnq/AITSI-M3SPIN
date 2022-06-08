@@ -148,14 +148,14 @@ public class Parser {
     }
 
     private If parseIf() throws SimpleParserException, CodeScannerException {
-        parseName();
+        String conditionVarName = parseName();
         codeScanner.parseKeyword(EntityType.THEN.getETName());
         parseChar('{');
-        parseStmtList();
+        StatementList thenStmts = parseStmtList();
         parseChar('}');
         codeScanner.parseKeyword(EntityType.ELSE.getETName());
         parseChar('{');
-        parseStmtList();
+        StatementList elseStmts = parseStmtList();
         parseChar('}');
         return new IfImpl(new VariableImpl(conditionVarName), thenStmts, elseStmts);
     }

@@ -82,8 +82,7 @@ public class DesignExtractor {
         } else if (EntityType.WHILE.equals(stmt.getType())) {
             return fillPkb((While) stmt);
         } else if (EntityType.IF.equals(stmt.getType())) {
-            return RelationshipsInfo.emptyInfo();
-            //todo w przyszłych iteracjach
+            return fillPkb((If) stmt);
         } else if (EntityType.CALL.equals(stmt.getType())) {
             return fillPkb((Call) stmt);
         } else {

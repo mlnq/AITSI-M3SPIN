@@ -11,33 +11,31 @@ import aitsi.m3spin.pkb.interfaces.Ast;
 import aitsi.m3spin.pkb.model.AttributableNode;
 
 public class AstImpl implements Ast {
-    private int procId = 0;
-    private int varId = 0;
     private TNode root;
 
-    @Override
-    public TNode createTNode(EntityType et) throws IllegalNodeTypeException {
-        switch (et) {
-            case ASSIGNMENT:
-                return new AssignmentImpl();
-            case CONSTANT:
-                return new ConstantImpl();
-            case IF:
-                return new IfImpl();
-            case MINUS:
-                return new MinusImpl();
-            case PLUS:
-                return new PlusImpl();
-            case PROCEDURE:
-                return new ProcedureImpl(procId++);
-            case VARIABLE:
-                return new VariableImpl(varId++);
-            case WHILE:
-                return new WhileImpl();
-            default:
-                throw new IllegalNodeTypeException(et);
-        }
-    }
+//    @Override
+//    public TNode createTNode(EntityType et) throws IllegalNodeTypeException {
+//        switch (et) {
+//            case ASSIGNMENT:
+//                return new AssignmentImpl();
+//            case CONSTANT:
+//                return new ConstantImpl();
+//            case IF:
+//                return new IfImpl();
+//            case MINUS:
+//                return new MinusImpl();
+//            case PLUS:
+//                return new PlusImpl();
+//            case PROCEDURE:
+//                return new ProcedureImpl(procId++);
+//            case VARIABLE:
+//                return new VariableImpl(varId++);
+//            case WHILE:
+//                return new WhileImpl();
+//            default:
+//                throw new IllegalNodeTypeException(et);
+//        }
+//    }
 
     @Override
     public TNode setRoot(TNode node) {
