@@ -233,7 +233,7 @@ public class QueryPreprocessor {
             }
             throw BadRelationshipArgumentTypeException.ofNotAllowedRefType(relationEnum, ReferenceType.INTEGER, isFirstArgument);
         } else if (codeScanner.hasCurrentChar('_')) {
-            if (allowedRefTypes.contains(ReferenceType.SYNONYM)) {
+            if (allowedRefTypes.contains(ReferenceType.WILDCARD)) {
                 codeScanner.parseChar('_');
                 return new WildcardReference();
             }
