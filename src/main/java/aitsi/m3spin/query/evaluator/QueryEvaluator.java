@@ -62,7 +62,7 @@ public class QueryEvaluator {
             ClauseEvaluator clauseEvaluator = clauseEvaluatorFactory.forClause(clause);
             if (clause.usesAnySynonym(selectedAndRelatedSynonyms)) { //tu tylko sprawsdza, czy to co w Select jest używane w klauzuli
                 TNodeSetResult[] bothRes = clauseEvaluator.evaluateClause();
-                TNodeSetResult chosenResult = clauseEvaluator.chooseResult(bothRes, selectedSynonym);
+                TNodeSetResult chosenResult = clauseEvaluator.chooseResult(bothRes, selectedSynonym, new TNodeSetResult(result));
                 result.retainAll(chosenResult.getResult());//todo do przetestowania ATS-16
             } else {
                 if (!clauseEvaluator.evaluateBooleanClause().get()) {
