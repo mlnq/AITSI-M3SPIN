@@ -2,42 +2,42 @@ package aitsi.m3spin.pkb.interfaces;
 
 import aitsi.m3spin.commons.interfaces.Procedure;
 
-import java.util.List;
+import java.util.Set;
 
 public interface Calls {
 
     /**
-     * Adds fact: procedure procedure1 calls procedure2
+     * Adds fact: procedure calling calls called
      */
-    void setCalls(Procedure procedure1, Procedure procedure2);
+    void setCalls(Procedure calling, Procedure called);
 
     /**
-     * @return list of procedures which call procedure passed as parameter directly
+     * @return list of procedures which call calling passed as parameter directly
      */
-    List<Procedure> getCalledBy(Procedure procedure);
+    Set<Procedure> getCalledBy(Procedure calling);
 
     /**
-     * @return list of procedures which call procedure passed as parameter both directly and indirectly
+     * @return list of procedures which call calling passed as parameter both directly and indirectly
      */
-    List<Procedure> getCalledByT(Procedure procedure);
+    Set<Procedure> getCalledByT(Procedure calling);
 
     /**
      * @return list of procedures which are called directly from procedure passed as parameter
      */
-    List<Procedure> getCalledFrom(Procedure procedure);
+    Set<Procedure> getCalling(Procedure called);
 
     /**
      * @return list of procedures which are called both directly and indirectly from procedure passed as parameter
      */
-    List<Procedure> getCalledFromT(Procedure p);
+    Set<Procedure> getCallingT(Procedure called);
 
     /**
-     * @return true if procedure1 calls procedure2 directly
+     * @return true if calling calls called directly
      */
-    Boolean isCalled(Procedure procedure1, Procedure procedure2);
+    boolean isCalled(Procedure calling, Procedure called);
 
     /**
-     * @return true if procedure1 calls procedure2 either directly or indirectly
+     * @return true if calling calls called either directly or indirectly
      */
-    Boolean isCalledT(Procedure procedure1, Procedure procedure2);
+    boolean isCalledT(Procedure calling, Procedure called);
 }

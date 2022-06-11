@@ -44,25 +44,41 @@ public class ParentImpl implements Parent {
 
     @Override
     public Set<Statement> getParentT(Statement child) {
-        return Collections.emptySet();
+        Set<Statement> statements = new HashSet<>();
+        Statement stm = getParent(child);
+        if (stm == null)
+            return Collections.emptySet();
+
+        while (stm != null) {
+            statements.add(stm);
+            stm = getParent(child);
+        }
+        return statements;
     }
 
     @Override
     public Set<Statement> getParentedByT(Statement parent) {
-        return Collections.emptySet();
+        Set<Statement> resultStatements = new HashSet<>();
+        Set<Statement> stmList = getParentedBy(parent);
+
+        if (stmList == null)
+            return Collections.emptySet();
+        resultStatements.addAll(stmList);
+        for (Statement stm : stmList) {
+            Set<Statement> tmp = getParentedByT(stm);
+            if (tmp != null)
+                resultStatements.addAll(tmp);
+        }
+        return resultStatements;
     }
 
     @Override
     public boolean isParent(@NonNull Statement parent, @NonNull Statement child) {
-        HashSet<Statement> children = parents.get(parent);
-        if (children == null) {
-            return false;
-        }
-        return children.contains(child);
+        return getParentedBy(parent).contains(child);
     }
 
     @Override
-    public boolean isParentT(@NonNull Statement parent, @NonNull Statement c) {
-        return false;
+    public boolean isParentT(@NonNull Statement parent, @NonNull Statement child) {
+        return getParentT(child).contains(parent);
     }
 }
