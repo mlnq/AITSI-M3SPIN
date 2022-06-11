@@ -42,13 +42,16 @@ public class QueryPreprocessor {
     }
 
     private void parseDeclarations() throws CodeScannerException, UnknownSynonymType {
+        codeScanner.skipWhitespaces();
         while (!codeScanner.hasCurrentString(PqlEntityEnum.SELECT.getName())) {
             codeScanner.skipWhitespaces();
             String synonymType = parseSynonymType();
             codeScanner.skipWhitespaces();
 
-            if (EntityType.contains(synonymType)) parseDeclaration(EntityType.fromString(synonymType));
-            else throw new UnknownSynonymType(synonymType);
+            if (EntityType.contains(synonymType)) {
+                parseDeclaration(EntityType.fromString(synonymType));
+                codeScanner.skipWhitespaces();
+            } else throw new UnknownSynonymType(synonymType);
         }
     }
 

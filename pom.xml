@@ -6,7 +6,7 @@
 
     <groupId>aitsi.m3spin</groupId>
     <artifactId>AITSI-M3SPIN</artifactId>
-    <version>1.0.0.0-CALLS-NPE</version>
+    <version>1.0.2.0-CODE-POS-TOSTRING</version>
     <!--iteracja.wersja(zwiększana przy scaleniu).problem(nazwany).build-->
 
     <properties>
