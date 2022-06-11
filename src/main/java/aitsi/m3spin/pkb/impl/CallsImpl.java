@@ -3,7 +3,10 @@ package aitsi.m3spin.pkb.impl;
 import aitsi.m3spin.commons.interfaces.Procedure;
 import aitsi.m3spin.pkb.interfaces.Calls;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class CallsImpl implements Calls {
     HashMap<Procedure, HashSet<Procedure>> calls = new HashMap<>();
@@ -18,37 +21,37 @@ public class CallsImpl implements Calls {
     }
 
     @Override
-    public List<Procedure> getCalledBy(Procedure procedure) {
-        HashSet<Procedure> called = calls.get(procedure);
+    public Set<Procedure> getCalledBy(Procedure calling) {
+        HashSet<Procedure> called = calls.get(calling);
         if (called == null) {
-            return null;
+            return Collections.emptySet();
         } else {
-            return new ArrayList<>(called);
+            return new HashSet<>(called);
         }
     }
 
     @Override
-    public List<Procedure> getCalledByT(Procedure procedure) {
-        return null;
+    public Set<Procedure> getCalledByT(Procedure calling) {
+        return Collections.emptySet();
     }
 
     @Override
-    public List<Procedure> getCalledFrom(Procedure procedure) {
-        return null;
+    public Set<Procedure> getCalling(Procedure called) {
+        return Collections.emptySet();
     }
 
     @Override
-    public List<Procedure> getCalledFromT(Procedure p) {
-        return null;
+    public Set<Procedure> getCallingT(Procedure called) {
+        return Collections.emptySet();
     }
 
     @Override
-    public Boolean isCalled(Procedure procedure1, Procedure procedure2) {
-        return null;
+    public boolean isCalled(Procedure calling, Procedure called) {
+        return getCalledBy(calling).contains(called);
     }
 
     @Override
-    public Boolean isCalledT(Procedure procedure1, Procedure procedure2) {
-        return null;
+    public boolean isCalledT(Procedure calling, Procedure called) {
+        return getCalledByT(calling).contains(called);
     }
 }
