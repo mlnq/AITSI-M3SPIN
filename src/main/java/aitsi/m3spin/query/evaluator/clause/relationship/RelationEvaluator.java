@@ -27,6 +27,10 @@ public class RelationEvaluator {
                 return new UsesEvaluationStrategy();
             case MODIFIES:
                 return new ModifiesEvaluationStrategy();
+            case CALLS:
+                return new CallsEvaluationStrategy();
+            case CALLS_T:
+                return new CallsTEvaluationStrategy();
             default:
                 return null;
         }

@@ -2,19 +2,19 @@ package aitsi.m3spin.pkb.interfaces;
 
 import aitsi.m3spin.commons.interfaces.Statement;
 
-import java.util.List;
+import java.util.Set;
 
 public interface Parent {
 
     Statement setParent(Statement parent, Statement child);
 
-    List<Statement> getParentedBy(Statement parent);
+    Set<Statement> getParentedBy(Statement parent);
 
     Statement getParent(Statement child);
 
-    List<Statement> getParentT(Statement child);
+    Set<Statement> getParentT(Statement child);
 
-    List<Statement> getParentedByT(Statement parent);
+    Set<Statement> getParentedByT(Statement parent);
 
     boolean isParent(Statement parent, Statement child);
 

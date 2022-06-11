@@ -2,8 +2,12 @@ package aitsi.m3spin.pkb.impl;
 
 import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.pkb.interfaces.Follows;
+import lombok.NonNull;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class FollowsImpl implements Follows {
     HashMap<Statement, Statement> follows = new HashMap<>();
@@ -19,14 +23,14 @@ public class FollowsImpl implements Follows {
     }
 
     @Override
-    public List<Statement> getFollowsT(Statement previous) {
+    public Set<Statement> getFollowsT(Statement previous) {
         HashSet<Statement> followsTResult = new HashSet<>();
-        Statement current =  previous;
+        Statement current = previous;
         while (follows.containsKey(current)) {
             current = getFollows(current);
             followsTResult.add(current);
         }
-        return new ArrayList<>(followsTResult);
+        return new HashSet<>(followsTResult);
     }
 
     @Override
@@ -40,24 +44,24 @@ public class FollowsImpl implements Follows {
     }
 
     @Override
-    public List<Statement> getFollowedByT(Statement next) {
+    public HashSet<Statement> getFollowedByT(Statement next) {
         HashSet<Statement> followedByTResult = new HashSet<>();
-        Statement current =  next;
+        Statement current = next;
         while (follows.containsValue(current)) {
             current = getFollowedBy(current);
             followedByTResult.add(current);
         }
-        return new ArrayList<>(followedByTResult);
+        return new HashSet<>(followedByTResult);
     }
 
     @Override
-    public boolean isFollowed(Statement previous, Statement next) {
+    public boolean isFollowed(@NonNull Statement previous, @NonNull Statement next) {
         return follows.get(previous).equals(next);
     }
 
     @Override
-    public boolean isFollowedT(Statement previous, Statement next) {
-        Statement current =  previous;
+    public boolean isFollowedT(@NonNull Statement previous, @NonNull Statement next) {
+        Statement current = previous;
         while (follows.containsKey(current)) {
             current = getFollows(current);
             if (current.equals(next))
