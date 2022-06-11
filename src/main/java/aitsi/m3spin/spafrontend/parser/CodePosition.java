@@ -6,6 +6,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @AllArgsConstructor
+@ToString
 public class CodePosition {
     private int line = 0;
     private int column = 0;
