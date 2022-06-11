@@ -18,44 +18,44 @@ public class CallsImpl implements Calls {
     }
 
     @Override
-    public List<String> getCalledBy(Procedure procedure) {
-        HashSet<String> called = calls.get(procedure);
+    public Set<String> getCalledBy(Procedure calling) {
+        HashSet<String> called = calls.get(calling);
         if (called == null) {
-            return null;
+            return Collections.emptySet();
         } else {
-            return new ArrayList<>(called);
+            return new HashSet<>(called);
         }
     }
 
     @Override
-    public List<Procedure> getCalledByT(Procedure procedure) {
-        return null;
+    public Set<Procedure> getCalledByT(Procedure calling) {
+        return Collections.emptySet();
     }
 
     @Override
-    public List<Procedure> getCalledFrom(Procedure procedure) {
-        String procName = procedure.getProcName();
+    public Set<Procedure> getCalling(Procedure called) {
+        String procName = called.getProcName();
         HashSet<Procedure> calledFrom = new HashSet<>();
         for(Map.Entry<Procedure, HashSet<String>> entry: calls.entrySet()) {
             if(entry.getValue().contains(procName)) {
                 calledFrom.add(entry.getKey());
             }
         }
-        return new ArrayList<>(calledFrom);
+        return calledFrom;
     }
 
     @Override
-    public List<Procedure> getCalledFromT(Procedure p) {
-        return null;
+    public Set<Procedure> getCallingT(Procedure called) {
+        return Collections.emptySet();
     }
 
     @Override
-    public Boolean isCalled(Procedure procedure1, Procedure procedure2) {
-        return calls.get(procedure1).contains(procedure2.getProcName());
+    public boolean isCalled(Procedure calling, Procedure called) {
+        return getCalledBy(calling).contains(called.getProcName());
     }
 
     @Override
-    public Boolean isCalledT(Procedure procedure1, Procedure procedure2) {
-        return null;
+    public boolean isCalledT(Procedure calling, Procedure called) {
+        return getCalledByT(calling).contains(called.getProcName());
     }
 }

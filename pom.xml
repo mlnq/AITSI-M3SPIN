@@ -6,7 +6,7 @@
 
     <groupId>aitsi.m3spin</groupId>
     <artifactId>AITSI-M3SPIN</artifactId>
-    <version>0.8.3.0-NPE-MERGE</version>
+    <version>1.0.0.0-CALLS-NPE</version>
     <!--iteracja.wersja(zwiększana przy scaleniu).problem(nazwany).build-->
 
     <properties>
