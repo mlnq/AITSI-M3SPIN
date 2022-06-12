@@ -1,6 +1,7 @@
 package aitsi.m3spin.pkb.impl;
 
 import aitsi.m3spin.commons.interfaces.Procedure;
+import aitsi.m3spin.commons.interfaces.Statement;
 import aitsi.m3spin.pkb.interfaces.Calls;
 
 import java.util.*;
@@ -29,7 +30,17 @@ public class CallsImpl implements Calls {
 
     @Override
     public Set<Procedure> getCalledByT(Procedure calling) {
-        return Collections.emptySet();
+        Set<Procedure> procList = getCalledBy(calling);
+
+        if (procList == null)
+            return Collections.emptySet();
+        Set<Procedure> resultProcedures = new HashSet<>(procList);
+        for (Procedure proc : procList) {
+            Set<Procedure> tmp = getCalledByT(proc);
+            if (tmp != null)
+                resultProcedures.addAll(tmp);
+        }
+        return resultProcedures;
     }
 
     @Override
@@ -45,7 +56,15 @@ public class CallsImpl implements Calls {
 
     @Override
     public Set<Procedure> getCallingT(Procedure called) {
-        return Collections.emptySet();
+        Set<Procedure> procedures = new HashSet<>();
+        Set<Procedure> proc = getCalling(called);
+        if (proc.size() == 0)
+            return Collections.emptySet();
+        while (proc != null) {
+            procedures.addAll(proc);
+            proc = getCalling(called);
+        }
+        return procedures;
     }
 
     @Override

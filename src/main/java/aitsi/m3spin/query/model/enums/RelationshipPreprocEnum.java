@@ -40,6 +40,10 @@ public enum RelationshipPreprocEnum {
     CALLS("Calls",
             new HashSet<>(Arrays.asList(ReferenceType.SYNONYM, ReferenceType.WILDCARD, ReferenceType.STRING)),
             new HashSet<>(Arrays.asList(ReferenceType.SYNONYM, ReferenceType.WILDCARD, ReferenceType.STRING))
+    ),
+    CALLS_T("Calls*",
+            new HashSet<>(Arrays.asList(ReferenceType.SYNONYM, ReferenceType.WILDCARD, ReferenceType.STRING)),
+            new HashSet<>(Arrays.asList(ReferenceType.SYNONYM, ReferenceType.WILDCARD, ReferenceType.STRING))
     );
 
     private final String relationName;
