@@ -11,6 +11,4 @@ public class Pkb {
     private final Modifies modifiesInterface = new ModifiesImpl();
     private final Uses usesInterface = new UsesImpl();
     private final Ast ast = new AstImpl();
-    private final VarTable varTable = new VarTableImpl();
-    private final ProcTable procTable = new ProcTableImpl();
 }

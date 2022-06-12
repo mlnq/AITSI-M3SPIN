@@ -15,7 +15,7 @@ public class CallsEvaluationStrategy extends TwoProcsAsArgsEvaluationStrategy {
     @Override
     public boolean evaluate(TNode firstNode, TNode secondNode, Pkb pkb) {
         if (!super.evaluate(firstNode, secondNode, pkb)) return false;
-        Set<String> proceduresCalledBy = pkb.getCallsInterface().getCalledBy((Procedure) firstNode);
-        return proceduresCalledBy.contains(((Procedure) secondNode).getProcName());
+        Set<Procedure> proceduresCalledBy = pkb.getCallsInterface().getCalledBy((Procedure) firstNode);
+        return proceduresCalledBy.contains((secondNode));
     }
 }

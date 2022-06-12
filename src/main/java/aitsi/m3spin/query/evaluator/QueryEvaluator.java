@@ -2,21 +2,18 @@ package aitsi.m3spin.query.evaluator;
 
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.impl.Pkb;
-import aitsi.m3spin.pkb.model.AttributableNode;
 import aitsi.m3spin.query.QueryProcessorException;
 import aitsi.m3spin.query.evaluator.clause.ClauseEvaluator;
 import aitsi.m3spin.query.evaluator.clause.ClauseEvaluatorFactory;
 import aitsi.m3spin.query.evaluator.dao.TNodeDao;
 import aitsi.m3spin.query.model.Query;
 import aitsi.m3spin.query.model.clauses.PqlClause;
-import aitsi.m3spin.query.model.references.PrimitiveTypeReference;
 import aitsi.m3spin.query.model.references.Synonym;
 import aitsi.m3spin.query.model.result.actual.QueryResult;
 import aitsi.m3spin.query.model.result.actual.TNodeSetResult;
 import aitsi.m3spin.query.model.result.reference.SelectedResult;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class QueryEvaluator {
     private final Pkb pkb;
@@ -49,13 +46,12 @@ public class QueryEvaluator {
             Set<Synonym> selectedAndRelatedSynonyms = query.getRelatedSynonyms(
                     selectedSynonym,
                     new HashSet<>(Collections.singleton(selectedSynonym)));
-            return evaluateSynonymQuery(selectedResult, queryClauses, clauseEvaluatorFactory, selectedAndRelatedSynonyms);
+            return evaluateSynonymQuery(selectedSynonym, queryClauses, clauseEvaluatorFactory, selectedAndRelatedSynonyms);
         }
     }
 
-    private QueryResult evaluateSynonymQuery(SelectedResult selectedResult, List<PqlClause> clauses, ClauseEvaluatorFactory clauseEvaluatorFactory,
+    private QueryResult evaluateSynonymQuery(Synonym selectedSynonym, List<PqlClause> clauses, ClauseEvaluatorFactory clauseEvaluatorFactory,
                                              Set<Synonym> selectedAndRelatedSynonyms) throws QueryProcessorException {
-        Synonym selectedSynonym = selectedResult.getSynonym();
         Set<? extends TNode> result = tNodeDao.findAllByType(selectedSynonym.getSynonymType());
 
         for (PqlClause clause : clauses) {
@@ -71,12 +67,7 @@ public class QueryEvaluator {
             }
         }
 
-        if (selectedResult instanceof Synonym) return QueryResult.ofTNodeSet(result);
-        else return QueryResult.ofAttrList(
-                result.stream()
-                        .map(AttributableNode.class::cast)
-                        .map(attributableNode -> (PrimitiveTypeReference) attributableNode.getAttribute())
-                        .collect(Collectors.toList()));
+        return QueryResult.ofTNodeSet(result);
     }
 
     private QueryResult evaluateBooleanQuery(List<PqlClause> queryClauses, ClauseEvaluatorFactory clauseEvaluatorFactory) throws QueryProcessorException {

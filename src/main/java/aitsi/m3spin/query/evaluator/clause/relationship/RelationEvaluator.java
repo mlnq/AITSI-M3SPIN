@@ -2,7 +2,6 @@ package aitsi.m3spin.query.evaluator.clause.relationship;
 
 import aitsi.m3spin.commons.interfaces.TNode;
 import aitsi.m3spin.pkb.impl.Pkb;
-import aitsi.m3spin.query.evaluator.exception.BadRelationshipArgumentsException;
 import aitsi.m3spin.query.model.enums.RelationshipEvaluatorEnum;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -36,7 +35,7 @@ public class RelationEvaluator {
         }
     }
 
-    public boolean evaluateRelationshipForNode(TNode firstNode, TNode secondNode) throws BadRelationshipArgumentsException {
+    public boolean evaluateRelationshipForNode(TNode firstNode, TNode secondNode) {
         return strategy.evaluate(firstNode, secondNode, pkb);
     }
 }
