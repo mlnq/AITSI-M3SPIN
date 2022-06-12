@@ -31,17 +31,17 @@ public class DesignExtractor {
         System.out.println("Filling PKB with data...");
 
         Procedure rootProc = procedures.get(0);
+        currentProcedure = rootProc;
         rootProc = (Procedure) pkb.getAst().setRoot(rootProc);
         fillPkb(rootProc);
 
-        Procedure currentProc;
         Procedure lastProc = rootProc;
 
         for (int i = 1; i < procedures.size(); i++) {
-            currentProc = procedures.get(i);
-            pkb.getAst().setSibling(lastProc, currentProc);
-            fillPkb(currentProc);
-            lastProc = currentProc;
+            currentProcedure = procedures.get(i);
+            pkb.getAst().setSibling(lastProc, currentProcedure);
+            fillPkb(currentProcedure);
+            lastProc = currentProcedure;
         }
 
         System.out.println("Filling PKB with data completed.");
