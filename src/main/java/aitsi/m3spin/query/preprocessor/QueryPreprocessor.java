@@ -23,10 +23,7 @@ import aitsi.m3spin.query.preprocessor.exceptions.*;
 import aitsi.m3spin.spafrontend.parser.CodeScanner;
 import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class QueryPreprocessor {
@@ -239,7 +236,7 @@ public class QueryPreprocessor {
             }
             throw BadRelationshipArgumentTypeException.ofNotAllowedRefType(relationEnum, ReferenceType.INTEGER, isFirstArgument);
         } else if (codeScanner.hasCurrentChar('_')) {
-            if (allowedRefTypes.contains(ReferenceType.SYNONYM)) {
+            if (allowedRefTypes.contains(ReferenceType.WILDCARD)) {
                 codeScanner.parseChar('_');
                 return new WildcardReference();
             }
@@ -272,12 +269,18 @@ public class QueryPreprocessor {
                 .findFirst();
         if (attributeEnumOptional.isPresent()) {
             AttributeEnum attributeEnum = attributeEnumOptional.get();
-            if (!attributeEnum.getEntityType().equals(synonym.getSynonymType()))
+            if (!attributeEnum.getEntityType().equals(synonym.getSynonymType()) && !(isStatement(attributeEnum, synonym)))
                 throw new BadAttributeException(attributeEnum, synonym);
             return attributeEnum;
         } else {
             throw new UnknownRelationTypeException(parsedName);
         }
+    }
+
+    private boolean isStatement(AttributeEnum attributeEnum, Synonym synonym) {
+        return attributeEnum.getEntityType().equals(EntityType.STATEMENT) &&
+                new HashSet<>(Arrays.asList(EntityType.IF, EntityType.ASSIGNMENT, EntityType.CALL, EntityType.WHILE, EntityType.STATEMENT))
+                        .contains(synonym.getSynonymType());
     }
 
     private Synonym parseSynonym() throws SynonymNotDeclared, CodeScannerException {

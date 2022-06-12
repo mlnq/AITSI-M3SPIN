@@ -88,7 +88,7 @@ public class SuchThatEvaluator extends ClauseEvaluator {
     }
 
     @Override
-    public TNodeSetResult chooseResult(TNodeSetResult[] bothResults, Synonym selectedSynonym) {
+    public TNodeSetResult chooseResult(TNodeSetResult[] bothResults, Synonym selectedSynonym, TNodeSetResult selectedNodes) {
         RelationshipArgumentRef firstArg = suchThat.getFirstArgument();
         RelationshipArgumentRef secondArg = suchThat.getSecondArgument();
 
@@ -101,6 +101,6 @@ public class SuchThatEvaluator extends ClauseEvaluator {
             if (selectedSynonym.equalsToSynonym(secondSynonym)) return bothResults[1];
         }
 
-        return TNodeSetResult.empty();
+        return selectedNodes;
     }
 }

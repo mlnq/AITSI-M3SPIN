@@ -153,14 +153,14 @@ public class WithClauseEvaluator extends ClauseEvaluator {
     }
 
     @Override
-    public TNodeSetResult chooseResult(TNodeSetResult[] bothResults, Synonym selectedSynonym) {
+    public TNodeSetResult chooseResult(TNodeSetResult[] bothResults, Synonym selectedSynonym, TNodeSetResult selectedNodes) {
         if (withRefContainsSelectedSynonym(leftHandType, leftHandRef, selectedSynonym))
             return bothResults[0];
 
         if (withRefContainsSelectedSynonym(rightHandType, rightHandRef, selectedSynonym))
             return bothResults[1];
 
-        return TNodeSetResult.empty();
+        return selectedNodes;
     }
 
     private boolean withRefContainsSelectedSynonym(WithArgRefType leftHandType, WithArgumentRef leftHandRef, Synonym selectedSynonym) {

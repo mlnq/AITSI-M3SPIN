@@ -19,7 +19,7 @@ public class PatternEvaluator extends ClauseEvaluator {
     }
 
     @Override
-    public TNodeSetResult chooseResult(TNodeSetResult[] bothResults, Synonym selectedSynonym) {
+    public TNodeSetResult chooseResult(TNodeSetResult[] bothResults, Synonym selectedSynonym, TNodeSetResult selectedNodes) {
         return null;//todo po 1 iteracji
     }
 }

@@ -32,5 +32,5 @@ public abstract class ClauseEvaluator {
 
     public abstract TNodeSetResult[] evaluateClause() throws QueryProcessorException;
 
-    public abstract TNodeSetResult chooseResult(TNodeSetResult[] bothResults, Synonym selectedSynonym);
+    public abstract TNodeSetResult chooseResult(TNodeSetResult[] bothResults, Synonym selectedSynonym, TNodeSetResult selectedNodes);
 }
