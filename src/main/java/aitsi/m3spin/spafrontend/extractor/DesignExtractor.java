@@ -4,16 +4,18 @@ import aitsi.m3spin.commons.enums.EntityType;
 import aitsi.m3spin.commons.impl.VariableImpl;
 import aitsi.m3spin.commons.interfaces.*;
 import aitsi.m3spin.pkb.impl.Pkb;
-import aitsi.m3spin.query.evaluator.dao.TNodeDao;
 import aitsi.m3spin.spafrontend.parser.RelationshipsInfo;
 import aitsi.m3spin.spafrontend.parser.exception.UnknownStatementType;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class DesignExtractor {
     private final Pkb pkb;
-    private Procedure currentProcedure;
+    private final Set<Procedure> allProcedures = new HashSet<>();
+    private final HashMap<Procedure, RelationshipsInfo> relInfoMap = new HashMap<>();
 
     public DesignExtractor(Pkb pkb) {
         this.pkb = pkb;
@@ -21,34 +23,79 @@ public class DesignExtractor {
 
     /*
      * Wzór metody fillPkb(tnode):
-     * 1. insertVar(tnode) / insertProc(tnode)
-     * 2. setChild(tnode, tnodeChild) / setSibling(tnode, tnodeSibling)
+     * 1. setChild(tnode, tnodeChild) / setSibling(tnode, tnodeSibling)
+     * 2. Przygotuj RelationshipsInfo
      * 3. Wywołaj fillPkb() dla tego dziecka/rodzeństwa
-     *
-     *  todo w przyszłuch iteracjach: Calls
      * */
     public void fillPkb(List<Procedure> procedures) throws UnknownStatementType {
         System.out.println("Filling PKB with data...");
 
+        allProcedures.addAll(procedures);
+
         Procedure rootProc = procedures.get(0);
-        currentProcedure = rootProc;
+        Procedure currentProcedure;
         rootProc = (Procedure) pkb.getAst().setRoot(rootProc);
-        fillPkb(rootProc);
+        relInfoMap.put(rootProc, fillPkb(rootProc));
 
         Procedure lastProc = rootProc;
 
         for (int i = 1; i < procedures.size(); i++) {
             currentProcedure = procedures.get(i);
             pkb.getAst().setSibling(lastProc, currentProcedure);
-            fillPkb(currentProcedure);
+            relInfoMap.put(currentProcedure, fillPkb(currentProcedure));
             lastProc = currentProcedure;
         }
+
+        relInfoMap.forEach(this::setCallsUsesModifies);
 
         System.out.println("Filling PKB with data completed.");
     }
 
-    private void fillPkb(Procedure procedure) throws UnknownStatementType {
-        pkb.getProcTable().insertProc(procedure.getProcName());
+    private void setCallsUsesModifies(Procedure procedure, RelationshipsInfo procRelInfo) {
+        RelationshipsInfo fullRelInfo = getRelInfoFromCalledProcs(procRelInfo, procedure.getProcName());
+
+        fullRelInfo.getCalledProcedures().stream()
+                .map(calledProcName -> findProcedureByName(calledProcName, procedure.getProcName()))
+                .forEach(calledProc -> pkb.getCallsInterface().setCalls(procedure, calledProc));
+
+        setMultipleUses(procedure, fullRelInfo.getUsedVariables());
+        setMultipleModifies(procedure, fullRelInfo.getModifiedVariables());
+    }
+
+    private RelationshipsInfo getRelInfoFromCalledProcs(final RelationshipsInfo procRelInfo, final String callingProcName) {
+        RelationshipsInfo fullRelInfo = new RelationshipsInfo(procRelInfo);
+        procRelInfo.getCalledProcedures().stream()
+                .map(calledProcName -> findProcedureByName(calledProcName, callingProcName))
+                .forEach(procedure -> {
+                    RelationshipsInfo relInfoFromCalledProcs = getRelInfoFromCalledProcs(relInfoMap.get(procedure), callingProcName);
+                    fullRelInfo.addRelInfo(relInfoFromCalledProcs);
+                });
+
+        return fullRelInfo;
+    }
+
+    private void setMultipleUses(Procedure procedure, List<Variable> usedVars) {
+        usedVars.forEach(variable -> pkb.getUsesInterface().setUses(procedure, variable));
+    }
+
+    private void setMultipleModifies(Procedure procedure, List<Variable> modifiedVars) {
+        modifiedVars.forEach(variable -> pkb.getModifiesInterface().setModifies(procedure, variable));
+    }
+
+    private Procedure findProcedureByName(String name, String callingProcName) {
+        Procedure searchedProc;
+        try {
+            searchedProc = allProcedures.stream()
+                    .filter(procedure -> procedure.getProcName().equals(name))
+                    .findFirst()
+                    .orElseThrow(() -> new NotDeclaredProcedureCallException(name, callingProcName));
+        } catch (NotDeclaredProcedureCallException e) {
+            throw new RuntimeException(e);
+        }
+        return searchedProc;
+    }
+
+    private RelationshipsInfo fillPkb(Procedure procedure) throws UnknownStatementType {
         StatementList stmtList = (StatementList) pkb.getAst().setChild(procedure, procedure.getStatementList());
         RelationshipsInfo relationshipsInfo = fillPkb(stmtList);
 
@@ -57,6 +104,8 @@ public class DesignExtractor {
 
         relationshipsInfo.getUsedVariables()
                 .forEach(usedVar -> pkb.getUsesInterface().setUses(procedure, usedVar));
+
+        return relationshipsInfo;
     }
 
     private RelationshipsInfo fillPkb(StatementList stmtList) throws UnknownStatementType {
@@ -106,7 +155,6 @@ public class DesignExtractor {
     }
 
     private RelationshipsInfo fillPkb(Variable variable, StatementList stmtList) throws UnknownStatementType {
-        pkb.getVarTable().insertVar(variable.getVarName());
         stmtList = (StatementList) pkb.getAst().setSibling(variable, stmtList);
         return fillPkb(stmtList);
     }
@@ -116,7 +164,6 @@ public class DesignExtractor {
             RelationshipsInfo relationshipsInfo = new RelationshipsInfo();
             if (expression.getFactor() instanceof Variable) {
                 Variable variable = (Variable) expression.getFactor();
-                pkb.getVarTable().insertVar(variable.getVarName());
                 relationshipsInfo.addUsedVar(variable);
             }
             Factor factor = (Factor) pkb.getAst().setChild(expression, expression.getFactor());
@@ -134,22 +181,24 @@ public class DesignExtractor {
         relationshipsInfo.addModifiedVar(variable);
         pkb.getModifiesInterface().setModifies(assignment, variable);
 
-        RelationshipsInfo.merge(relationshipsInfo, fillPkb(variable, assignment.getExpression()));
+        relationshipsInfo = RelationshipsInfo.merge(relationshipsInfo, fillPkb(variable, assignment.getExpression()));
+
         relationshipsInfo.getUsedVariables()
                 .forEach(usedVar -> pkb.getUsesInterface().setUses(assignment, usedVar));
         return relationshipsInfo;
     }
 
     private RelationshipsInfo fillPkb(Variable variable, Expression expression) {
-        pkb.getVarTable().insertVar(variable.getVarName());
         expression = (Expression) pkb.getAst().setSibling(variable, expression);
         return fillPkb(expression);
     }
 
     private RelationshipsInfo fillPkb(Call call) {
-        String calledProc = (String) call.getAttribute().getValue();
-        pkb.getCallsInterface().setCalls(currentProcedure, calledProc);
-        return RelationshipsInfo.emptyInfo();
+        String calledProcName = (String) call.getAttribute().getValue();
+
+        RelationshipsInfo relationshipsInfo = new RelationshipsInfo();
+        relationshipsInfo.addCalledProcName(calledProcName);
+        return relationshipsInfo;
     }
 
     private RelationshipsInfo fillPkb(If ifImpl) throws UnknownStatementType {
@@ -166,18 +215,13 @@ public class DesignExtractor {
         ifImpl.getElseStmtList().getStatements()
                 .forEach(statement -> pkb.getParentInterface().setParent(ifImpl, statement));
 
-        RelationshipsInfo.merge(relationshipsInfo, fillPkb(ifImpl.getConditionVar(), ifImpl.getThenStmtList(), ifImpl.getElseStmtList()));
-
-
-        return relationshipsInfo;
+        return RelationshipsInfo.merge(relationshipsInfo, fillPkb(ifImpl.getConditionVar(), ifImpl.getThenStmtList(), ifImpl.getElseStmtList()));
     }
 
     private RelationshipsInfo fillPkb(Variable variable, StatementList thenStmtList, StatementList elseStmtList) throws UnknownStatementType {
-        pkb.getVarTable().insertVar(variable.getVarName());
         thenStmtList = (StatementList) pkb.getAst().setSibling(variable, thenStmtList);
-        RelationshipsInfo relationshipsInfo = fillPkb(thenStmtList);
+        RelationshipsInfo thenRelInfo = fillPkb(thenStmtList);
         elseStmtList = (StatementList) pkb.getAst().setSibling(thenStmtList, elseStmtList);
-        RelationshipsInfo.merge(relationshipsInfo, fillPkb(elseStmtList));
-        return relationshipsInfo;
+        return RelationshipsInfo.merge(thenRelInfo, fillPkb(elseStmtList));
     }
 }

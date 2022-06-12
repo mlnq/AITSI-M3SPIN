@@ -9,12 +9,12 @@ public interface Calls {
     /**
      * Adds fact: procedure calling calls called
      */
-    void setCalls(Procedure calling, String called);
+    void setCalls(Procedure calling, Procedure called);
 
     /**
      * @return list of procedures which call calling passed as parameter directly
      */
-    Set<String> getCalledBy(Procedure calling);
+    Set<Procedure> getCalledBy(Procedure calling);
 
     /**
      * @return list of procedures which call calling passed as parameter both directly and indirectly

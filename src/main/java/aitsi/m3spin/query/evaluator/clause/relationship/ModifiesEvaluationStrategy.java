@@ -24,7 +24,7 @@ public class ModifiesEvaluationStrategy extends VarAsSecondArgEvaluationStrategy
                     .collect(Collectors.toSet());
             return varsModifiedByProc.contains(secondNode);
         } else {
-            Set<TNode> varsUsedByStmt = pkb.getUsesInterface().getVarsUsedByStmt((Statement) firstNode).stream()
+            Set<TNode> varsUsedByStmt = pkb.getModifiesInterface().getModified((Statement) firstNode).stream()
                     .map(TNode.class::cast)
                     .collect(Collectors.toSet());
             return varsUsedByStmt.contains(secondNode);

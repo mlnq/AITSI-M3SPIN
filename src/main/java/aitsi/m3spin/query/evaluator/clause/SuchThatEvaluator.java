@@ -17,7 +17,9 @@ import aitsi.m3spin.query.model.relationships.RelationshipArgumentRef;
 import aitsi.m3spin.query.model.result.actual.TNodeSetResult;
 import lombok.EqualsAndHashCode;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -60,13 +62,13 @@ public class SuchThatEvaluator extends ClauseEvaluator {
     private TNodeSetResult[] evaluateRelationship(RelationshipEvaluatorEnum relationship, Set<? extends TNode> firstArgNodes,
                                                   Set<? extends TNode> secondArgNodes) {
 
-        Set<TNode> secondResult = new HashSet<>();
+        List<TNode> secondResult = new ArrayList<>();
 
         Set<TNode> firstResult = firstArgNodes.stream()
                 .filter(node -> secondResult.addAll(filterMatchingNodesFromSet(relationship, node, secondArgNodes)))
                 .collect(Collectors.toSet());
 
-        return new TNodeSetResult[]{new TNodeSetResult(firstResult), new TNodeSetResult(secondResult)};
+        return new TNodeSetResult[]{new TNodeSetResult(firstResult), new TNodeSetResult(new HashSet<>(secondResult))};
     }
 
     private Set<? extends TNode> filterMatchingNodesFromSet(RelationshipEvaluatorEnum relationship,
